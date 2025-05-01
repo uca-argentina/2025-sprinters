@@ -6,6 +6,12 @@ Class {
 }
 
 { #category : 'tests' }
+DummyTest >> testBanana [
+
+	self assert: Dummy new isDummy
+]
+
+{ #category : 'tests' }
 DummyTest >> testDummy [
 
 	self assert: Dummy new isDummy
