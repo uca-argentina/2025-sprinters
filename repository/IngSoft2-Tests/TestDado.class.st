@@ -5,6 +5,15 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
+{ #category : 'asserting' }
+TestDado >> should: aBlock raise: anErrorType withMessage: anErrorMessage [ 
+	^self 
+		should: aBlock 
+		raise: anErrorType  
+		whoseDescriptionIncludes: anErrorMessage
+		description: 'Test failed for excepted reasons'
+]
+
 { #category : 'tests' }
 TestDado >> test000WhenCreoDadoCon5CarasThenCarasIgual5 [
 
@@ -24,7 +33,11 @@ TestDado >> test001WhenDadoNCarasTirarDadoThenReturnEntre1yNCaras [
 ]
 
 { #category : 'tests' }
-TestDado >> testBanana [
+TestDado >> test002Banana [
 
+	self 
 	
+	should: [ Dado with: 0 ]
+	raise: Error 
+	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Numero de caras debe ser mayor a 0' ].
 ]
