@@ -9,20 +9,11 @@ Class {
 }
 
 { #category : 'instance creation' }
-Dado class >> with: aCara [
-	aCara > 0 ifFalse: [
+Dado class >> with: numeroDeCaras [
+	numeroDeCaras > 0 ifFalse: [
 		^ Error signal: 'Numero de caras debe ser mayor a 0'].
 	
-	^ self new initializeWith: aCara
-]
-
-{ #category : 'asserting' }
-Dado >> assertValid: aCara [
-
-	aCara > 0 ifFalse: [
-		^ Error signal: 'Numero de caras debe ser mayor 0'].
-	
-	^ true.
+	^ self new initializeWith: numeroDeCaras.
 ]
 
 { #category : 'as yet unclassified' }
@@ -31,8 +22,8 @@ Dado >> caras [
 ]
 
 { #category : 'initialization' }
-Dado >> initializeWith: aCara [ 
-	cantidadCaras := aCara. 
+Dado >> initializeWith: numeroDeCaras [
+	cantidadCaras := numeroDeCaras. 
 ]
 
 { #category : 'as yet unclassified' }
