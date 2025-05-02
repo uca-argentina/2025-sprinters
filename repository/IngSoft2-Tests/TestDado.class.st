@@ -33,7 +33,7 @@ TestDado >> test001WhenDadoNCarasTirarDadoThenReturnEntre1yNCaras [
 ]
 
 { #category : 'tests' }
-TestDado >> test002Banana [
+TestDado >> test002WhenCreoDadoConCarasMenorA0ThenTiraError [
 
 	self 
 	
