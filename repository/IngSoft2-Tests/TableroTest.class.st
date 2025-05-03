@@ -15,7 +15,7 @@ TableroTest >> test000WhenCreamosTableroConCantidadDeCasillerosThenMostrarCantid
 ]
 
 { #category : 'tests' }
-TableroTest >> test001WhenCreamosTableroConCantidadDeCasillerosYGusanoThenMostrarCantidadDeCasilleros [
+TableroTest >> test000WhenCreamosTableroConCantidadDeCasillerosYGusanoThenMostrarCantidadDeCasilleros [
 
 	| unTablero cantidadDeCasilleros unGusano aX aY |
 	cantidadDeCasilleros := 10.

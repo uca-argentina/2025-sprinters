@@ -13,6 +13,12 @@ Nave class >> newShip [
 	^ self new initializePosicion.
 ]
 
+{ #category : 'as yet unclassified' }
+Nave >> ganoEn: aTablero [
+
+	^ posicion > aTablero mostrarCasilleros
+]
+
 { #category : 'initialization' }
 Nave >> initializePosicion [
 	posicion := 0.
