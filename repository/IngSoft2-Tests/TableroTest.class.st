@@ -38,3 +38,29 @@ TableroTest >> test002WhenCreamosTableroConCantidadDeCasillerosYGusanoErroneosTh
 	raise: Error 
 	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Posiciones de agujero de gusanos excede cantidad de casilleros de tablero' ].
 ]
+
+{ #category : 'tests' }
+TableroTest >> test003WhenCreamosTableroConCantidadDeCasillerosMenoresa1ThenReturnsError [
+
+	| cantidadDeCasilleros unGusano |
+	cantidadDeCasilleros := 0.
+	unGusano := Gusano with: 4 and: 11. 
+	self 
+	
+	should: [ Tablero with: cantidadDeCasilleros and: unGusano.]
+	raise: Error 
+	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Cantidad de casilleros en el tablero debe ser mayor a 0' ].
+]
+
+{ #category : 'tests' }
+TableroTest >> test004WhenCreamosTableroConCantidadDeCasillerosNoEnteroThenReturnsError [
+
+	| cantidadDeCasilleros unGusano |
+	cantidadDeCasilleros := 3.14.
+	unGusano := Gusano with: 4 and: 11. 
+	self 
+	
+	should: [ Tablero with: cantidadDeCasilleros and: unGusano.]
+	raise: Error 
+	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Cantidad de casillero no es un numero entero' ].
+]

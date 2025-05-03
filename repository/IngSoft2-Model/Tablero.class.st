@@ -17,6 +17,12 @@ Tablero class >> with: aCantidadDeCasilleros [
 { #category : 'as yet unclassified' }
 Tablero class >> with: aCantidadDeCasilleros and: aGusano [
 
+	aCantidadDeCasilleros isInteger ifFalse: [
+		^ Error signal: 'Cantidad de casillero no es un numero entero' ].
+	aCantidadDeCasilleros < 1 ifTrue: [
+		^ Error signal:
+			  'Cantidad de casilleros en el tablero debe ser mayor a 0' ].
+
 	(aGusano estaDentro: aCantidadDeCasilleros) ifFalse: [
 		^ Error signal:
 			  'Posiciones de agujero de gusanos excede cantidad de casilleros de tablero' ].
