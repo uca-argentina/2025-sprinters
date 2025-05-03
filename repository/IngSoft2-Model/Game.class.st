@@ -18,8 +18,13 @@ Game class >> with: aTablero and: aBucketDados and: aNave [
 
 { #category : 'as yet unclassified' }
 Game >> algunaNaveGano [
+	
+	ganador := naves detect: [:n | n ganoEn: tablero] ifNone: [nil].
+	
+	^ ganador isNotNil.
 
-	^ naves anySatisfy: [:n | n ganoEn: tablero ].
+	
+
 ]
 
 { #category : 'initialization' }
@@ -36,4 +41,9 @@ Game >> jugar [
 	[ self algunaNaveGano = false ] whileTrue: [
 		naves do: [ :unaNave | unaNave moverNave: bucketDeDados tirarBucket ] ].
 	^ 'fin'
+]
+
+{ #category : 'as yet unclassified' }
+Game >> mostrarGanador [
+	^ ganador.
 ]

@@ -26,3 +26,25 @@ JuegoTest >> test000WhenCreamosTableroConCantidadDeCasillerosYGusanoThenMostrarC
 	
 	self assert: unJuego jugar equals: 'fin'.
 ]
+
+{ #category : 'tests' }
+JuegoTest >> test001WhenCreamosTableroConCantidadDeCasillerosYGusanoThenMostrarCantidadDeCasilleros [
+
+	| unaNave listaDeDados unDado unBucketDeDados jugadaDeDados unTablero cantidadDeCasilleros unGusano unJuego listaDeNaves naveUno naveDos |
+	
+	listaDeNaves := OrderedCollection new.
+	naveUno := Nave newShip.
+	naveDos := Nave newShip.
+	listaDeDados := OrderedCollection new.
+	listaDeNaves add: naveUno.
+	listaDeNaves add: naveDos.
+	unDado := Dado with: 5.
+	listaDeDados add: unDado.
+	unBucketDeDados := BucketDados with: listaDeDados.
+	cantidadDeCasilleros := 10.
+	unGusano := Gusano with: 2 and: 4.
+	unTablero := Tablero with: cantidadDeCasilleros and: unGusano.
+	unJuego := Game with: unTablero and: unBucketDeDados and: listaDeNaves.
+	unJuego jugar.
+	self assert: unJuego mostrarGanador isNotNil.
+]
