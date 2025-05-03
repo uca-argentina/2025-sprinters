@@ -23,10 +23,20 @@ Gusano class >> with: aX and: aY [
 	^ self new initializeWith: aX and: aY
 ]
 
+{ #category : 'as yet unclassified' }
+Gusano >> estaDentro: aCantidadDeCasilleros [ 
+	^ ((x between: 0 and: aCantidadDeCasilleros) and: [y between: 0 and: aCantidadDeCasilleros]) . 
+]
+
 { #category : 'initialization' }
 Gusano >> initializeWith: aX and: aY [ 
 	x := aX.
 	y := aY.
+]
+
+{ #category : 'as yet unclassified' }
+Gusano >> mostrarPosiciones: aTablero [ 
+	^ aTablero mostrarCasilleroDeGusano: { x. y. } .
 ]
 
 { #category : 'as yet unclassified' }

@@ -6,24 +6,6 @@ Class {
 }
 
 { #category : 'tests' }
-JuegoTest >> test000WhenCreamosTableroConCantidadDeCasillerosThenMostrarCantidadDeCasilleros [
-
-	| unaNave listaDeDados unDado unBucketDeDados jugadaDeDados unTablero cantidadDeCasilleros |
-	unaNave := Nave newShip.
-	listaDeDados := OrderedCollection new.
-	unDado := Dado with: 5.
-	listaDeDados add: unDado.
-	unBucketDeDados := BucketDados with: listaDeDados.
-	cantidadDeCasilleros := 10.
-	unTablero := Tablero with: cantidadDeCasilleros.
-
-	jugadaDeDados := unBucketDeDados tirarBucket.
-	unaNave moverNave: jugadaDeDados.
-
-	self assert: unaNave mostrarPosicion equals: jugadaDeDados
-]
-
-{ #category : 'tests' }
 JuegoTest >> test001Banana [
 
 	| unaNave listaDeDados unDado unBucketDeDados jugadaDeDados unTablero cantidadDeCasilleros |
@@ -39,4 +21,22 @@ JuegoTest >> test001Banana [
 	unaNave moverNave: jugadaDeDados.
 
 	self assert: unaNave mostrarPosicion equals: jugadaDeDados.
+]
+
+{ #category : 'tests' }
+JuegoTest >> test001WhenCreamosTableroConCantidadDeCasillerosYGusanoThenMostrarCantidadDeCasilleros [
+
+	| unaNave listaDeDados unDado unBucketDeDados jugadaDeDados unTablero cantidadDeCasilleros |
+	unaNave := Nave newShip.
+	listaDeDados := OrderedCollection new.
+	unDado := Dado with: 5.
+	listaDeDados add: unDado.
+	unBucketDeDados := BucketDados with: listaDeDados.
+	cantidadDeCasilleros := 10.
+	unTablero := Tablero with: cantidadDeCasilleros.
+
+	jugadaDeDados := unBucketDeDados tirarBucket.
+	unaNave moverNave: jugadaDeDados.
+
+	self assert: unaNave mostrarPosicion equals: jugadaDeDados
 ]
