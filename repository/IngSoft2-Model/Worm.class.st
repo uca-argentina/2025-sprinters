@@ -12,20 +12,15 @@ Class {
 { #category : 'as yet unclassified' }
 Worm class >> with: aX and: aY [
 	(aX isInteger and: [ aY isInteger ]) ifFalse: [
-		^ Error signal: 'Posiciones del agujero deben ser enteros' ].
+		^ Error signal: 'Worm holes positions must be integers' ].
 	(aX > 0 and: [ aY > 0 ]) ifFalse: [
 		^ Error signal:
-			  'Posiciones del agujero de gusano deben ser mayor a 0' ].
+			  'Worm holes positions must be greater than zero' ].
 	(aX = aY) ifTrue: [
 		^ Error signal:
-			  'Posiciones del agujero de gusano no pueden ser iguales' ].
+			  'Worm holes positions must be different' ].
 	
 	^ self new initializeWith: aX and: aY
-]
-
-{ #category : 'as yet unclassified' }
-Worm >> estaDentro: aCantidadDeCasilleros [ 
-	^ ((x between: 0 and: aCantidadDeCasilleros) and: [y between: 0 and: aCantidadDeCasilleros]) . 
 ]
 
 { #category : 'initialization' }
@@ -35,16 +30,21 @@ Worm >> initializeWith: aX and: aY [
 ]
 
 { #category : 'as yet unclassified' }
-Worm >> posicionX [
+Worm >> isInside: aAmountOfCells [ 
+	^ ((x between: 0 and: aAmountOfCells) and: [y between: 0 and: aAmountOfCells]) . 
+]
+
+{ #category : 'as yet unclassified' }
+Worm >> positionX [
 	^ x.
 ]
 
 { #category : 'as yet unclassified' }
-Worm >> posicionY [
+Worm >> positionY [
 	^ y.
 ]
 
 { #category : 'as yet unclassified' }
-Worm >> showPositions: aTablero [ 
-	^ aTablero showWormHoleCell: { x. y. } .
+Worm >> showPositions: aBoard [ 
+	^ aBoard showWormHoleCell: { x. y. } .
 ]

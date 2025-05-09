@@ -6,7 +6,7 @@ Class {
 }
 
 { #category : 'tests' }
-BoardTest >> test000WhenCreamosTableroConCantidadDeCasillerosThenMostrarCantidadDeCasilleros [
+BoardTest >> test000WhenCreateBoardWithAmountOfCellsThenShowAmountOfCells [
 
 	| unTablero cantidadDeCasilleros |
 	cantidadDeCasilleros := 10.
@@ -15,52 +15,52 @@ BoardTest >> test000WhenCreamosTableroConCantidadDeCasillerosThenMostrarCantidad
 ]
 
 { #category : 'tests' }
-BoardTest >> test000WhenCreamosTableroConCantidadDeCasillerosYGusanoThenMostrarCantidadDeCasilleros [
+BoardTest >> test001WhenPlayGameThenReturnGameOver [
 
-	| unTablero cantidadDeCasilleros unGusano aX aY |
-	cantidadDeCasilleros := 10.
+	| aBoard amountOfCells aWorm aX aY |
+	amountOfCells := 10.
 	aX := 4.
 	aY := 6.
-	unGusano := Worm with: aX and: aY. 
-	unTablero := Board with: cantidadDeCasilleros and: unGusano.
-	self assert: unTablero showSpecialCells equals: {aX. aY}.
+	aWorm := Worm with: aX and: aY. 
+	aBoard := Board with: amountOfCells and: aWorm.
+	self assert: aBoard showSpecialCells equals: {aX. aY}.
 ]
 
 { #category : 'tests' }
-BoardTest >> test002WhenCreamosTableroConCantidadDeCasillerosYGusanoErroneosThenReturnsError [
+BoardTest >> test002WhenCreateBoardWithWrongWormHolePostionThenReturnsError [
 
-	| cantidadDeCasilleros unGusano |
-	cantidadDeCasilleros := 10.
-	unGusano := Worm with: 4 and: 11. 
+	| amountOfCells aWorm |
+	amountOfCells := 10.
+	aWorm := Worm with: 4 and: 11. 
 	self 
 	
-	should: [ Board with: cantidadDeCasilleros and: unGusano.]
+	should: [ Board with: amountOfCells and: aWorm.]
 	raise: Error 
-	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Posiciones de agujero de gusanos excede cantidad de casilleros de tablero' ].
+	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Position of the worm hole exceed amount board`s cells' ].
 ]
 
 { #category : 'tests' }
-BoardTest >> test003WhenCreamosTableroConCantidadDeCasillerosMenoresa1ThenReturnsError [
+BoardTest >> test003WhenCreateBoardWithCellsLessThan1ThenReturnsError [
 
-	| cantidadDeCasilleros unGusano |
-	cantidadDeCasilleros := 0.
-	unGusano := Worm with: 4 and: 11. 
+	| amountOfCells aWorm |
+	amountOfCells := 0.
+	aWorm := Worm with: 4 and: 11. 
 	self 
 	
-	should: [ Board with: cantidadDeCasilleros and: unGusano.]
+	should: [ Board with: amountOfCells and: aWorm.]
 	raise: Error 
-	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Cantidad de casilleros en el tablero debe ser mayor a 0' ].
+	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Amount of cells must be greater than zero' ].
 ]
 
 { #category : 'tests' }
-BoardTest >> test004WhenCreamosTableroConCantidadDeCasillerosNoEnteroThenReturnsError [
+BoardTest >> test004WhenCreateBoardWithCellsNotIntegerThenReturnsError [
 
-	| cantidadDeCasilleros unGusano |
-	cantidadDeCasilleros := 3.14.
-	unGusano := Worm with: 4 and: 11. 
+	| amountOfCells aWorm |
+	amountOfCells := 3.14.
+	aWorm := Worm with: 4 and: 11. 
 	self 
 	
-	should: [ Board with: cantidadDeCasilleros and: unGusano.]
+	should: [ Board with: amountOfCells and: aWorm.]
 	raise: Error 
-	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Cantidad de casillero no es un numero entero' ].
+	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Amount of cells must be an integer' ].
 ]

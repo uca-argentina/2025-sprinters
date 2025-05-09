@@ -2,7 +2,7 @@ Class {
 	#name : 'Ship',
 	#superclass : 'Object',
 	#instVars : [
-		'posicion'
+		'position'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -10,26 +10,26 @@ Class {
 
 { #category : 'instance creation' }
 Ship class >> newShip [
-	^ self new initializePosicion.
-]
-
-{ #category : 'as yet unclassified' }
-Ship >> ganoEn: aTablero [
-
-	^ posicion > aTablero showCells
+	^ self new initializePosition.
 ]
 
 { #category : 'initialization' }
-Ship >> initializePosicion [
-	posicion := 0.
+Ship >> initializePosition [
+	position := 0.
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> mostrarPosicion [
-	^ posicion.
+Ship >> moveShip: numberOfCells [ 
+	position := position + numberOfCells.
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> moverNave: numeroDeCasillas [ 
-	posicion := posicion + numeroDeCasillas.
+Ship >> showPosition [
+	^ position.
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> winAt: aBoard [
+
+	^ position > aBoard showCells
 ]
