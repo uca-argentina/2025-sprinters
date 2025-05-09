@@ -6,33 +6,17 @@ Class {
 }
 
 { #category : 'tests' }
-BucketTest >> test000WhenTiramos2DadosCon6CarasThenReturnNumeroEntre2YCaraDadoUnoYCaraDadoDos [
+BucketTest >> test000WhenThrow2DicesWith6FacesThenReturnNumberBetween2AndSumOfDiceOneAndTwo [
 
-	| dadoUno dadoDos bucketDeDados listaDeDados jugadaDeDados |
-	dadoUno := Dado with: 6.
-	dadoDos := Dado with: 6.
-	listaDeDados := OrderedCollection new: 2.
-	listaDeDados add: dadoUno.
-	listaDeDados add: dadoDos.
-	bucketDeDados := BucketDados with: listaDeDados.
-	jugadaDeDados := bucketDeDados tirarBucket.
-
-
-	self assert: (jugadaDeDados between: listaDeDados size and: dadoUno caras + dadoDos caras).
-]
-
-{ #category : 'tests' }
-BucketTest >> test003Banana [
-
-	| dadoUno dadoDos bucketDeDados listaDeDados jugadaDeDados |
-	dadoUno := Dado with: 6.
-	dadoDos := Dado with: 6.
-	listaDeDados := OrderedCollection new: 2.
-	listaDeDados add: dadoUno.
-	listaDeDados add: dadoDos.
-	bucketDeDados := BucketDados with: listaDeDados.
-	jugadaDeDados := bucketDeDados tirarBucket.
+	| diceOne diceTwo bucketOfDices listOfDices diceGame |
+	diceOne := Dice with: 6.
+	diceTwo := Dice with: 6.
+	listOfDices := OrderedCollection new: 2.
+	listOfDices add: diceOne.
+	listOfDices add: diceTwo.
+	bucketOfDices := DiceBucket with: listOfDices.
+	diceGame := bucketOfDices throwBucket .
 
 
-	self assert: (jugadaDeDados between: listaDeDados size and: dadoUno caras + dadoDos caras).
+	self assert: (diceGame between: listOfDices size and: diceOne faces + diceTwo faces).
 ]
