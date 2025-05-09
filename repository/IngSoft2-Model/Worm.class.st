@@ -1,5 +1,5 @@
 Class {
-	#name : 'Gusano',
+	#name : 'Worm',
 	#superclass : 'Object',
 	#instVars : [
 		'x',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Gusano class >> with: aX and: aY [
+Worm class >> with: aX and: aY [
 	(aX isInteger and: [ aY isInteger ]) ifFalse: [
 		^ Error signal: 'Posiciones del agujero deben ser enteros' ].
 	(aX > 0 and: [ aY > 0 ]) ifFalse: [
@@ -24,27 +24,27 @@ Gusano class >> with: aX and: aY [
 ]
 
 { #category : 'as yet unclassified' }
-Gusano >> estaDentro: aCantidadDeCasilleros [ 
+Worm >> estaDentro: aCantidadDeCasilleros [ 
 	^ ((x between: 0 and: aCantidadDeCasilleros) and: [y between: 0 and: aCantidadDeCasilleros]) . 
 ]
 
 { #category : 'initialization' }
-Gusano >> initializeWith: aX and: aY [ 
+Worm >> initializeWith: aX and: aY [ 
 	x := aX.
 	y := aY.
 ]
 
 { #category : 'as yet unclassified' }
-Gusano >> mostrarPosiciones: aTablero [ 
-	^ aTablero mostrarCasilleroDeGusano: { x. y. } .
-]
-
-{ #category : 'as yet unclassified' }
-Gusano >> posicionX [
+Worm >> posicionX [
 	^ x.
 ]
 
 { #category : 'as yet unclassified' }
-Gusano >> posicionY [
+Worm >> posicionY [
 	^ y.
+]
+
+{ #category : 'as yet unclassified' }
+Worm >> showPositions: aTablero [ 
+	^ aTablero showWormHoleCell: { x. y. } .
 ]

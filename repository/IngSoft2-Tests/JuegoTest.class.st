@@ -11,17 +11,17 @@ JuegoTest >> test000WhenCreamosTableroConCantidadDeCasillerosYGusanoThenMostrarC
 	| unaNave listaDeDados unDado unBucketDeDados jugadaDeDados unTablero cantidadDeCasilleros unGusano unJuego listaDeNaves naveUno naveDos |
 	
 	listaDeNaves := OrderedCollection new.
-	naveUno := Nave newShip.
-	naveDos := Nave newShip.
+	naveUno := Ship newShip.
+	naveDos := Ship newShip.
 	listaDeDados := OrderedCollection new.
 	listaDeNaves add: naveUno.
 	listaDeNaves add: naveDos.
-	unDado := Dado with: 5.
+	unDado := Dice with: 5.
 	listaDeDados add: unDado.
-	unBucketDeDados := BucketDados with: listaDeDados.
+	unBucketDeDados := DiceBucket with: listaDeDados.
 	cantidadDeCasilleros := 10.
-	unGusano := Gusano with: 2 and: 4.
-	unTablero := Tablero with: cantidadDeCasilleros and: unGusano.
+	unGusano := Worm with: 2 and: 4.
+	unTablero := Board with: cantidadDeCasilleros and: unGusano.
 	unJuego := Game with: unTablero and: unBucketDeDados and: listaDeNaves.
 	
 	self assert: unJuego jugar equals: 'fin'.
@@ -33,17 +33,17 @@ JuegoTest >> test001WhenCreamosTableroConCantidadDeCasillerosYGusanoThenMostrarC
 	| unaNave listaDeDados unDado unBucketDeDados jugadaDeDados unTablero cantidadDeCasilleros unGusano unJuego listaDeNaves naveUno naveDos |
 	
 	listaDeNaves := OrderedCollection new.
-	naveUno := Nave newShip.
-	naveDos := Nave newShip.
+	naveUno := Ship newShip.
+	naveDos := Ship newShip.
 	listaDeDados := OrderedCollection new.
 	listaDeNaves add: naveUno.
 	listaDeNaves add: naveDos.
-	unDado := Dado with: 5.
+	unDado := Dice with: 5.
 	listaDeDados add: unDado.
-	unBucketDeDados := BucketDados with: listaDeDados.
+	unBucketDeDados := DiceBucket with: listaDeDados.
 	cantidadDeCasilleros := 10.
-	unGusano := Gusano with: 2 and: 4.
-	unTablero := Tablero with: cantidadDeCasilleros and: unGusano.
+	unGusano := Worm with: 2 and: 4.
+	unTablero := Board with: cantidadDeCasilleros and: unGusano.
 	unJuego := Game with: unTablero and: unBucketDeDados and: listaDeNaves.
 	unJuego jugar.
 	self assert: unJuego mostrarGanador isNotNil.
@@ -54,15 +54,15 @@ JuegoTest >> test002WhenCreamosTableroConCantidadDeCasillerosYGusanoThenMostrarG
 
 	| listaDeDados unDado unBucketDeDados unTablero cantidadDeCasilleros unGusano unJuego listaDeNaves naveUno |
 	listaDeNaves := OrderedCollection new.
-	naveUno := Nave newShip.
+	naveUno := Ship newShip.
 	listaDeDados := OrderedCollection new.
 	listaDeNaves add: naveUno.
-	unDado := Dado with: 5.
+	unDado := Dice with: 5.
 	listaDeDados add: unDado.
-	unBucketDeDados := BucketDados with: listaDeDados.
+	unBucketDeDados := DiceBucket with: listaDeDados.
 	cantidadDeCasilleros := 10.
-	unGusano := Gusano with: 2 and: 4.
-	unTablero := Tablero with: cantidadDeCasilleros and: unGusano.
+	unGusano := Worm with: 2 and: 4.
+	unTablero := Board with: cantidadDeCasilleros and: unGusano.
 	unJuego := Game
 		           with: unTablero
 		           and: unBucketDeDados

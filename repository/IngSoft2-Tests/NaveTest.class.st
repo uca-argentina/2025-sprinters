@@ -10,7 +10,7 @@ NaveTest >> test000WhenCreateNaveThenPosicionIgualACero [
 
 | unaNave |
 
-unaNave := Nave newShip.
+unaNave := Ship newShip.
 
 self assert: unaNave mostrarPosicion equals: 0.
 ]
@@ -20,7 +20,7 @@ NaveTest >> test001WhenNaveRecibeUnNumeroThenSeMueveEsaCantidad [
 
 | unaNave jugadaDeDados |
 
-unaNave := Nave newShip.
+unaNave := Ship newShip.
 jugadaDeDados := 2.
 unaNave moverNave: jugadaDeDados.
 

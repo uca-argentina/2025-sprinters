@@ -1,5 +1,5 @@
 Class {
-	#name : 'Nave',
+	#name : 'Ship',
 	#superclass : 'Object',
 	#instVars : [
 		'posicion'
@@ -9,27 +9,27 @@ Class {
 }
 
 { #category : 'instance creation' }
-Nave class >> newShip [
+Ship class >> newShip [
 	^ self new initializePosicion.
 ]
 
 { #category : 'as yet unclassified' }
-Nave >> ganoEn: aTablero [
+Ship >> ganoEn: aTablero [
 
-	^ posicion > aTablero mostrarCasilleros
+	^ posicion > aTablero showCells
 ]
 
 { #category : 'initialization' }
-Nave >> initializePosicion [
+Ship >> initializePosicion [
 	posicion := 0.
 ]
 
 { #category : 'as yet unclassified' }
-Nave >> mostrarPosicion [
+Ship >> mostrarPosicion [
 	^ posicion.
 ]
 
 { #category : 'as yet unclassified' }
-Nave >> moverNave: numeroDeCasillas [ 
+Ship >> moverNave: numeroDeCasillas [ 
 	posicion := posicion + numeroDeCasillas.
 ]
