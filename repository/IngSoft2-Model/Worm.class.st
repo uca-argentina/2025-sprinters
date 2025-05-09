@@ -45,6 +45,15 @@ Worm >> positionY [
 ]
 
 { #category : 'as yet unclassified' }
+Worm >> sendPosition: aPosition [
+
+	aPosition = x ifTrue: [ ^ y ].
+	aPosition = y ifTrue: [ ^ x ].
+
+	^ aPosition
+]
+
+{ #category : 'as yet unclassified' }
 Worm >> showPositions: aBoard [ 
 	^ aBoard showWormHoleCell: { x. y. } .
 ]

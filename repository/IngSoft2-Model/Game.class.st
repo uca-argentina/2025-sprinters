@@ -28,7 +28,7 @@ Game >> initializeWith: aBoard and: aBucketOfDices and: aBucketOfShips [
 Game >> play [
 
 	[ self someShipWon = false ] whileTrue: [
-		ships do: [ :aShip | aShip moveShip: bucketOfDices throwBucket ] ].
+		ships do: [ :aShip | aShip moveShip: bucketOfDices throwBucket in: board  ] ].
 	^ 'Game over'
 ]
 

@@ -24,6 +24,12 @@ Ship >> moveShip: numberOfCells [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> moveShip: numberOfCells in: aBoard [ 
+	position := position + numberOfCells.
+	position := aBoard verifyPosition: self.
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> showPosition [
 	^ position.
 ]

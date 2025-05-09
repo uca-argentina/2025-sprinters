@@ -17,10 +17,11 @@ self assert: aShip showPosition equals: 0.
 
 { #category : 'tests' }
 ShipTest >> test001WhenShipReceiveANumberThenMovesThatAmount [
-| aShip diceGame |
-aShip := Ship newShip.
-diceGame := 2.
-aShip moveShip: diceGame.
 
-self assert: aShip showPosition equals: diceGame
+	| aShip diceGame |
+	aShip := Ship newShip.
+	diceGame := 2.
+	aShip moveShip: diceGame.
+
+	self assert: aShip showPosition equals: diceGame
 ]

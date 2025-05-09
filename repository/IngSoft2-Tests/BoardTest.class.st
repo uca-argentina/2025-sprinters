@@ -64,3 +64,17 @@ BoardTest >> test004WhenCreateBoardWithCellsNotIntegerThenReturnsError [
 	raise: Error 
 	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Amount of cells must be an integer' ].
 ]
+
+{ #category : 'tests' }
+BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
+
+	| amountOfCells aX aY aWorm aBoard aShip |
+	amountOfCells := 10.
+	aX := 4.
+	aY := 6.
+	aWorm := Worm with: aX and: aY.
+	aBoard := Board with: amountOfCells and: aWorm.
+	aShip := Ship newShip.
+	aShip moveShip: 6.
+	self assert: (aBoard verifyPosition: aShip) equals: 4.
+]
