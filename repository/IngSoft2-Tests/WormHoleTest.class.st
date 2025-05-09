@@ -47,3 +47,14 @@ WormHoleTest >> test003WhenCreateWormHolesPositionNoIntegersThenReturnsError [
 				assert: error messageText
 				equals: 'Worm holes positions must be integers' ]
 ]
+
+{ #category : 'tests' }
+WormHoleTest >> test004WhenShipMovesInsideWormholeThenPositionChanges [
+
+	| aWorm aX aY aShip aPosition |
+	aX := 2.
+	aY := 6.
+	aWorm := Worm with: aX and: aY.
+	aPosition := 6.
+	self assert: (aWorm sendPosition: aPosition) equals: 2.
+]
