@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'amountOfCells',
 		'wormHole',
-		'aFinalPosition'
+		'aFinalPosition',
+		'listOfPositions'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -22,13 +23,12 @@ Board class >> with: arg1 [
 ]
 
 { #category : 'as yet unclassified' }
-Board class >> with: arg1 and: arg2 [
+Board class >> with: arg1 and: arg2 [ 
 
 	arg1 isInteger ifFalse: [
 		^ Error signal: 'Amount of cells must be an integer' ].
 	arg1 < 1 ifTrue: [
 		^ Error signal: 'Amount of cells must be greater than zero' ].
-	nil.
 	(arg2 isInside: arg1) ifFalse: [
 		^ Error signal:
 			  'Position of the worm hole exceed amount board`s cells' ].
@@ -44,8 +44,15 @@ Board >> initializeWith: arg1 [
 { #category : 'initialization' }
 Board >> initializeWith: arg1 and: arg2 [
 
+	listOfPositions := OrderedCollection new: arg1 withAll: false.
 	amountOfCells := arg1.
 	wormHole := arg2
+]
+
+{ #category : 'as yet unclassified' }
+Board >> positionTaken [
+
+	^ listOfPositions
 ]
 
 { #category : 'as yet unclassified' }
@@ -69,6 +76,7 @@ Board >> showWormHoleCell: arg1 [
 ]
 
 { #category : 'as yet unclassified' }
-Board >> verifyPosition: aShip [ 
-	^ wormHole sendPosition: aShip showPosition.
+Board >> verifyPosition: aShip [
+
+	^ wormHole sendPosition: aShip showPosition
 ]

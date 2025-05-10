@@ -51,7 +51,7 @@ WormHoleTest >> test003WhenCreateWormHolesPositionNoIntegersThenReturnsError [
 { #category : 'tests' }
 WormHoleTest >> test004WhenShipMovesInsideWormholeThenPositionChanges [
 
-	| aWorm aX aY aShip aPosition |
+	| aWorm aX aY aPosition |
 	aX := 2.
 	aY := 6.
 	aWorm := Worm with: aX and: aY.

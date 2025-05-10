@@ -78,3 +78,21 @@ BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 	aShip moveShip: 6.
 	self assert: (aBoard verifyPosition: aShip) equals: 4.
 ]
+
+{ #category : 'tests' }
+BoardTest >> test006When [
+
+	| amountOfCells aX aY aWorm aBoard aShip result |
+	amountOfCells := 10.
+	aX := 4.
+	aY := 6.
+	aWorm := Worm with: aX and: aY.
+	aBoard := Board with: amountOfCells and: aWorm.
+
+	aShip := Ship newShip.
+	aShip moveShip: 3.
+
+	result := aBoard positionTaken.
+
+	self assert: (result at: 3) equals: true
+]
