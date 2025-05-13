@@ -42,11 +42,9 @@ Board >> initializeWith: arg1 [
 ]
 
 { #category : 'initialization' }
-Board >> initializeWith: arg1 and: arg2 [
-
-	listOfPositions := OrderedCollection new: arg1 withAll: false.
-	amountOfCells := arg1.
-	wormHole := arg2
+Board >> initializeWith: aAmountOfCells and: aWormHole [
+	amountOfCells := aAmountOfCells.
+	wormHole := aWormHole
 ]
 
 { #category : 'as yet unclassified' }
