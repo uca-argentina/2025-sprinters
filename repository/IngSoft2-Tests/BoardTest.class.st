@@ -8,10 +8,10 @@ Class {
 { #category : 'tests' }
 BoardTest >> test000WhenCreateBoardWithAmountOfCellsThenShowAmountOfCells [
 
-	| unTablero cantidadDeCasilleros |
-	cantidadDeCasilleros := 10.
-	unTablero := Board with: cantidadDeCasilleros.
-	self assert: unTablero showCells equals: cantidadDeCasilleros
+	| aBoard amountOfCells |
+	amountOfCells := 10.
+	aBoard := Board with: amountOfCells.
+	self assert: aBoard showCells equals: amountOfCells
 ]
 
 { #category : 'tests' }

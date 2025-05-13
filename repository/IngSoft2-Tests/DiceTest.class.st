@@ -5,15 +5,6 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
-{ #category : 'asserting' }
-DiceTest >> should: aBlock raise: anErrorType withMessage: anErrorMessage [ 
-	^self 
-		should: aBlock 
-		raise: anErrorType  
-		whoseDescriptionIncludes: anErrorMessage
-		description: 'Test failed for excepted reasons'
-]
-
 { #category : 'tests' }
 DiceTest >> test000WhenCreateDiceWith5FacesThenFacesEqual5 [
 
