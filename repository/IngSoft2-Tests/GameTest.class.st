@@ -11,8 +11,8 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 	|listOfDices aDice aDiceBucket  aBoard amountOfCells aWorm aGame listOfShips shipOne shipTwo |
 	
 	listOfShips := OrderedCollection new.
-	shipOne := Ship newShip.
-	shipTwo := Ship newShip.
+	shipOne := Ship createShip: 'Ship 1'.
+	shipTwo := Ship createShip: 'Ship 2'.
 	listOfDices := OrderedCollection new.
 	listOfShips add: shipOne.
 	listOfShips add: shipTwo.
@@ -33,8 +33,8 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	|listOfDices aDice aDiceBucket  aBoard amountOfCells aWorm aGame listOfShips shipOne shipTwo |
 	
 	listOfShips := OrderedCollection new.
-	shipOne := Ship newShip.
-	shipTwo := Ship newShip.
+	shipOne := Ship createShip: 'Ship 1'.
+	shipTwo := Ship createShip: 'Ship 2'.
 	listOfDices := OrderedCollection new.
 	listOfShips add: shipOne.
 	listOfShips add: shipTwo.
@@ -115,4 +115,32 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 	assertedResult at: 'Ship 1' put: 10.
 	assertedResult at: 'Ship 2' put: 5.
 	self assert: (aGame showShipsPositions) equals: assertedResult.
+]
+
+{ #category : 'tests' }
+GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
+
+	| listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame listOfShips shipOne assertedResult shipTwo shipThree |
+	listOfShips := OrderedCollection new.
+	shipOne := Ship createShip: 'Ship 1'.
+	shipTwo := Ship createShip: 'Ship 2'.
+	shipThree := Ship createShip: 'Ship 1'.
+	listOfDices := OrderedCollection new.
+	listOfShips add: shipOne.
+	listOfShips add: shipTwo.
+	listOfShips add: shipThree.
+	aDice := Dice with: 5.
+	listOfDices add: aDice.
+	aDiceBucket := DiceBucket with: listOfDices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	aBoard := Board with: amountOfCells and: aWorm.
+
+	self
+		should: [ Game with: aBoard and: aDiceBucket and: listOfShips ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'Ship´s name must not be reapeated.' ]
 ]
