@@ -15,6 +15,8 @@ Class {
 Game class >> with: aBoard and: aBucketOfDices and: aListOfShips [
 
 	| listOfShips |
+	aListOfShips size = 0 ifTrue: [
+		^ Error signal: 'List of ships must not be empty.' ].
 	listOfShips := Set new.
 	aListOfShips do: [ :ship | listOfShips add: ship showName ].
 	listOfShips size = aListOfShips size ifFalse: [

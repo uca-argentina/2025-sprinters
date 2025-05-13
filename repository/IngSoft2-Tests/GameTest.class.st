@@ -144,3 +144,26 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 				assert: error messageText
 				equals: 'Ship´s name must not be reapeated.' ]
 ]
+
+{ #category : 'tests' }
+GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [ [
+
+    | listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame listOfShips shipOne assertedResult shipTwo shipThree |
+    listOfShips := OrderedCollection new.
+    listOfDices := OrderedCollection new.
+    aDice := Dice with: 5.
+    listOfDices add: aDice.
+    aDiceBucket := DiceBucket with: listOfDices.
+    amountOfCells := 10.
+    aWorm := Worm with: 2 and: 4.
+    aBoard := Board with: amountOfCells and: aWorm.
+
+    self
+        should: [ Game with: aBoard and: aDiceBucket and: listOfShips ]
+        raise: Error
+        withExceptionDo: [ :error |
+            self
+                assert: error messageText
+                equals: 'List of ships must not be empty.' ]
+]
+]
