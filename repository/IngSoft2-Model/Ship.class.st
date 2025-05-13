@@ -23,12 +23,6 @@ Ship class >> newShip [
 	^ self new initializePosition.
 ]
 
-{ #category : 'comparing' }
-Ship >> hash [
-
-	^ self showName hash.
-]
-
 { #category : 'initialization' }
 Ship >> initializePosition [
 	position := 0.

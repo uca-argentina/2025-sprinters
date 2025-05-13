@@ -12,27 +12,27 @@ Class {
 }
 
 { #category : 'instance creation' }
-Board class >> with: arg1 [
+Board class >> with: aAmountOfCells [
 
-	arg1 isInteger ifFalse: [
+	aAmountOfCells isInteger ifFalse: [
 		^ Error signal: 'Amount of cells must be an integer' ].
-	arg1 < 1 ifTrue: [
+	aAmountOfCells < 1 ifTrue: [
 		^ Error signal: 'Amount of cells must be greater than zero' ].
 	nil.
-	^ self new initializeWith: arg1
+	^ self new initializeWith: aAmountOfCells
 ]
 
 { #category : 'as yet unclassified' }
-Board class >> with: arg1 and: arg2 [ 
+Board class >> with: aAmountOfCells and: aWormHole [ 
 
-	arg1 isInteger ifFalse: [
+	aAmountOfCells isInteger ifFalse: [
 		^ Error signal: 'Amount of cells must be an integer' ].
-	arg1 < 1 ifTrue: [
+	aAmountOfCells < 1 ifTrue: [
 		^ Error signal: 'Amount of cells must be greater than zero' ].
-	(arg2 isInside: arg1) ifFalse: [
+	(aWormHole isInside: aAmountOfCells) ifFalse: [
 		^ Error signal:
 			  'Position of the worm hole exceed amount board`s cells' ].
-	^ self new initializeWith: arg1 and: arg2
+	^ self new initializeWith: aAmountOfCells and: aWormHole
 ]
 
 { #category : 'initialization' }
