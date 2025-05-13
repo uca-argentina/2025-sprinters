@@ -12,8 +12,17 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Game class >> with: aBoard and: aBucketOfDices and: aShip [ 
-	^ self new initializeWith: aBoard and: aBucketOfDices and: aShip.
+Game class >> with: aBoard and: aBucketOfDices and: aListOfShips [
+
+	| listOfShips |
+	listOfShips := Set new.
+	aListOfShips do: [ :ship | listOfShips add: ship showName ].
+	listOfShips size = aListOfShips size ifFalse: [
+		^ Error signal: 'Ship´s name must not be reapeated.' ].
+	^ self new
+		  initializeWith: aBoard
+		  and: aBucketOfDices
+		  and: aListOfShips
 ]
 
 { #category : 'initialization' }
