@@ -25,3 +25,27 @@ ShipTest >> test001WhenShipReceiveANumberThenMovesThatAmount [
 
 	self assert: aShip showPosition equals: diceGame
 ]
+
+{ #category : 'tests' }
+ShipTest >> test002WhenCreateAShipWithNameThenReturnShipsName [
+
+	| aShip shipName |
+	shipName := 'Ship 1'.
+	aShip := Ship createShip: shipName.
+
+	self assert: aShip showName equals: shipName
+]
+
+{ #category : 'tests' }
+ShipTest >> test003WhenCreateAShipWithNameThatIsNotAStringThenRaiceError [
+
+	| shipName |
+	shipName := 124.
+	self
+		should: [ Ship createShip: shipName ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'Ship´s name must be a string.' ]
+]

@@ -25,11 +25,26 @@ Game >> initializeWith: aBoard and: aBucketOfDices and: aBucketOfShips [
 ]
 
 { #category : 'as yet unclassified' }
-Game >> play [
+Game >> play [	
+[ self someShipWon = false ] whileTrue: [
+	ships do: [ :aShip |
+		aShip moveShip: bucketOfDices throwBucket in: board.
+		self someShipWon ifTrue: [ ^ 'Game over' ] ] ].
+^ 'Game over'
 
-	[ self someShipWon = false ] whileTrue: [
-		ships do: [ :aShip | aShip moveShip: bucketOfDices throwBucket in: board  ] ].
-	^ 'Game over'
+]
+
+{ #category : 'as yet unclassified' }
+Game >> showShipsPositions [
+
+	winner
+		ifNotNil: [
+			| result |
+			result := Dictionary new.
+			ships do: [ :ship |
+				result at: ship showName put: ship showPosition ].
+			^ result ]
+		ifNil: [ ^ 'The Game is not over' ]
 ]
 
 { #category : 'as yet unclassified' }
