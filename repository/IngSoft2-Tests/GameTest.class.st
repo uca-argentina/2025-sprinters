@@ -72,10 +72,9 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 { #category : 'tests' }
 GameTest >> test003WhenSomeShipWinThenShowPositions [
 
-	|listOfDices aDice aDiceBucket  aBoard amountOfCells aWorm aGame listOfShips shipOne assertedResult |
-	
+	| listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame listOfShips shipOne assertedResult |
 	listOfShips := OrderedCollection new.
-	shipOne := Ship newShip.
+	shipOne := Ship createShip: 'Ship 1'.
 	listOfDices := OrderedCollection new.
 	listOfShips add: shipOne.
 	aDice := Dice with: 5.
@@ -86,8 +85,9 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 	aBoard := Board with: amountOfCells and: aWorm.
 	aGame := Game with: aBoard and: aDiceBucket and: listOfShips.
 	aGame play.
-	assertedResult := OrderedCollection new:1 withAll:10.
-	self assert: (aGame showShipsPositions) equals: assertedResult.
+	assertedResult := Dictionary new.
+	assertedResult at: 'Ship 1' put: 10.
+	self assert: aGame showShipsPositions equals: assertedResult
 ]
 
 { #category : 'tests' }
@@ -96,8 +96,8 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 	|listOfDices aDice aDiceBucket  aBoard amountOfCells aWorm aGame listOfShips shipOne assertedResult shipTwo |
 	
 	listOfShips := OrderedCollection new.
-	shipOne := Ship newShip.
-	shipTwo := Ship newShip.
+	shipOne := Ship createShip: 'Ship 1'.
+	shipTwo := Ship createShip: 'Ship 2'.
 	listOfDices := OrderedCollection new.
 	listOfShips add: shipOne.
 	listOfShips add: shipTwo.
@@ -111,6 +111,8 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 	shipOne moveShip: 10 in: aBoard. 
 	shipTwo moveShip: 5 in: aBoard.
 	aGame play.
-	assertedResult := OrderedCollection with: 10 with: 5.
+	assertedResult := Dictionary new.
+	assertedResult at: 'Ship 1' put: 10.
+	assertedResult at: 'Ship 2' put: 5.
 	self assert: (aGame showShipsPositions) equals: assertedResult.
 ]

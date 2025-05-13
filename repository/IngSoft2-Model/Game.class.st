@@ -35,10 +35,16 @@ Game >> play [
 ]
 
 { #category : 'as yet unclassified' }
-Game >> showShipsPositions [ winner
-	ifNotNil: [ ^ ships collect: [ :ship | ship showPosition ] ]
-	ifNil: [ ^ 'The Game is not over' ]
-	
+Game >> showShipsPositions [
+
+	winner
+		ifNotNil: [
+			| result |
+			result := Dictionary new.
+			ships do: [ :ship |
+				result at: ship showName put: ship showPosition ].
+			^ result ]
+		ifNil: [ ^ 'The Game is not over' ]
 ]
 
 { #category : 'as yet unclassified' }
