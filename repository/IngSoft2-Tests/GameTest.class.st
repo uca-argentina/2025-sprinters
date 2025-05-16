@@ -8,8 +8,7 @@ Class {
 { #category : 'tests' }
 GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 
-	|listOfDices aDice aDiceBucket  aBoard amountOfCells aWorm aGame listOfShips shipOne shipTwo |
-	
+	| listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame listOfShips shipOne shipTwo |
 	listOfShips := OrderedCollection new.
 	shipOne := Ship createShip: 'Ship 1'.
 	shipTwo := Ship createShip: 'Ship 2'.
@@ -21,10 +20,10 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 	aDiceBucket := DiceBucket with: listOfDices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	aBoard with: amountOfCells and: aWorm.
 	aGame := Game with: aBoard and: aDiceBucket and: listOfShips.
 	aGame play.
-	self assert: aGame showWinner isNotNil.
+	self assert: aGame showWinner isNotNil
 ]
 
 { #category : 'tests' }
@@ -166,4 +165,43 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [ [
                 assert: error messageText
                 equals: 'List of ships must not be empty.' ]
 ]
+]
+
+{ #category : 'tests' }
+GameTest >> test007When [
+
+	|listOfDices aDice aDiceBucket  aBoard amountOfCells aWorm aGame listOfShips shipOne shipTwo |
+	
+	listOfShips := OrderedCollection new.
+	shipOne := Ship createShip: 'Ship 1'.
+	shipTwo := Ship createShip: 'Ship 2'.
+	listOfDices := OrderedCollection new.
+	listOfShips add: shipOne.
+	listOfShips add: shipTwo.
+	aDice := Dice with: 5.
+	listOfDices add: aDice.
+	aDiceBucket := DiceBucket with: listOfDices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+]
+
+{ #category : 'tests' }
+GameTest >> test007WhenCreateGameThenGameCreateShips [
+
+	| listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame listOfShips |
+	listOfShips := OrderedCollection new.
+	listOfDices := OrderedCollection new.
+	aDice := Dice with: 5.
+	listOfDices add: aDice.
+	aDiceBucket := DiceBucket with: listOfDices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	aBoard := Board with: amountOfCells and: aWorm.
+
+	listOfShips add: 'ship 1'.
+	listOfShips add: 'ship 2'.
+	listOfShips add: 'ship 3'.
+	aGame := Game with: aBoard and: aDiceBucket and: listOfShips.
+
+	self assert: (aGame ships at: 1) showPosition equals: 0
 ]
