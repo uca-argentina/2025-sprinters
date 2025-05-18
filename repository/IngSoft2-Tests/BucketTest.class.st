@@ -15,7 +15,7 @@ BucketTest >> test000WhenThrow2DicesWith6FacesThenReturnNumberBetween2AndSumOfDi
 	listOfDices add: diceOne.
 	listOfDices add: diceTwo.
 	bucketOfDices := DiceBucket with: listOfDices.
-	diceGame := bucketOfDices throwBucket .
+	diceGame := bucketOfDices throw .
 
 
 	self assert: (diceGame between: listOfDices size and: diceOne faces + diceTwo faces).

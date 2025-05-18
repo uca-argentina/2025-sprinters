@@ -19,7 +19,7 @@ DiceTest >> test001WhenThrowDiceWithNFacesThenReturnNumberBetween1andN [
 	| aDice diceValue amountOfFaces|
 	amountOfFaces := 5.
 	aDice := Dice with: amountOfFaces.
-	diceValue := aDice throwDice.
+	diceValue := aDice throw.
 	self assert: (diceValue between: 1 and: amountOfFaces).
 ]
 

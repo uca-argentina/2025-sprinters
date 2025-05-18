@@ -28,6 +28,22 @@ Game class >> with: aBoard and: aBucketOfDices and: aListOfShips [
 ]
 
 { #category : 'as yet unclassified' }
+Game class >> withBoard: aBoard usingDice: aDiceBucket andShipsNamed: shipsNames [
+
+	| listOfShips |
+	shipsNames size = 0 ifTrue: [
+		^ Error signal: 'List of ships must not be empty.' ].
+	listOfShips := Set new.
+	shipsNames do: [ :ship | listOfShips add: ship ].
+	listOfShips size = shipsNames size ifFalse: [
+		^ Error signal: 'Ship´s name must not be reapeated.' ].
+	^ self new
+		  initializeWithBoard: aBoard
+		  usingDice: aDiceBucket
+		  andShipsNamed: shipsNames
+]
+
+{ #category : 'as yet unclassified' }
 Game >> currentTopPlayer [
 
 	| topShip topPosition |
@@ -49,11 +65,20 @@ Game >> initializeWith: aBoard and: aBucketOfDices and: aListOfShips [
 	winner := nil
 ]
 
+{ #category : 'initialization' }
+Game >> initializeWithBoard: aBoard  usingDice: aDiceBucket andShipsNamed: shipsNames [
+
+	board := aBoard.
+	bucketOfDices := aDiceBucket.
+	ships := shipsNames collect: [ :aName | Ship createShip: aName ].
+	winner := nil
+]
+
 { #category : 'as yet unclassified' }
 Game >> play [	
 [ self someShipWon = false ] whileTrue: [
 	ships do: [ :aShip |
-		aShip moveShip: bucketOfDices throwBucket in: board.
+		aShip move: bucketOfDices throw in: board.
 		self someShipWon ifTrue: [ ^ 'Game over' ] ] ].
 ^ 'Game over'
 

@@ -21,7 +21,7 @@ ShipTest >> test001WhenShipReceiveANumberThenMovesThatAmount [
 	| aShip diceGame |
 	aShip := Ship newShip.
 	diceGame := 2.
-	aShip moveShip: diceGame.
+	aShip move: diceGame.
 
 	self assert: aShip showPosition equals: diceGame
 ]

@@ -3,9 +3,7 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'amountOfCells',
-		'wormHole',
-		'aFinalPosition',
-		'listOfPositions'
+		'wormHole'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -48,12 +46,6 @@ Board >> initializeWith: aAmountOfCells and: aWormHole [
 ]
 
 { #category : 'as yet unclassified' }
-Board >> positionTaken [
-
-	^ listOfPositions
-]
-
-{ #category : 'as yet unclassified' }
 Board >> showCells [
 
 	^ amountOfCells
@@ -66,15 +58,7 @@ Board >> showSpecialCells [
 ]
 
 { #category : 'as yet unclassified' }
-Board >> showWormHoleCell: arg1 [
-
-	| tmp1 |
-	tmp1 := arg1.
-	^ tmp1
-]
-
-{ #category : 'as yet unclassified' }
 Board >> verifyPosition: aShip [
 
-	^ wormHole sendPosition: aShip showPosition
+	^ wormHole transportIfConnectedTo: aShip showPosition
 ]

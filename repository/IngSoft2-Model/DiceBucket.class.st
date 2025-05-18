@@ -19,10 +19,10 @@ DiceBucket >> initializeWith: aSetOfDices [
 ]
 
 { #category : 'as yet unclassified' }
-DiceBucket >> throwBucket [
+DiceBucket >> throw [
 
 	| totalSum |
 	totalSum := 0.
-	bucketOfDices do: [ :dice | totalSum := totalSum + dice throwDice ].
+	bucketOfDices do: [ :dice | totalSum := totalSum + dice throw ].
 	^ totalSum
 ]
