@@ -27,7 +27,7 @@ Dice >> initializeWith: amountOfFaces [
 ]
 
 { #category : 'as yet unclassified' }
-Dice >> throwDice [
+Dice >> throw [
 	| randomNumber |
 	randomNumber := (Random new nextIntegerBetween: 1 and: amountFaces ).
 	^ randomNumber.

@@ -8,136 +8,134 @@ Class {
 { #category : 'tests' }
 GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 
-	|listOfDices aDice aDiceBucket  aBoard amountOfCells aWorm aGame listOfShips shipOne shipTwo |
-	
-	listOfShips := OrderedCollection new.
-	shipOne := Ship createShip: 'Ship 1'.
-	shipTwo := Ship createShip: 'Ship 2'.
-	listOfDices := OrderedCollection new.
-	listOfShips add: shipOne.
-	listOfShips add: shipTwo.
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
 	aDice := Dice with: 5.
-	listOfDices add: aDice.
-	aDiceBucket := DiceBucket with: listOfDices.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	aBoard := Board with: amountOfCells and: aWorm.
-	aGame := Game with: aBoard and: aDiceBucket and: listOfShips.
+
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships.
 	aGame play.
-	self assert: aGame showWinner isNotNil.
+	self assert: aGame showWinner isNotNil
 ]
 
 { #category : 'tests' }
 GameTest >> test001WhenPlayGameThenReturnGameOver [
 
-	|listOfDices aDice aDiceBucket  aBoard amountOfCells aWorm aGame listOfShips shipOne shipTwo |
-	
-	listOfShips := OrderedCollection new.
-	shipOne := Ship createShip: 'Ship 1'.
-	shipTwo := Ship createShip: 'Ship 2'.
-	listOfDices := OrderedCollection new.
-	listOfShips add: shipOne.
-	listOfShips add: shipTwo.
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
 	aDice := Dice with: 5.
-	listOfDices add: aDice.
-	aDiceBucket := DiceBucket with: listOfDices.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	aBoard := Board with: amountOfCells and: aWorm.
-	aGame := Game with: aBoard and: aDiceBucket and: listOfShips.
-	
-	self assert: aGame play equals: 'Game over'.
+
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships.
+
+	self assert: aGame play equals: 'Game over'
 ]
 
 { #category : 'tests' }
 GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 
-	|listOfDices aDice aDiceBucket  aBoard amountOfCells aWorm aGame listOfShips shipOne|
-	
-	listOfShips := OrderedCollection new.
-	shipOne := Ship newShip.
+	| listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships |
+	ships := OrderedCollection new.
 	listOfDices := OrderedCollection new.
-	listOfShips add: shipOne.
+	ships add: 'shipOne'.
 	aDice := Dice with: 5.
 	listOfDices add: aDice.
 	aDiceBucket := DiceBucket with: listOfDices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	aBoard := Board with: amountOfCells and: aWorm.
-	aGame := Game with: aBoard and: aDiceBucket and: listOfShips.
+	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
 	aGame play.
-	self assert: aGame showWinner equals: shipOne.
+	self assert: ((aGame currentStatus) showWinner:aGame) showName equals: 'shipOne'
 ]
 
 { #category : 'tests' }
 GameTest >> test003WhenSomeShipWinThenShowPositions [
 
-	| listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame listOfShips shipOne assertedResult |
-	listOfShips := OrderedCollection new.
-	shipOne := Ship createShip: 'Ship 1'.
-	listOfDices := OrderedCollection new.
-	listOfShips add: shipOne.
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships assertedResult |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
 	aDice := Dice with: 5.
-	listOfDices add: aDice.
-	aDiceBucket := DiceBucket with: listOfDices.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	aBoard := Board with: amountOfCells and: aWorm.
-	aGame := Game with: aBoard and: aDiceBucket and: listOfShips.
+	ships add: 'ship 1'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships.
 	aGame play.
 	assertedResult := Dictionary new.
-	assertedResult at: 'Ship 1' put: 10.
+	assertedResult at: 'ship 1' put: 10.
 	self assert: aGame showShipsPositions equals: assertedResult
 ]
 
 { #category : 'tests' }
 GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 
-	|listOfDices aDice aDiceBucket  aBoard amountOfCells aWorm aGame listOfShips shipOne assertedResult shipTwo |
-	
-	listOfShips := OrderedCollection new.
-	shipOne := Ship createShip: 'Ship 1'.
-	shipTwo := Ship createShip: 'Ship 2'.
-	listOfDices := OrderedCollection new.
-	listOfShips add: shipOne.
-	listOfShips add: shipTwo.
-	aDice := Dice with: 5.
-	listOfDices add: aDice.
-	aDiceBucket := DiceBucket with: listOfDices.
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships assertedResult |
+	ships := OrderedCollection new.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 5.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	aBoard := Board with: amountOfCells and: aWorm.
-	aGame := Game with: aBoard and: aDiceBucket and: listOfShips.
-	shipOne moveShip: 10 in: aBoard. 
-	shipTwo moveShip: 5 in: aBoard.
+	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
 	aGame play.
 	assertedResult := Dictionary new.
-	assertedResult at: 'Ship 1' put: 10.
-	assertedResult at: 'Ship 2' put: 5.
-	self assert: (aGame showShipsPositions) equals: assertedResult.
+	assertedResult at: 'ship 1' put: 10.
+	assertedResult at: 'ship 2' put: 5.
+	self assert: aGame showShipsPositions equals: assertedResult
 ]
 
 { #category : 'tests' }
 GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 
-	| listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame listOfShips shipOne assertedResult shipTwo shipThree |
-	listOfShips := OrderedCollection new.
-	shipOne := Ship createShip: 'Ship 1'.
-	shipTwo := Ship createShip: 'Ship 2'.
-	shipThree := Ship createShip: 'Ship 1'.
-	listOfDices := OrderedCollection new.
-	listOfShips add: shipOne.
-	listOfShips add: shipTwo.
-	listOfShips add: shipThree.
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
 	aDice := Dice with: 5.
-	listOfDices add: aDice.
-	aDiceBucket := DiceBucket with: listOfDices.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	aBoard := Board with: amountOfCells and: aWorm.
 
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 1'.
+
 	self
-		should: [ Game with: aBoard and: aDiceBucket and: listOfShips ]
+		should: [
+		Game with: aBoard using: aDiceBucket andShipsNamed: ships ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -146,24 +144,46 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 ]
 
 { #category : 'tests' }
-GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [ [
+GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 
-    | listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame listOfShips shipOne assertedResult shipTwo shipThree |
-    listOfShips := OrderedCollection new.
-    listOfDices := OrderedCollection new.
-    aDice := Dice with: 5.
-    listOfDices add: aDice.
-    aDiceBucket := DiceBucket with: listOfDices.
-    amountOfCells := 10.
-    aWorm := Worm with: 2 and: 4.
-    aBoard := Board with: amountOfCells and: aWorm.
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := Dice with: 5.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	aBoard := Board with: amountOfCells and: aWorm.
 
-    self
-        should: [ Game with: aBoard and: aDiceBucket and: listOfShips ]
-        raise: Error
-        withExceptionDo: [ :error |
-            self
-                assert: error messageText
-                equals: 'List of ships must not be empty.' ]
+
+	self
+		should: [
+		Game with: aBoard using: aDiceBucket andShipsNamed: ships ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'List of ships must not be empty.' ]
 ]
+
+{ #category : 'tests' }
+GameTest >> test007WhenCreateGameThenGameCreateShips [
+
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := Dice with: 5.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	aBoard := Board with: amountOfCells and: aWorm.
+
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
+
+	self assert: (aGame ships at: 1) showPosition equals: 0
 ]

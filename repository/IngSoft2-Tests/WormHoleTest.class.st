@@ -56,5 +56,5 @@ WormHoleTest >> test004WhenShipMovesInsideWormholeThenPositionChanges [
 	aY := 6.
 	aWorm := Worm with: aX and: aY.
 	aPosition := 6.
-	self assert: (aWorm sendPosition: aPosition) equals: 2.
+	self assert: (aWorm transportIfConnectedTo: aPosition) equals: 2.
 ]

@@ -21,7 +21,7 @@ ShipTest >> test001WhenShipReceiveANumberThenMovesThatAmount [
 	| aShip diceGame |
 	aShip := Ship newShip.
 	diceGame := 2.
-	aShip moveShip: diceGame.
+	aShip move: diceGame.
 
 	self assert: aShip showPosition equals: diceGame
 ]
@@ -31,7 +31,7 @@ ShipTest >> test002WhenCreateAShipWithNameThenReturnShipsName [
 
 	| aShip shipName |
 	shipName := 'Ship 1'.
-	aShip := Ship createShip: shipName.
+	aShip := Ship create: shipName.
 
 	self assert: aShip showName equals: shipName
 ]
@@ -42,7 +42,7 @@ ShipTest >> test003WhenCreateAShipWithNameThatIsNotAStringThenRaiceError [
 	| shipName |
 	shipName := 124.
 	self
-		should: [ Ship createShip: shipName ]
+		should: [ Ship create: shipName ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self

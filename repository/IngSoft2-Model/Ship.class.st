@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Ship class >> createShip: aName [
+Ship class >> create: aName [
 
 	aName isString ifFalse: [
 		^ Error signal: 'Ship´s name must be a string.' ].
@@ -36,12 +36,12 @@ Ship >> initializeWith: aName [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> moveShip: numberOfCells [ 
+Ship >> move: numberOfCells [ 
 	position := position + numberOfCells.
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> moveShip: numberOfCells in: aBoard [
+Ship >> move: numberOfCells in: aBoard [
 	(position + numberOfCells) > (aBoard showCells)
 		ifTrue: [ position := aBoard showCells ]
 		ifFalse: [position := position + numberOfCells ].

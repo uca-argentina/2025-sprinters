@@ -2,8 +2,8 @@ Class {
 	#name : 'Worm',
 	#superclass : 'Object',
 	#instVars : [
-		'x',
-		'y'
+		'positionX',
+		'positionY'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -24,36 +24,37 @@ Worm class >> with: aX and: aY [
 ]
 
 { #category : 'initialization' }
-Worm >> initializeWith: aX and: aY [ 
-	x := aX.
-	y := aY.
+Worm >> initializeWith: aX and: aY [
+
+	positionX := aX.
+	positionY := aY
 ]
 
 { #category : 'as yet unclassified' }
 Worm >> isInside: aAmountOfCells [ 
-	^ ((x between: 0 and: aAmountOfCells) and: [y between: 0 and: aAmountOfCells]) . 
+	^ ((positionX between: 0 and: aAmountOfCells) and: [positionY between: 0 and: aAmountOfCells]) . 
 ]
 
 { #category : 'as yet unclassified' }
 Worm >> positionX [
-	^ x.
+	^ positionX.
 ]
 
 { #category : 'as yet unclassified' }
 Worm >> positionY [
-	^ y.
-]
-
-{ #category : 'as yet unclassified' }
-Worm >> sendPosition: aPosition [
-
-	aPosition = x ifTrue: [ ^ y ].
-	aPosition = y ifTrue: [ ^ x ].
-
-	^ aPosition
+	^ positionY.
 ]
 
 { #category : 'as yet unclassified' }
 Worm >> showPositions: aBoard [ 
-	^ aBoard showWormHoleCell: { x. y. } .
+	^ { positionX. positionY. } .
+]
+
+{ #category : 'as yet unclassified' }
+Worm >> transportIfConnectedTo: aPosition [
+
+	aPosition = positionX ifTrue: [ ^ positionY ].
+	aPosition = positionY ifTrue: [ ^ positionX ].
+
+	^ aPosition
 ]
