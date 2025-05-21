@@ -22,8 +22,8 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	aGame := Game
-		         withBoard: aBoard
-		         usingDice: aDiceBucket
+		         with: aBoard
+		         using: aDiceBucket
 		         andShipsNamed: ships.
 	aGame play.
 	self assert: aGame showWinner isNotNil
@@ -46,8 +46,8 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	aGame := Game
-		         withBoard: aBoard
-		         usingDice: aDiceBucket
+		         with: aBoard
+		         using: aDiceBucket
 		         andShipsNamed: ships.
 
 	self assert: aGame play equals: 'Game over'
@@ -87,8 +87,8 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 	aBoard := Board with: amountOfCells and: aWorm.
 	ships add: 'ship 1'.
 	aGame := Game
-		         withBoard: aBoard
-		         usingDice: aDiceBucket
+		         with: aBoard
+		         using: aDiceBucket
 		         andShipsNamed: ships.
 	aGame play.
 	assertedResult := Dictionary new.
@@ -142,7 +142,7 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 
 	self
 		should: [
-		Game withBoard: aBoard usingDice: aDiceBucket andShipsNamed: ships ]
+		Game with: aBoard using: aDiceBucket andShipsNamed: ships ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -166,7 +166,7 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 
 	self
 		should: [
-		Game withBoard: aBoard usingDice: aDiceBucket andShipsNamed: ships ]
+		Game with: aBoard using: aDiceBucket andShipsNamed: ships ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -190,7 +190,7 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	aGame := Game withBoard: aBoard usingDice: aDiceBucket andShipsNamed: ships.
+	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
 
 	self assert: (aGame ships at: 1) showPosition equals: 0
 ]

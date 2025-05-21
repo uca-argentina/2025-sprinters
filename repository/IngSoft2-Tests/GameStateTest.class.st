@@ -72,7 +72,7 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 
 	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame |
 	listOfShips := OrderedCollection new.
-	shipOne := Ship createShip: 'Ship 1'.
+	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
 	listOfShips add: shipOne.
 	aDice := Dice with: 5.
@@ -81,8 +81,8 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	aBoard := Board with: amountOfCells and: aWorm.
-	aGame := Game with: aBoard and: aDiceBucket and: listOfShips.
+	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: listOfShips.
 
 	gameState := Finished new.
-	self assert: (gameState showWinner: aGame) equals: shipOne
+	self assert: (gameState showWinner: aGame) showName equals: shipOne
 ]

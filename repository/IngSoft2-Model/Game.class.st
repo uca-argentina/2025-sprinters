@@ -5,7 +5,8 @@ Class {
 		'winner',
 		'board',
 		'bucketOfDices',
-		'ships'
+		'ships',
+		'status'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -28,7 +29,7 @@ Game class >> with: aBoard and: aBucketOfDices and: aListOfShips [
 ]
 
 { #category : 'as yet unclassified' }
-Game class >> withBoard: aBoard usingDice: aDiceBucket andShipsNamed: shipsNames [
+Game class >> with: aBoard using: aDiceBucket andShipsNamed: shipsNames [
 
 	| listOfShips |
 	shipsNames size = 0 ifTrue: [
@@ -38,8 +39,8 @@ Game class >> withBoard: aBoard usingDice: aDiceBucket andShipsNamed: shipsNames
 	listOfShips size = shipsNames size ifFalse: [
 		^ Error signal: 'Ship´s name must not be reapeated.' ].
 	^ self new
-		  initializeWithBoard: aBoard
-		  usingDice: aDiceBucket
+		  initializeWith: aBoard
+		  using: aDiceBucket
 		  andShipsNamed: shipsNames
 ]
 
@@ -66,12 +67,12 @@ Game >> initializeWith: aBoard and: aBucketOfDices and: aListOfShips [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWithBoard: aBoard  usingDice: aDiceBucket andShipsNamed: shipsNames [
+Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
 
 	board := aBoard.
 	bucketOfDices := aDiceBucket.
 	ships := shipsNames collect: [ :aName | Ship createShip: aName ].
-	winner := nil
+	status := NotPlayed new.
 ]
 
 { #category : 'as yet unclassified' }
