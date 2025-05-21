@@ -6,7 +6,8 @@ Class {
 		'board',
 		'bucketOfDices',
 		'ships',
-		'status'
+		'status',
+		'turnManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -69,7 +70,7 @@ Game >> initializeWith: aBoard and: aBucketOfDices and: aListOfShips [
 	board := aBoard.
 	bucketOfDices := aBucketOfDices.
 	ships := aListOfShips collect: [ :aName | Ship create: aName ].
-	winner := nil
+	
 ]
 
 { #category : 'initialization' }
@@ -79,6 +80,7 @@ Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
 	bucketOfDices := aDiceBucket.
 	ships := shipsNames collect: [ :aName | Ship create: aName ].
 	status := NotPlayed new.
+	turnManager:= TurnManager with:ships
 ]
 
 { #category : 'as yet unclassified' }
@@ -86,11 +88,7 @@ Game >> play [
 
 	status := Started new.
 	[ self someShipWon = false ] whileTrue: [
-		ships do: [ :aShip |
-			aShip move: bucketOfDices throw in: board.
-			self someShipWon ifTrue: [
-				status := Finished new.
-				^ 'Game over' ] ] ].
+		turnManager nextShip move: bucketOfDices throw in: board ].
 	status := Finished new.
 
 	^ 'Game over'
