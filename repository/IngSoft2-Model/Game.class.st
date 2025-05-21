@@ -45,6 +45,12 @@ Game class >> with: aBoard using: aDiceBucket andShipsNamed: shipsNames [
 ]
 
 { #category : 'as yet unclassified' }
+Game >> currentStatus [
+
+	^ status
+]
+
+{ #category : 'as yet unclassified' }
 Game >> currentTopPlayer [
 
 	| topShip topPosition |
@@ -62,7 +68,7 @@ Game >> initializeWith: aBoard and: aBucketOfDices and: aListOfShips [
 
 	board := aBoard.
 	bucketOfDices := aBucketOfDices.
-	ships := aListOfShips collect: [ :aName | Ship createShip: aName ].
+	ships := aListOfShips collect: [ :aName | Ship create: aName ].
 	winner := nil
 ]
 
@@ -71,18 +77,23 @@ Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
 
 	board := aBoard.
 	bucketOfDices := aDiceBucket.
-	ships := shipsNames collect: [ :aName | Ship createShip: aName ].
+	ships := shipsNames collect: [ :aName | Ship create: aName ].
 	status := NotPlayed new.
 ]
 
 { #category : 'as yet unclassified' }
-Game >> play [	
-[ self someShipWon = false ] whileTrue: [
-	ships do: [ :aShip |
-		aShip move: bucketOfDices throw in: board.
-		self someShipWon ifTrue: [ ^ 'Game over' ] ] ].
-^ 'Game over'
+Game >> play [
 
+	status := Started new.
+	[ self someShipWon = false ] whileTrue: [
+		ships do: [ :aShip |
+			aShip move: bucketOfDices throw in: board.
+			self someShipWon ifTrue: [
+				status := Finished new.
+				^ 'Game over' ] ] ].
+	status := Finished new.
+
+	^ 'Game over'
 ]
 
 { #category : 'accessing' }

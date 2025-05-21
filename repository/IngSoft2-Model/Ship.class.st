@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Ship class >> createShip: aName [
+Ship class >> create: aName [
 
 	aName isString ifFalse: [
 		^ Error signal: 'Ship´s name must be a string.' ].
