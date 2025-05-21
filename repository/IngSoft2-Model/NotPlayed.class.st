@@ -16,3 +16,10 @@ NotPlayed >> isPlaying [
 
 	^ false.
 ]
+
+{ #category : 'as yet unclassified' }
+NotPlayed >> showWinner: aGame [
+
+	^ Error signal:
+		  'The game has not started, it does not have a winner yet'
+]

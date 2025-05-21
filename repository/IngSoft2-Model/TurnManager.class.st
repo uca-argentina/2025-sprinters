@@ -11,7 +11,10 @@ Class {
 
 { #category : 'instance creation' }
 TurnManager class >> with: ships [
-	^ self new initializeWith: ships.
+
+	ships isEmpty ifTrue: [
+		^ Error signal: 'Ships must to have one item at least' ].
+	^ self new initializeWith: ships
 ]
 
 { #category : 'initialization' }
