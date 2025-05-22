@@ -49,3 +49,24 @@ ShipTest >> test003WhenCreateAShipWithNameThatIsNotAStringThenRaiceError [
 				assert: error messageText
 				equals: 'Ship´s name must be a string.' ]
 ]
+
+{ #category : 'tests' }
+ShipTest >> test004WhenShip1PositionIsLastOneAndThrow1ThenShip1StartFromTheBeginning [
+	| ship1 aLoadedDice aCircularBoard |
+	ship1 :=CircularShip create: 'Ship1'.
+	aCircularBoard := CircularBoard with: 5.
+	aLoadedDice := LoadedDice with: 1.
+	ship1 move: 5 in: aCircularBoard.
+	ship1 move: aLoadedDice throw in: aCircularBoard .
+	self assert: (ship1 showPosition ) equals: 1.
+]
+
+{ #category : 'tests' }
+ShipTest >> test005WhenShip1Moves12CellsInABoardWith5CellsThenShip1Has2Laps [
+	| ship1 aLoadedDice aCircularBoard |
+	ship1 :=CircularShip create: 'Ship1'.
+	aCircularBoard := CircularBoard with: 5.
+	aLoadedDice := LoadedDice with: 12.
+	ship1 move: aLoadedDice throw in: aCircularBoard .
+	self assert: (ship1 showLaps ) equals: 2.
+]

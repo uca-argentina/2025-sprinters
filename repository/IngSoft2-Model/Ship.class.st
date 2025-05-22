@@ -43,7 +43,7 @@ Ship >> move: numberOfCells [
 { #category : 'as yet unclassified' }
 Ship >> move: numberOfCells in: aBoard [
 	(position + numberOfCells) > (aBoard showCells)
-		ifTrue: [ position := aBoard showCells ]
+		ifTrue: [ position := aBoard showCells  ]
 		ifFalse: [position := position + numberOfCells ].
 	position := aBoard verifyPosition: self.
 ]
