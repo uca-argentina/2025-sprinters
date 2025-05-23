@@ -7,27 +7,12 @@ Class {
 		'bucketOfDices',
 		'ships',
 		'status',
-		'turnManager'
+		'turnManager',
+		'laps'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
-
-{ #category : 'as yet unclassified' }
-Game class >> with: aBoard and: aBucketOfDices and: aListOfShips [
-
-	| listOfShips |
-	aListOfShips size = 0 ifTrue: [
-		^ Error signal: 'List of ships must not be empty.' ].
-	listOfShips := Set new.
-	aListOfShips do: [ :ship | listOfShips add: ship ].
-	listOfShips size = aListOfShips size ifFalse: [
-		^ Error signal: 'Ship´s name must not be reapeated.' ].
-	^ self new
-		  initializeWith: aBoard
-		  and: aBucketOfDices
-		  and: aListOfShips
-]
 
 { #category : 'as yet unclassified' }
 Game class >> with: aBoard using: aDiceBucket andShipsNamed: shipsNames [
@@ -43,6 +28,16 @@ Game class >> with: aBoard using: aDiceBucket andShipsNamed: shipsNames [
 		  initializeWith: aBoard
 		  using: aDiceBucket
 		  andShipsNamed: shipsNames
+]
+
+{ #category : 'as yet unclassified' }
+Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: aCollection until: anInteger [
+
+	^ self new 
+		  initializeWith: aCircularBoard
+		  using: aLoadedDice
+		  andShipsNamed: aCollection
+		  until: anInteger
 ]
 
 { #category : 'as yet unclassified' }
@@ -65,15 +60,6 @@ Game >> currentTopPlayer [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard and: aBucketOfDices and: aListOfShips [
-
-	board := aBoard.
-	bucketOfDices := aBucketOfDices.
-	ships := aListOfShips collect: [ :aName | Ship create: aName ].
-	
-]
-
-{ #category : 'initialization' }
 Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
 
 	board := aBoard.
@@ -81,6 +67,18 @@ Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
 	ships := shipsNames collect: [ :aName | Ship create: aName ].
 	status := NotPlayed new.
 	turnManager:= TurnManager with:ships
+]
+
+{ #category : 'initialization' }
+Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
+
+	board := aCircularBoard.
+	bucketOfDices := aDiceBucket.
+	ships := shipsNames collect: [ :aName | Ship create: aName ].
+	status := NotPlayed new.
+	turnManager:= TurnManager with:ships.
+	laps := numberOfLaps
+	
 ]
 
 { #category : 'as yet unclassified' }
@@ -119,11 +117,13 @@ Game >> showWinner [
 
 { #category : 'as yet unclassified' }
 Game >> someShipWon [
-	
-	winner := ships detect: [:n | n winAt: board ] ifNone: [nil].
-	
-	^ winner isNotNil.
 
-	
+	winner := ships
+		          detect: [ :ship |
+			          laps isNil
+				          ifTrue: [ ship winAt: board ]
+				          ifFalse: [ ship winAt: board until: laps ] ]
+		          ifNone: [ nil ].
 
+	^ winner isNotNil
 ]

@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'position',
-		'name'
+		'name',
+		'currentLap'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -30,7 +31,7 @@ Ship >> initializePosition [
 
 { #category : 'initialization' }
 Ship >> initializeWith: aName [
-
+	currentLap := 1.
 	position := 0.
 	name := aName.
 ]
@@ -42,10 +43,19 @@ Ship >> move: numberOfCells [
 
 { #category : 'as yet unclassified' }
 Ship >> move: numberOfCells in: aBoard [
-	(position + numberOfCells) > (aBoard showCells)
-		ifTrue: [ position := aBoard showCells  ]
-		ifFalse: [position := position + numberOfCells ].
-	position := aBoard verifyPosition: self.
+
+	| boardCells |
+	position := position + numberOfCells.
+	boardCells := aBoard showCells.
+	currentLap := currentLap + (position // aBoard showCells).
+	position > boardCells ifTrue: [ position := position \\ boardCells ].
+	position := aBoard verifyPosition: self
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> showLaps [
+
+	^ currentLap
 ]
 
 { #category : 'as yet unclassified' }
@@ -63,4 +73,10 @@ Ship >> showPosition [
 Ship >> winAt: aBoard [
 
 	^ position >= aBoard showCells
+]
+
+{ #category : 'accessing' }
+Ship >> winAt: cells until: laps [
+
+	^ currentLap > laps 
 ]

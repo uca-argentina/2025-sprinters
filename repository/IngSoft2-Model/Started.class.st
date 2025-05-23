@@ -18,7 +18,7 @@ Started >> isPlaying [
 ]
 
 { #category : 'as yet unclassified' }
-Started >> showWinner [
+Started >> showWinner: aGame [
 
 	^ Error signal: 'The game is not finished, so it hasn´t a winner yet'
 ]

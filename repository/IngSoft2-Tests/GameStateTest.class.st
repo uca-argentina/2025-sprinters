@@ -56,10 +56,24 @@ GameStateTest >> test005WhenGameIsFinishedThenPlayingStateIsFalse [
 { #category : 'tests' }
 GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 
-	| gameState |
+	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame |
+	listOfShips := OrderedCollection new.
+	shipOne := 'Ship 1'.
+	listOfDices := OrderedCollection new.
+	listOfShips add: shipOne.
+	aDice := Dice with: 5.
+	listOfDices add: aDice.
+	aDiceBucket := DiceBucket with: listOfDices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	aBoard := Board with: amountOfCells and: aWorm.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: listOfShips.
 	gameState := Started new.
 	self
-		should: [ gameState showWinner ]
+		should: [ gameState showWinner: aGame ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
