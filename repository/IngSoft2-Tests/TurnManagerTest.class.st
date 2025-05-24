@@ -9,7 +9,7 @@ Class {
 TurnManagerTest >> test000WhenCalledNextShipToPlayThenReturnsNextShipToPlay [
 
 | shipOne ships aTurnManager |
-shipOne:= 'Ship one'.
+shipOne:=Ship create: 'Ship one'.
 ships := OrderedCollection new.
 ships add: shipOne.
 aTurnManager := TurnManager with: ships.
@@ -21,8 +21,8 @@ self assert: aTurnManager nextShip equals: shipOne.
 TurnManagerTest >> test001WhenTwoShipsArePlayingAndFirstPlayedThenNextShipIsShipTwo [
 
 	| shipOne ships aTurnManager shipTwo |
-	shipOne := 'Ship one'.
-	shipTwo := 'Ship two'.
+	shipOne := Ship create: 'Ship one'.
+	shipTwo :=  Ship create: 'Ship two'.
 	ships := OrderedCollection new.
 	ships add: shipOne.
 	ships add: shipTwo.
@@ -36,8 +36,8 @@ TurnManagerTest >> test001WhenTwoShipsArePlayingAndFirstPlayedThenNextShipIsShip
 TurnManagerTest >> test002WhenAllShipsHasPlayedThenNextShipIsTheFirst [
 
 	| shipOne ships aTurnManager shipTwo |
-	shipOne := 'Ship one'.
-	shipTwo := 'Ship two'.
+	shipOne :=Ship create: 'Ship one'.
+	shipTwo := Ship create: 'Ship two'.
 	ships := OrderedCollection new.
 	ships add: shipOne.
 	ships add: shipTwo.
@@ -61,4 +61,35 @@ TurnManagerTest >> test003WhenShipsAreEmptyThenRaiseError [
 			self
 				assert: error messageText
 				equals: 'Ships must to have one item at least' ]
+]
+
+{ #category : 'tests' }
+TurnManagerTest >> test004WhenShip1DoesNotWantsToPlayThenReturnShip2 [
+
+	| ships ship1 ship2 turnManager actualShip |
+	ships := OrderedCollection new.
+	ship1 := LazyShip create: 'ship1'.
+	ship2 := Ship create: 'ship2'.
+	ships add: ship1.
+	ships add: ship2.
+	turnManager := TurnManager with: ships.
+	actualShip := turnManager nextShip.
+	self assert: actualShip showName equals: 'ship2'
+]
+
+{ #category : 'tests' }
+TurnManagerTest >> test005WhenShip1andShip2DoNotWantsToPlayThenReturnShip3 [
+
+	| ships ship1 ship2 turnManager actualShip ship3 |
+	ships := OrderedCollection new.
+	ship1 := LazyShip create: 'ship1'.
+	ship2 := LazyShip create: 'ship2'.
+	ship3 := Ship create: 'ship3'.
+	ships add: ship1.
+	ships add: ship2.
+	ships add: ship3.
+	turnManager := TurnManager with: ships.
+	actualShip := turnManager nextShip.
+	actualShip := turnManager nextShip.
+	self assert: actualShip showName equals: 'ship3'.
 ]
