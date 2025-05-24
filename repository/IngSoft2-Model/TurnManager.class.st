@@ -28,8 +28,19 @@ TurnManager >> nextShip [
 
 	| actualShip |
 	actualShip := ships at: turn.
-	turn := ships size = turn
-		        ifTrue: [ 1 ]
-		        ifFalse: [ turn + 1 ].
+	ships size = turn
+		ifTrue: [
+			actualShip wantsToPlay "ultimo jujador quiere jugar?"
+				ifTrue: [ turn := 1 ] " iultimo jugador juega y el siguiente es el 1 --Z vuelve a empezar"
+				ifFalse: [
+					actualShip := (ships at: 1). " iultimo jugador NO juega , el actual es el 1 y el siguiente es el 2 "
+					turn := 2] ] 
+		ifFalse: [
+			actualShip wantsToPlay "NO es el ultimo jujador quiere jugar?"
+				ifTrue: [ turn := turn + 1 ]  
+				ifFalse: [
+					actualShip := (ships at: (turn + 1)). "jugador simple el actual va a ser el siguiente"
+					turn := (turn + 2) ] ].
+
 	^ actualShip
 ]

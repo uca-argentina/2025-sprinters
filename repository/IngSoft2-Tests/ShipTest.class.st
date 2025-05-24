@@ -55,6 +55,7 @@ ShipTest >> test004WhenShip1PositionIsLastOneAndThrow1ThenShip1StartFromTheBegin
 	| ship1 aLoadedDice aCircularBoard |
 	ship1 :=Ship create: 'Ship1'.
 	aCircularBoard := Board with: 5.
+	aCircularBoard with: 2.
 	aLoadedDice := LoadedDice with: 1.
 	ship1 move: 5 in: aCircularBoard.
 	ship1 move: aLoadedDice throw in: aCircularBoard .
@@ -67,6 +68,7 @@ ShipTest >> test005WhenShip1Moves12CellsInABoardWith5CellsThenShip1Has2Laps [
 	| ship1 aLoadedDice aCircularBoard |
 	ship1 := Ship create: 'Ship1'.
 	aCircularBoard := Board with: 5.
+	aCircularBoard with: 3.
 	aLoadedDice := LoadedDice with: 12.
 	ship1 move: aLoadedDice throw in: aCircularBoard.
 	self assert: ship1 showLaps equals: 3
@@ -103,6 +105,7 @@ ShipTest >> test007WhenShipThrow11AndBoardHas5CellsThenShipWinAt2LapsReturnsTrue
 	ships := OrderedCollection new.
 	ship1 := Ship create: 'Ship1'.
 	aCircularBoard := Board with: 5.
+	aCircularBoard with: 3.
 	aLoadedDice := LoadedDice with: 11.
 	ship1 move: aLoadedDice throw in: aCircularBoard.
 	laps := 2.

@@ -7,8 +7,7 @@ Class {
 		'bucketOfDices',
 		'ships',
 		'status',
-		'turnManager',
-		'laps'
+		'turnManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -72,12 +71,12 @@ Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
 { #category : 'initialization' }
 Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
 
-	board := aCircularBoard.
+	board := aCircularBoard with:numberOfLaps .
 	bucketOfDices := aDiceBucket.
 	ships := shipsNames collect: [ :aName | Ship create: aName ].
 	status := NotPlayed new.
 	turnManager:= TurnManager with:ships.
-	laps := numberOfLaps
+	
 	
 ]
 
@@ -118,6 +117,8 @@ Game >> showWinner [
 { #category : 'as yet unclassified' }
 Game >> someShipWon [
 
+	| laps |
+	laps := board showLaps.
 	winner := ships
 		          detect: [ :ship |
 			          laps isNil

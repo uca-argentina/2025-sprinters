@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'amountOfCells',
-		'wormHole'
+		'wormHole',
+		'laps'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -42,13 +43,20 @@ Board >> initializeWith: arg1 [
 { #category : 'initialization' }
 Board >> initializeWith: aAmountOfCells and: aWormHole [
 	amountOfCells := aAmountOfCells.
-	wormHole := aWormHole
+	wormHole := aWormHole.
+	laps:=1.
 ]
 
 { #category : 'as yet unclassified' }
 Board >> showCells [
 
 	^ amountOfCells
+]
+
+{ #category : 'as yet unclassified' }
+Board >> showLaps [
+
+	^ laps
 ]
 
 { #category : 'as yet unclassified' }
@@ -65,4 +73,10 @@ Board >> verifyPosition: aShip [
 	wormHole ifNotNil: [
 		^ wormHole transportIfConnectedTo: aShip showPosition ].
 	^ shipPosition   
+]
+
+{ #category : 'instance creation' }
+Board >> with: aNumberOfLaps [
+
+	laps := aNumberOfLaps
 ]

@@ -48,7 +48,10 @@ Ship >> move: numberOfCells in: aBoard [
 	position := position + numberOfCells.
 	boardCells := aBoard showCells.
 	currentLap := currentLap + (position // aBoard showCells).
-	position > boardCells ifTrue: [ position := position \\ boardCells ].
+	position > boardCells ifTrue: [
+		position := aBoard showLaps > 1
+			            ifTrue: [ position \\ boardCells ]
+			            ifFalse: [ aBoard showCells ] ].
 	position := aBoard verifyPosition: self
 ]
 
@@ -67,6 +70,12 @@ Ship >> showName [
 { #category : 'as yet unclassified' }
 Ship >> showPosition [
 	^ position.
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> wantsToPlay [
+
+	^ true
 ]
 
 { #category : 'as yet unclassified' }
