@@ -60,5 +60,9 @@ Board >> showSpecialCells [
 { #category : 'as yet unclassified' }
 Board >> verifyPosition: aShip [
 
-	^ wormHole transportIfConnectedTo: aShip showPosition
+	| shipPosition |
+	shipPosition := aShip showPosition.
+	wormHole ifNotNil: [
+		^ wormHole transportIfConnectedTo: aShip showPosition ].
+	^ shipPosition   
 ]
