@@ -6,7 +6,8 @@ Class {
 		'name',
 		'currentLap',
 		'shields',
-		'turnsToSkip'
+		'turnsToSkip',
+		'diceBucket'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -19,6 +20,12 @@ Ship class >> create: aName [
 		^ Error signal: 'Ship´s name must be a string.' ].
 
 	^ self new initializeWith: aName
+]
+
+{ #category : 'as yet unclassified' }
+Ship class >> create: aName with: aDiceBucket [
+
+	^ self new initializeWith: aName and: aDiceBucket
 ]
 
 { #category : 'instance creation' }
@@ -45,6 +52,24 @@ Ship >> initializeWith: aName [
 	name := aName.
 	shields := 3.
 	turnsToSkip:=0.
+]
+
+{ #category : 'initialization' }
+Ship >> initializeWith: aName and: aDiceBucket [
+
+	name := aName.
+	diceBucket := aDiceBucket.
+	position := 0.
+	currentLap := 0.
+	turnsToSkip := 0.
+	shields := 3
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> loseFight [
+
+	self loseShield.
+	position := 0
 ]
 
 { #category : 'as yet unclassified' }
@@ -106,6 +131,12 @@ Ship >> showShields [
 Ship >> skipTurn [
 
 	turnsToSkip := turnsToSkip - 1
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> throwDices [
+
+	^ diceBucket throw
 ]
 
 { #category : 'as yet unclassified' }

@@ -84,13 +84,19 @@ Game >> play [
 
 	| actualShip cellsToMove |
 	status := Started new.
-	[ self someShipWon = false ] whileTrue: [
-		actualShip := turnManager nextShip.
-		cellsToMove := bucketOfDices throw.
-		actualShip move: cellsToMove in: board ].
+	[ self someShipWon = false ] whileTrue: [ self playTurn ].
 	status := Finished new.
 
 	^ 'Game over'
+]
+
+{ #category : 'as yet unclassified' }
+Game >> playTurn [
+
+	| actualShip cellsToMove |
+	actualShip := turnManager nextShip.
+	cellsToMove := bucketOfDices throw.
+	actualShip move: cellsToMove in: board
 ]
 
 { #category : 'accessing' }
