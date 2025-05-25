@@ -187,3 +187,90 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 
 	self assert: (aGame ships at: 1) showPosition equals: 0
 ]
+
+{ #category : 'tests' }
+GameTest >> test008WhenGameHasPlayedThenShowRanking [
+
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with:10.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	aBoard := Board with: amountOfCells.
+	laps := 3.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps.
+	
+	assertedResult := OrderedCollection new.
+	assertedResult add: 'ship 1'.
+	assertedResult add: 'ship 2'.
+	assertedResult add: 'ship 3'.
+	aGame play.
+	self assert: aGame showRanking equals: assertedResult
+]
+
+{ #category : 'tests' }
+GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionReturnShip1AtFirst [
+
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult result |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with:10.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	aBoard := Board with: amountOfCells .
+	laps := 3.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps.
+	aGame play.
+	result:=aGame shipsSortedByPosition.
+	self assert: (result at:1) showName equals: 'ship 1'
+]
+
+{ #category : 'tests' }
+GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
+
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with:10.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	aBoard := Board with: amountOfCells.
+	laps := 3.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps.
+	self
+		should: [
+		 aGame showRanking ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'The Game has not been played yet so it doesn`t have a ranking' ]
+]

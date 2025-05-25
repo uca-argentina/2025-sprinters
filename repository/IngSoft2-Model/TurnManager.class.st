@@ -26,21 +26,21 @@ TurnManager >> initializeWith: shipCollection [
 { #category : 'as yet unclassified' }
 TurnManager >> nextShip [
 
-	| actualShip |
+	| actualShip totalShips turnsSkipped shipIndex |
+	totalShips := ships size.
+	turnsSkipped := 0.
+	shipIndex := turn.
+	[ turnsSkipped < totalShips ] whileTrue: [
+		actualShip := ships at: shipIndex.
+		actualShip wantsToPlay
+			ifTrue: [
+				turn := shipIndex \\ totalShips + 1. " es para que en caso de que este en la ultima nave vuelva a empezar en la nave 1"
+				^ actualShip ]
+			ifFalse: [
+				turnsSkipped := turnsSkipped + 1.
+				shipIndex := shipIndex \\ totalShips + 1 ] ].
 	actualShip := ships at: turn.
-	ships size = turn
-		ifTrue: [
-			actualShip wantsToPlay "ultimo jujador quiere jugar?"
-				ifTrue: [ turn := 1 ] " iultimo jugador juega y el siguiente es el 1 --Z vuelve a empezar"
-				ifFalse: [
-					actualShip := (ships at: 1). " iultimo jugador NO juega , el actual es el 1 y el siguiente es el 2 "
-					turn := 2] ] 
-		ifFalse: [
-			actualShip wantsToPlay "NO es el ultimo jujador quiere jugar?"
-				ifTrue: [ turn := turn + 1 ]  
-				ifFalse: [
-					actualShip := (ships at: (turn + 1)). "jugador simple el actual va a ser el siguiente"
-					turn := (turn + 2) ] ].
+	turn := turn \\ totalShips + 1.
 
 	^ actualShip
 ]
