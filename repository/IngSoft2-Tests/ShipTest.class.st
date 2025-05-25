@@ -130,3 +130,43 @@ ShipTest >> test009WhenShipIsCreatedAndThenLoseAShieldThenShipShieldsAre2 [
 	ship1 loseShield.
 	self assert: ship1 showShields equals: 2
 ]
+
+{ #category : 'tests' }
+ShipTest >> test010WhenShipRecoverItsShieldsThenShipShieldsAre3 [
+
+	| ship1  |
+	ship1 := Ship create: 'Ship1'.
+	ship1 recoverShields.
+	self assert: ship1 showShields equals: 3
+]
+
+{ #category : 'tests' }
+ShipTest >> test011WhenShipIsCreatedThenItCanPlay [
+
+	| ship1  |
+	ship1 := Ship create: 'Ship1'.
+	self assert: ship1 canPlay equals: true
+]
+
+{ #category : 'tests' }
+ShipTest >> test012WhenShipLoseAllItsShieldsThenItCanNotPlay [
+
+	| ship1  |
+	ship1 := Ship create: 'Ship1'.
+	ship1 loseShield .
+	ship1 loseShield .
+	ship1 loseShield .
+	self assert: ship1 canPlay equals: false
+]
+
+{ #category : 'tests' }
+ShipTest >> test013WhenShipRecoverItsShieldsThenItCanPlay [
+
+	| ship1  |
+	ship1 := Ship create: 'Ship1'.
+	ship1 loseShield .
+	ship1 loseShield .
+	ship1 loseShield .
+	ship1 recoverShields .
+	self assert: ship1 canPlay equals: true
+]

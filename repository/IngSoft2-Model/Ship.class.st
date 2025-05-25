@@ -26,6 +26,12 @@ Ship class >> newShip [
 	^ self new initializePosition.
 ]
 
+{ #category : 'testing' }
+Ship >> canPlay [
+
+	^ turnsToSkip = 0
+]
+
 { #category : 'initialization' }
 Ship >> initializePosition [
 	position := 0.
@@ -65,6 +71,13 @@ Ship >> move: numberOfCells in: aBoard [
 			            ifTrue: [ position \\ boardCells ]
 			            ifFalse: [ aBoard showCells ] ].
 	position := aBoard verifyPosition: self
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> recoverShields [
+
+	shields := 3.
+	turnsToSkip :=0.
 ]
 
 { #category : 'as yet unclassified' }
