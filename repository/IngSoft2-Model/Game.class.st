@@ -7,7 +7,8 @@ Class {
 		'bucketOfDices',
 		'ships',
 		'status',
-		'turnManager'
+		'turnManager',
+		'battleManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -55,20 +56,20 @@ Game >> currentTopPlayer [
 Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
 
 	board := aBoard.
-	bucketOfDices := aDiceBucket.
-	ships := shipsNames collect: [ :aName | Ship create: aName ].
+	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket].
 	status := NotPlayed new.
-	turnManager:= TurnManager with:ships
+	turnManager:= TurnManager with:ships.
+	battleManager :=BattleManager new.
 ]
 
 { #category : 'initialization' }
 Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
 
 	board := aCircularBoard with:numberOfLaps .
-	bucketOfDices := aDiceBucket.
-	ships := shipsNames collect: [ :aName | Ship create: aName ].
+	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket ].
 	status := NotPlayed new.
 	turnManager:= TurnManager with:ships.
+	battleManager :=BattleManager.
 	
 	
 ]
@@ -93,10 +94,13 @@ Game >> play [
 { #category : 'as yet unclassified' }
 Game >> playTurn [
 
-	| actualShip cellsToMove |
+	| actualShip |
 	actualShip := turnManager nextShip.
-	cellsToMove := bucketOfDices throw.
-	actualShip move: cellsToMove in: board
+	actualShip moveIn: board.
+	(ships select: [ :ship |
+		 ship ~~ actualShip and: [
+			 ship showPosition = actualShip showPosition ] ]) do: [ :enemy |
+		battleManager fightBetween: actualShip and: enemy ]
 ]
 
 { #category : 'accessing' }

@@ -85,10 +85,10 @@ Ship >> move: numberOfCells [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> move: numberOfCells in: aBoard [
+Ship >> moveIn: aBoard [
 
 	| boardCells |
-	position := position + numberOfCells.
+	position := position + self throwDices.
 	boardCells := aBoard showCells.
 	currentLap := currentLap + (position // aBoard showCells).
 	position > boardCells ifTrue: [
@@ -159,5 +159,5 @@ Ship >> winAt: aBoard [
 { #category : 'accessing' }
 Ship >> winAt: cells until: laps [
 
-	^ currentLap > laps 
+	^ currentLap >= laps 
 ]
