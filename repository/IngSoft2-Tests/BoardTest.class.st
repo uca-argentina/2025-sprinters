@@ -81,13 +81,15 @@ BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 
 { #category : 'tests' }
 BoardTest >> test006WhenShipMoveMoreThanCellsInTheBoardThenPositionIsAmountOfCells [
-	| amountOfCells aX aY aWorm aBoard aShip |
+
+	| amountOfCells aX aY aWorm aBoard aShip loadedDice |
 	amountOfCells := 4.
 	aX := 1.
 	aY := 2.
 	aWorm := Worm with: aX and: aY.
 	aBoard := Board with: amountOfCells and: aWorm.
-	aShip := Ship create: 'ship1'.
-	aShip move: 6 in: aBoard.
-	self assert: (aBoard verifyPosition: aShip) equals: 4.
+	loadedDice := LoadedDice with: 6.
+	aShip := Ship create: 'ship1' with: loadedDice.
+	aShip moveIn: aBoard.
+	self assert: (aBoard verifyPosition: aShip) equals: 4
 ]

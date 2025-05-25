@@ -4,7 +4,10 @@ Class {
 	#instVars : [
 		'position',
 		'name',
-		'currentLap'
+		'currentLap',
+		'shields',
+		'turnsToSkip',
+		'diceBucket'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -19,9 +22,21 @@ Ship class >> create: aName [
 	^ self new initializeWith: aName
 ]
 
+{ #category : 'as yet unclassified' }
+Ship class >> create: aName with: aDiceBucket [
+
+	^ self new initializeWith: aName and: aDiceBucket
+]
+
 { #category : 'instance creation' }
 Ship class >> newShip [
 	^ self new initializePosition.
+]
+
+{ #category : 'testing' }
+Ship >> canPlay [
+
+	^ turnsToSkip = 0
 ]
 
 { #category : 'initialization' }
@@ -31,9 +46,37 @@ Ship >> initializePosition [
 
 { #category : 'initialization' }
 Ship >> initializeWith: aName [
+
 	currentLap := 1.
 	position := 0.
 	name := aName.
+	shields := 3.
+	turnsToSkip:=0.
+]
+
+{ #category : 'initialization' }
+Ship >> initializeWith: aName and: aDiceBucket [
+
+	name := aName.
+	diceBucket := aDiceBucket.
+	position := 0.
+	currentLap := 0.
+	turnsToSkip := 0.
+	shields := 3
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> loseFight [
+
+	self loseShield.
+	position := 0
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> loseShield [
+
+	shields := shields - 1.
+	shields = 0 ifTrue: [ turnsToSkip := 2 ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -42,10 +85,10 @@ Ship >> move: numberOfCells [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> move: numberOfCells in: aBoard [
+Ship >> moveIn: aBoard [
 
 	| boardCells |
-	position := position + numberOfCells.
+	position := position + self throwDices.
 	boardCells := aBoard showCells.
 	currentLap := currentLap + (position // aBoard showCells).
 	position > boardCells ifTrue: [
@@ -53,6 +96,13 @@ Ship >> move: numberOfCells in: aBoard [
 			            ifTrue: [ position \\ boardCells ]
 			            ifFalse: [ aBoard showCells ] ].
 	position := aBoard verifyPosition: self
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> recoverShields [
+
+	shields := 3.
+	turnsToSkip :=0.
 ]
 
 { #category : 'as yet unclassified' }
@@ -73,6 +123,28 @@ Ship >> showPosition [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> showShields [
+	^shields
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> skipTurn [
+
+	turnsToSkip := turnsToSkip - 1
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> throwDices [
+
+	^ diceBucket throw
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> turnsThatHasToSkip [
+	^turnsToSkip 
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> wantsToPlay [
 
 	^ true
@@ -87,5 +159,5 @@ Ship >> winAt: aBoard [
 { #category : 'accessing' }
 Ship >> winAt: cells until: laps [
 
-	^ currentLap > laps 
+	^ currentLap >= laps 
 ]

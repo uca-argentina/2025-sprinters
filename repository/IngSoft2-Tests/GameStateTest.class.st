@@ -129,3 +129,28 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 				assert: error messageText
 				equals: 'The game has not started, it does not have a winner yet' ]
 ]
+
+{ #category : 'tests' }
+GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChangeItPosition [
+
+	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame ship1 ship2 |
+	listOfShips := OrderedCollection new.
+	listOfDices := OrderedCollection new.
+	listOfShips add: 'Ship 1'.
+	listOfShips add: 'Ship 2'.
+	aDice := Dice with: 5.
+	listOfDices add: aDice.
+	aDiceBucket := DiceBucket with: listOfDices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	aBoard := Board with: amountOfCells and: aWorm.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: listOfShips.
+	aGame playTurn.
+	ship1:=aGame ships at:1.
+	ship2:=aGame ships at:2.
+	
+	self deny: (ship1 showPosition) equals: (ship2 showPosition)
+]

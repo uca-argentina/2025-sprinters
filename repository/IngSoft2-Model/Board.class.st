@@ -35,9 +35,10 @@ Board class >> with: aAmountOfCells and: aWormHole [
 ]
 
 { #category : 'initialization' }
-Board >> initializeWith: arg1 [
+Board >> initializeWith: cells [
 
-	amountOfCells := arg1
+	amountOfCells := cells.
+	laps := 1
 ]
 
 { #category : 'initialization' }

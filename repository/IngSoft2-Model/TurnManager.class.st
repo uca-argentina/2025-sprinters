@@ -24,23 +24,35 @@ TurnManager >> initializeWith: shipCollection [
 ]
 
 { #category : 'as yet unclassified' }
-TurnManager >> nextShip [
+TurnManager >> nextPlayableShip [
 
-	| actualShip totalShips turnsSkipped shipIndex |
+	| totalShips turnsSkipped ship |
 	totalShips := ships size.
 	turnsSkipped := 0.
-	shipIndex := turn.
-	[ turnsSkipped < totalShips ] whileTrue: [
-		actualShip := ships at: shipIndex.
-		actualShip wantsToPlay
-			ifTrue: [
-				turn := shipIndex \\ totalShips + 1. " es para que en caso de que este en la ultima nave vuelva a empezar en la nave 1"
-				^ actualShip ]
-			ifFalse: [
-				turnsSkipped := turnsSkipped + 1.
-				shipIndex := shipIndex \\ totalShips + 1 ] ].
-	actualShip := ships at: turn.
-	turn := turn \\ totalShips + 1.
 
-	^ actualShip
+	[ turnsSkipped < totalShips ] whileTrue: [
+		ship := ships at: turn.
+		turn := turn \\ totalShips + 1.
+		ship canPlay
+			ifTrue: [ ^ ship ]
+			ifFalse: [
+				ship skipTurn.
+				turnsSkipped := turnsSkipped + 1 ] ].
+	Error signal: 'There is no ship witch can play'
+]
+
+{ #category : 'as yet unclassified' }
+TurnManager >> nextShip [
+
+	^ self nextShipThatWantToPlay: self nextPlayableShip
+]
+
+{ #category : 'as yet unclassified' }
+TurnManager >> nextShipThatWantToPlay: actualShip [
+
+	actualShip wantsToPlay
+		ifTrue: [ ^ actualShip ]
+		ifFalse: [
+			actualShip skipTurn.
+			^ self nextShip ]
 ]

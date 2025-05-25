@@ -17,7 +17,8 @@ LoadedDice class >> with: aAmountOfFaces [
 { #category : 'initialization' }
 LoadedDice >> initializeWith: aAmountOfFaces [
 
-	amountOfFaces := aAmountOfFaces
+	amountOfFaces := aAmountOfFaces.
+	
 ]
 
 { #category : 'as yet unclassified' }
