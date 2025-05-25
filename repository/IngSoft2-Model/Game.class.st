@@ -48,14 +48,7 @@ Game >> currentStatus [
 { #category : 'as yet unclassified' }
 Game >> currentTopPlayer [
 
-	| topShip topPosition |
-	topShip := ships at: 1.
-	topPosition := topShip showPosition.
-	ships do: [ :ship |
-		ship showPosition > topPosition ifTrue: [
-			topShip := ship.
-			topPosition := ship showPosition ] ].
-	^ topShip
+	^ self shipsSortedByPosition at: 1.
 ]
 
 { #category : 'initialization' }
@@ -80,12 +73,21 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 	
 ]
 
+{ #category : 'testing' }
+Game >> isBefore: shipA than: shipB [
+
+	^ (ships indexOf: shipA) < (ships indexOf: shipB)
+]
+
 { #category : 'as yet unclassified' }
 Game >> play [
 
+	| actualShip cellsToMove |
 	status := Started new.
 	[ self someShipWon = false ] whileTrue: [
-		turnManager nextShip move: bucketOfDices throw in: board ].
+		actualShip := turnManager nextShip.
+		cellsToMove := bucketOfDices throw.
+		actualShip move: cellsToMove in: board ].
 	status := Finished new.
 
 	^ 'Game over'
@@ -97,16 +99,46 @@ Game >> ships [
 ]
 
 { #category : 'as yet unclassified' }
+Game >> shipsSortedByPosition [
+
+	^ ships copy sort: [ :a :b |
+		  a showLaps > b showLaps or: [
+			  a showLaps = b showLaps and: [
+				  a showPosition > b showPosition or: [
+					  a showPosition = b showPosition and: [
+						  self isBefore: a than: b ] ] ] ] ]
+]
+
+{ #category : 'as yet unclassified' }
+Game >> showRanking [
+
+	| top ranking sorted |
+	status isFinished
+		ifTrue: [
+			top := 1.
+			ranking := OrderedCollection new.
+			sorted := self shipsSortedByPosition.
+
+			[ top <= 3 and: [ top <= sorted size ] ] whileTrue: [
+				ranking add: (sorted at: top) showName.
+				top := top + 1 ].
+			^ ranking ]
+		ifFalse: [
+			Error signal:
+				'The Game has not been played yet so it doesn`t have a ranking' ]
+]
+
+{ #category : 'as yet unclassified' }
 Game >> showShipsPositions [
 
-	winner
-		ifNotNil: [
+	status isFinished 
+		ifTrue: [
 			| result |
 			result := Dictionary new.
 			ships do: [ :ship |
 				result at: ship showName put: ship showPosition ].
 			^ result ]
-		ifNil: [ ^ 'The Game is not over' ]
+		ifFalse: [ ^ 'The Game is not over' ]
 ]
 
 { #category : 'as yet unclassified' }
