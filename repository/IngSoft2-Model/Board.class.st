@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'amountOfCells',
 		'wormHole',
-		'laps'
+		'laps',
+		'distributions',
+		'cells'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
