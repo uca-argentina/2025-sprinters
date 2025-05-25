@@ -170,3 +170,22 @@ ShipTest >> test013WhenShipRecoverItsShieldsThenItCanPlay [
 	ship1 recoverShields .
 	self assert: ship1 canPlay equals: true
 ]
+
+{ #category : 'tests' }
+ShipTest >> test014WhenShipHas2TurnToSkipAndHAsSkipped1TurnThenItHas1TurnToSkip [
+
+	| ship1 ships ship2 ship3 turnManager actualShip |
+	ships := OrderedCollection new.
+	ship1 := Ship create: 'ship1'.
+	ship2 := Ship create: 'ship2'.
+	ship3 := Ship create: 'ship3'.
+	ships add: ship1.
+	ships add: ship2.
+	ships add: ship3.
+	ship1 loseShield.
+	ship1 loseShield.
+	ship1 loseShield.
+	turnManager := TurnManager with: ships.
+	actualShip := turnManager nextShip.
+	self assert: ship1 turnsThatHasToSkip equals: 1
+]

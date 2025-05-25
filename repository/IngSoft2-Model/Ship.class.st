@@ -103,6 +103,17 @@ Ship >> showShields [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> skipTurn [
+
+	turnsToSkip := turnsToSkip - 1
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> turnsThatHasToSkip [
+	^turnsToSkip 
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> wantsToPlay [
 
 	^ true

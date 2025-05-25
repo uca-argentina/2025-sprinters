@@ -93,3 +93,66 @@ TurnManagerTest >> test005WhenShip1andShip2DoNotWantsToPlayThenReturnShip3 [
 	actualShip := turnManager nextShip.
 	self assert: actualShip showName equals: 'ship3'.
 ]
+
+{ #category : 'tests' }
+TurnManagerTest >> test006WhenShip1CanNotPlayThenNextPlayableShipIsShip2 [
+
+	| ships ship1 ship2 turnManager actualShip ship3 |
+	ships := OrderedCollection new.
+	ship1 := Ship create: 'ship1'.
+	ship2 := Ship create: 'ship2'.
+	ship3 := Ship create: 'ship3'.
+	ships add: ship1.
+	ships add: ship2.
+	ships add: ship3.
+	ship1 loseShield.
+	ship1 loseShield.
+	ship1 loseShield.
+	turnManager := TurnManager with: ships.
+	actualShip := turnManager nextPlayableShip.
+	self assert: actualShip showName equals: 'ship2'.
+]
+
+{ #category : 'tests' }
+TurnManagerTest >> test007WhenShip1CanNotPlayThenNextShipIsShip2 [
+
+	| ships ship1 ship2 turnManager actualShip ship3 |
+	ships := OrderedCollection new.
+	ship1 := Ship create: 'ship1'.
+	ship2 := Ship create: 'ship2'.
+	ship3 := Ship create: 'ship3'.
+	ships add: ship1.
+	ships add: ship2.
+	ships add: ship3.
+	ship1 loseShield.
+	ship1 loseShield.
+	ship1 loseShield.
+	turnManager := TurnManager with: ships.
+	actualShip := turnManager nextShip.
+	self assert: actualShip showName equals: 'ship2'.
+]
+
+{ #category : 'tests' }
+TurnManagerTest >> test008WhenAllShipsCanNotPlayThenRaiseError [
+
+	| ships ship1 ship2 turnManager |
+	ships := OrderedCollection new.
+	ship1 := Ship create: 'ship1'.
+	ship2 := Ship create: 'ship2'.
+	ships add: ship1.
+	ships add: ship2.
+	ship1 loseShield.
+	ship1 loseShield.
+	ship1 loseShield.
+	ship2 loseShield.
+	ship2 loseShield.
+	ship2 loseShield.
+	turnManager := TurnManager with: ships.
+	self
+		should: [ turnManager nextShip ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'There is no ship witch can play' ]
+]
