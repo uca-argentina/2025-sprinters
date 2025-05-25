@@ -112,3 +112,21 @@ ShipTest >> test007WhenShipThrow11AndBoardHas5CellsThenShipWinAt2LapsReturnsTrue
 
 	self assert: (ship1 winAt: cells until: laps) equals: true
 ]
+
+{ #category : 'tests' }
+ShipTest >> test008WhenShipIsCreatedThenShipShieldsAre3 [
+
+	| ship1  |
+	ship1 := Ship create: 'Ship1'.
+
+	self assert: ship1 showShields equals: 3
+]
+
+{ #category : 'tests' }
+ShipTest >> test009WhenShipIsCreatedAndThenLoseAShieldThenShipShieldsAre2 [
+
+	| ship1  |
+	ship1 := Ship create: 'Ship1'.
+	ship1 loseShield.
+	self assert: ship1 showShields equals: 2
+]

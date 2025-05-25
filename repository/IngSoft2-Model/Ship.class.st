@@ -4,7 +4,9 @@ Class {
 	#instVars : [
 		'position',
 		'name',
-		'currentLap'
+		'currentLap',
+		'shields',
+		'turnsToSkip'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -31,9 +33,19 @@ Ship >> initializePosition [
 
 { #category : 'initialization' }
 Ship >> initializeWith: aName [
+
 	currentLap := 1.
 	position := 0.
 	name := aName.
+	shields := 3.
+	turnsToSkip:=0.
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> loseShield [
+
+	shields := shields - 1.
+	shields = 0 ifTrue: [ turnsToSkip := 2 ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -70,6 +82,11 @@ Ship >> showName [
 { #category : 'as yet unclassified' }
 Ship >> showPosition [
 	^ position.
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> showShields [
+	^shields
 ]
 
 { #category : 'as yet unclassified' }
