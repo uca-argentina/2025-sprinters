@@ -40,6 +40,12 @@ Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: aCollection
 		  until: anInteger
 ]
 
+{ #category : 'accessing' }
+Game >> board [
+
+	^ board
+]
+
 { #category : 'as yet unclassified' }
 Game >> currentStatus [
 

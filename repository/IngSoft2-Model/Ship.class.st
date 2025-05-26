@@ -85,6 +85,27 @@ Ship >> move: numberOfCells [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> move: numberOfCells in: aBoard [
+
+	| totalCells newPosition |
+	totalCells := aBoard showCells.
+	newPosition := position + numberOfCells.
+
+	currentLap := currentLap + (newPosition // totalCells).
+
+	position := newPosition < 0
+		            ifTrue: [ 0 ]
+		            ifFalse: [
+			            aBoard showLaps > 1
+				            ifTrue: [ newPosition \\ totalCells + 1 ]
+				            ifFalse: [
+					            newPosition < 0 ifTrue: [ 0 ].
+					            newPosition > totalCells
+						            ifTrue: [ totalCells ]
+						            ifFalse: [ newPosition ] ] ]
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> moveIn: aBoard [
 
 	| boardCells |

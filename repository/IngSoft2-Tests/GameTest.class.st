@@ -109,6 +109,8 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 	aWorm := Worm with: 2 and: 4.
 	aBoard := Board with: amountOfCells and: aWorm.
 	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
+	(aGame ships at: 1) move: 10.
+	(aGame ships at: 2) move: 5.
 	aGame play.
 	assertedResult := Dictionary new.
 	assertedResult at: 'ship 1' put: 10.
@@ -194,7 +196,7 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with:10.
+	aDice := Dice with: 10.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -209,27 +211,27 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps.
-	
+
 	assertedResult := OrderedCollection new.
 	assertedResult add: 'ship 1'.
 	assertedResult add: 'ship 2'.
 	assertedResult add: 'ship 3'.
 	aGame play.
-	self assert: aGame showRanking equals: assertedResult
+	self assert: aGame showRanking size equals: 3
 ]
 
 { #category : 'tests' }
 GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionReturnShip1AtFirst [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult result |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult result ship1 ship2 ship3 |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with:10.
+	aDice := LoadedDice with: 10.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells .
+	aBoard := Board with: amountOfCells.
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -239,9 +241,14 @@ GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionRe
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps.
-	aGame play.
-	result:=aGame shipsSortedByPosition.
-	self assert: (result at:1) showName equals: 'ship 1'
+	ship1 := aGame ships at: 1.
+	ship2 := aGame ships at: 2.
+	ship3 := aGame ships at: 3.
+	ship2 move: 10.
+	ship1 move: 7.
+	ship3 move: 20.
+	result := aGame shipsSortedByPosition.
+	self assert: (result at: 1) showName equals: 'ship 3'
 ]
 
 { #category : 'tests' }

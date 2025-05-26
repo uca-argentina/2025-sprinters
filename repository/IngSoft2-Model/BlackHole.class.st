@@ -6,6 +6,12 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+BlackHole >> applyTo: aShip in: aGame [
+
+	aShip move: -4 in: aGame board
+]
+
+{ #category : 'as yet unclassified' }
 BlackHole >> effectOnMovement [
 	^ -4.
 ]
