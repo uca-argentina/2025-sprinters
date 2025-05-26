@@ -147,14 +147,10 @@ Game >> showRanking [
 { #category : 'as yet unclassified' }
 Game >> showShipsPositions [
 
-	status isFinished 
-		ifTrue: [
-			| result |
-			result := Dictionary new.
-			ships do: [ :ship |
-				result at: ship showName put: ship showPosition ].
-			^ result ]
-		ifFalse: [ ^ 'The Game is not over' ]
+	| result |
+	result := Dictionary new.
+	ships do: [ :ship | result at: ship showName put: ship showPosition ].
+	^ result
 ]
 
 { #category : 'as yet unclassified' }

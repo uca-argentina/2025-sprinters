@@ -120,6 +120,12 @@ Ship >> moveIn: aBoard [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> moveToFirstPosition [
+
+	position := 0
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> recoverShields [
 
 	shields := 3.

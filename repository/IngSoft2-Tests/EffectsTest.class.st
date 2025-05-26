@@ -137,3 +137,57 @@ EffectsTest >> test006WhenCreateMoonWalkEffectWithLessOrEqualZeroCellsThenRaiseE
 				assert: error messageText
 				equals: 'Amount of cells must be greater than zero' ]
 ]
+
+{ #category : 'tests' }
+EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroButLapsNotChange [
+
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 |
+	effect := AtomicBomb new.
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 10.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	aWorm := Worm with: 2 and: 8.
+	aBoard := Board with: 10.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 4.
+	ship1 := aGame ships at: 1.
+	ship2 := aGame ships at: 2.
+	ship2 move: 23 in:aBoard.
+	effect applyTo: ship1 in: aGame.
+	self assert: ship2 showLaps equals: 2
+]
+
+{ #category : 'tests' }
+EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
+
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 |
+	effect := AtomicBomb new.
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 10.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	aWorm := Worm with: 2 and: 8.
+	aBoard := Board with: 10.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 4.
+	ship1 := aGame ships at: 1.
+	ship2 := aGame ships at: 2.
+	aGame playTurn.
+	effect applyTo: ship1 in: aGame.
+	self assert: ship2 showShields equals: 2
+]
