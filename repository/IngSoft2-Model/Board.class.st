@@ -5,7 +5,6 @@ Class {
 		'amountOfCells',
 		'wormHole',
 		'laps',
-		'distributions',
 		'cells'
 	],
 	#category : 'IngSoft2-Model',
@@ -36,6 +35,41 @@ Board class >> with: aAmountOfCells and: aWormHole [
 	^ self new initializeWith: aAmountOfCells and: aWormHole
 ]
 
+{ #category : 'as yet unclassified' }
+Board class >> with: aAmountOfCells and: aWormHole has: aDistribution [
+
+	aAmountOfCells isInteger ifFalse: [
+		^ Error signal: 'Amount of cells must be an integer' ].
+	aAmountOfCells < 1 ifTrue: [
+		^ Error signal: 'Amount of cells must be greater than zero' ].
+	(aWormHole isInside: aAmountOfCells) ifFalse: [
+		^ Error signal:
+			  'Position of the worm hole exceed amount board`s cells' ].
+	^ self new initializeWith: aAmountOfCells and: aWormHole has: aDistribution.
+]
+
+{ #category : 'as yet unclassified' }
+Board >> amountOfBlackHoleCells [
+
+	^ self amountOfCellsOf: BlackHole.
+]
+
+{ #category : 'as yet unclassified' }
+Board >> amountOfCellsOf: anEffectOrClass [
+
+	| count |
+	count := 0.
+	cells do: [ :cell |
+		(cell effect = anEffectOrClass) ifTrue: [
+			count := count + 1 ] ].
+	^ count
+]
+
+{ #category : 'as yet unclassified' }
+Board >> amountOfNoEffectCells [
+	^ self amountOfCellsOf: NoEffect.
+]
+
 { #category : 'initialization' }
 Board >> initializeWith: cells [
 
@@ -48,6 +82,31 @@ Board >> initializeWith: aAmountOfCells and: aWormHole [
 	amountOfCells := aAmountOfCells.
 	wormHole := aWormHole.
 	laps:=1.
+]
+
+{ #category : 'initialization' }
+Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions [
+
+	| cell effects |
+	amountOfCells := aAmountOfCells.
+	wormHole := aWormHole.
+	laps := 1.
+
+	effects := OrderedCollection new.
+
+	"Asignar cantidades exactas"
+	distributions do: [ :dist |
+		(dist probability * amountOfCells) asInteger timesRepeat: [
+			effects add: dist cellClass ] ].
+
+	effects := effects shuffle.
+	"Crear celdas"
+	cells := OrderedCollection new.
+	1 to: amountOfCells do: [ :i |
+		cell := Cell new.
+		cell position: i.
+		cell effect: (effects at: i).
+		cells add: cell ]
 ]
 
 { #category : 'as yet unclassified' }

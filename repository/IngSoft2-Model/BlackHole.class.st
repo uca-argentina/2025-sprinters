@@ -6,6 +6,6 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-BlackHole >> effectOnPosition [
+BlackHole >> effectOnMovement [
 	^ -4.
 ]

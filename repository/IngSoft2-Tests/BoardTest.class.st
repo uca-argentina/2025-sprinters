@@ -93,3 +93,22 @@ BoardTest >> test006WhenShipMoveMoreThanCellsInTheBoardThenPositionIsAmountOfCel
 	aShip moveIn: aBoard.
 	self assert: (aBoard verifyPosition: aShip) equals: 4
 ]
+
+{ #category : 'tests' }
+BoardTest >> test007WhenGivenDistributionToABoardThenAllAddUpToTheExacAmountOfCells [
+
+	| amountOfCells aX aY aWorm aBoard distributions total |
+	amountOfCells := 100.
+	"El numero de celdas por ahora esta logicamente implementado para que sea siempre un entero, un par"
+	aX := 1.
+	aY := 2.
+	aWorm := Worm with: aX and: aY.
+
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 0.4).
+	distributions add: (Distribution at: BlackHole with: 0.6).
+
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	total := aBoard amountOfNoEffectCells + aBoard amountOfBlackHoleCells.
+	self assert: total equals: amountOfCells.
+]

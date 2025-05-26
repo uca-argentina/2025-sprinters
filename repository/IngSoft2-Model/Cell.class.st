@@ -25,8 +25,8 @@ Cell >> effect: aCellClass [
 ]
 
 { #category : 'as yet unclassified' }
-Cell >> effectOnPosition [
-	^ cellClass effectOnPosition
+Cell >> effectOnMovement [
+	^ cellClass effectOnMovement
 ]
 
 { #category : 'accessing' }
