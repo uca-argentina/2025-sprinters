@@ -69,7 +69,7 @@ Board class >> with: aAmountOfCells and: aWormHole has: aDistribution andTotalPa
 { #category : 'as yet unclassified' }
 Board >> amountOfBlackHoleCells [
 
-	^ self amountOfCellsOf: BlackHole.
+	^ self amountOfCellsOf: 'BlackHole'.
 ]
 
 { #category : 'as yet unclassified' }
@@ -78,14 +78,14 @@ Board >> amountOfCellsOf: anEffectOrClass [
 	| count |
 	count := 0.
 	cells do: [ :cell |
-		(cell effect = anEffectOrClass) ifTrue: [
+		(cell effect className= anEffectOrClass) ifTrue: [
 			count := count + 1 ] ].
 	^ count
 ]
 
 { #category : 'as yet unclassified' }
 Board >> amountOfNoEffectCells [
-	^ self amountOfCellsOf: NoEffect.
+	^ self amountOfCellsOf: 'NoEffect'.
 ]
 
 { #category : 'as yet unclassified' }
@@ -121,7 +121,9 @@ Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions [
 	"Asignar cantidades exactas"
 	distributions do: [ :dist |
 		(dist probability * amountOfCells) asInteger timesRepeat: [
-			effects add: dist cellClass]  ].
+			effects add: dist cellClass ] ].
+	
+	(effects size = amountOfCells) ifFalse:[(amountOfCells - effects size) timesRepeat: [effects add: NoEffect initializeThis]].
 
 	effects := effects shuffle.
 	"Crear celdas"
@@ -147,6 +149,8 @@ Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions andTot
 	distributions do: [ :dist |
 		(dist probability * amountOfCells) asInteger timesRepeat: [
 			effects add: dist cellClass ] ].
+	
+	(effects size equals: amountOfCells) ifFalse:[(amountOfCells - effects size) timesRepeat: [effects add: NoEffect initializeThis]].
 
 	effects := effects shuffle.
 	"Crear celdas"

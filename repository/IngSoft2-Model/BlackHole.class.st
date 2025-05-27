@@ -5,6 +5,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'initialization' }
+BlackHole class >> initializeThis [
+	^ self new.
+]
+
 { #category : 'as yet unclassified' }
 BlackHole >> applyTo: aShip in: aGame [
 
