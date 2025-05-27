@@ -5,6 +5,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'initialization' }
+AtomicBomb class >> initializeThis [
+	^ self new.
+]
+
 { #category : 'as yet unclassified' }
 AtomicBomb >> applyTo: aShip in: aGame [
 

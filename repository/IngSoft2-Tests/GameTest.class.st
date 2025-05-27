@@ -322,7 +322,7 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: NoEffect new with: 1).
+	distributions add: (Distribution at: NoEffect with: 1).
 
 	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	laps := 3.

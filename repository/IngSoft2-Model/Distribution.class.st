@@ -25,7 +25,7 @@ Distribution >> cellClass [
 { #category : 'initialization' }
 Distribution >> initializeWith: aProbability asignTo: aCellClass [
 
-	cellClass := aCellClass.
+	cellClass := aCellClass initializeThis.
 	probability := aProbability
 ]
 

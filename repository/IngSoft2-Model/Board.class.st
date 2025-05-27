@@ -121,7 +121,7 @@ Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions [
 	"Asignar cantidades exactas"
 	distributions do: [ :dist |
 		(dist probability * amountOfCells) asInteger timesRepeat: [
-			effects add: dist cellClass ] ].
+			effects add: dist cellClass]  ].
 
 	effects := effects shuffle.
 	"Crear celdas"

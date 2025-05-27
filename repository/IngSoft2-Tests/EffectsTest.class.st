@@ -142,7 +142,7 @@ EffectsTest >> test006WhenCreateMoonWalkEffectWithLessOrEqualZeroCellsThenRaiseE
 EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroButLapsNotChange [
 
 	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 |
-	effect := AtomicBomb new.
+	effect := AtomicBomb.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice with: 10.
@@ -169,7 +169,7 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 
 	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 distributions |
-	effect := AtomicBomb new.
+	effect := AtomicBomb.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice with: 10.
@@ -199,7 +199,6 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 	parsecsToMove add: 8.
 	parsecsToMove add: 6.
 	parsecsToMove add: 3.
-	effect := HyperJump with: parsecsToMove.
 
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
@@ -212,9 +211,8 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 	aWorm := Worm with: aX and: aY.
 
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: NoEffect with: 0.4).
-	distributions add: (Distribution at: BlackHole with: 0.6).
-
+	distributions add: (Distribution at: HyperJump with: 1).
+	
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
@@ -229,19 +227,20 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 		         andShipsNamed: ships
 		         until: 4.
 	ship1 := aGame ships at: 1.
+	effect := (distributions at:1) cellClass.
+	ship1 move: 4 in: aBoard.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showPosition equals: 4
+	self assert: ship1 showPosition equals: 9.
 ]
 
 { #category : 'tests' }
 EffectsTest >> test010WhenCreatHuperJumpEffectToShip1andShip2ThenShipsPositionAreDifferent [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 parsecsToMove amountOfCells aX aY distributions |
+		| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions ship2 |
 	parsecsToMove := OrderedCollection new.
 	parsecsToMove add: 8.
 	parsecsToMove add: 6.
 	parsecsToMove add: 3.
-	effect := HyperJump with: parsecsToMove.
 
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
@@ -254,9 +253,8 @@ EffectsTest >> test010WhenCreatHuperJumpEffectToShip1andShip2ThenShipsPositionAr
 	aWorm := Worm with: aX and: aY.
 
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: NoEffect with: 0.4).
-	distributions add: (Distribution at: BlackHole with: 0.6).
-
+	distributions add: (Distribution at: HyperJump with: 1).
+	
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
@@ -272,9 +270,10 @@ EffectsTest >> test010WhenCreatHuperJumpEffectToShip1andShip2ThenShipsPositionAr
 		         until: 4.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
+	effect := (distributions at:1) cellClass.
 	effect applyTo: ship1 in: aGame.
 	effect applyTo: ship2 in: aGame.
-	self assert: ship2 showPosition equals: 3
+	self assert: (ship1 showPosition + ship2 showPosition) equals: 9.
 ]
 
 { #category : 'tests' }
@@ -314,38 +313,18 @@ EffectsTest >> test012WhenCreatHuperJumpEffectWithCellsHaveToBeLessThanThePreviu
 ]
 
 { #category : 'tests' }
-EffectsTest >> test013WhenCreatHuperJumpThenReturnName [
+EffectsTest >> test017WhenHavingMoonwalkEffectThenHasNCells [
 
-	| parsecsToMove effect |
-	parsecsToMove := OrderedCollection new.
-	parsecsToMove add: 8.
-	parsecsToMove add: 6.
-	parsecsToMove add: 3.
+	| dices aDice aDiceBucket amountOfCells aWorm ships distributions |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 5.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: MoonWalk with: 1).
 
-	effect := HyperJump with: parsecsToMove.
-	self assert: effect showName equals: 'Hyper Jump'
-]
-
-{ #category : 'tests' }
-EffectsTest >> test014WhenCreatAtomicBombThenReturnName [
-
-	| parsecsToMove effect |
-	effect := AtomicBomb new.
-	self assert: effect showName equals: 'Atomic Bomb'
-]
-
-{ #category : 'tests' }
-EffectsTest >> test015WhenCreatMoonWalkThenReturnName [
-
-	| parsecsToMove effect |
-	effect := MoonWalk new.
-	self assert: effect showName equals: 'Moon Walk'
-]
-
-{ #category : 'tests' }
-EffectsTest >> test016WhenCreatHyperSpaceJumpThenReturnName [
-
-	| parsecsToMove effect |
-	effect := HyperSpaceJump new.
-	self assert: effect showName equals: 'Hyper Space Jump'
+	self assert: (distributions at: 1) cellClass numberOfCells equals: 10
 ]

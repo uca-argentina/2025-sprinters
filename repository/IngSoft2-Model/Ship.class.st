@@ -114,10 +114,12 @@ Ship >> moveByParsecs: parsecs on: aBoard [
 	newParsecPos := currentParsec + parsecs. " 8 parsecs´+ 4 parsec = 12 parsecs"
 	newPosition := newParsecPos // aBoard parsecsPerCell. " (12 parsecs / (2 parsec/celda ) = 6 celdas % 10 celdas = 6 celdas "
 	currentLap := currentLap + (newPosition // boardSize).
-	newPosition > boardSize ifTrue: [
-		position := aBoard showLaps > 1
-			            ifTrue: [ newPosition \\ boardSize ]
-			            ifFalse: [ boardSize ] ]ifFalse:[position := newPosition]
+	newPosition > boardSize
+		ifTrue: [
+			position := aBoard showLaps > 1
+				            ifTrue: [ newPosition \\ boardSize ]
+				            ifFalse: [ boardSize ] ]
+		ifFalse: [ position := newPosition ]
 ]
 
 { #category : 'as yet unclassified' }

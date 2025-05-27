@@ -13,6 +13,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'initialization' }
+HyperJump class >> initializeThis [
+	^ self new initializeWith: 10
+]
+
 { #category : 'instance creation' }
 HyperJump class >> with: parsecsToMove [
 
@@ -38,7 +43,12 @@ HyperJump >> applyTo: aShip in: aGame [
 { #category : 'initialization' }
 HyperJump >> initializeWith: collectionOfparsecs [
 
-	parsecsToMove := collectionOfparsecs.
+	| collectionOfparsecsList |
+	collectionOfparsecsList := OrderedCollection new.
+	collectionOfparsecs to: 1 by: -1 do: [ :each |
+	collectionOfparsecsList add: each ].
+
+	parsecsToMove := collectionOfparsecsList.
 	index := 1
 ]
 
@@ -51,8 +61,24 @@ HyperJump >> nextParsecs [
 	^ parsecsToJump
 ]
 
+{ #category : 'accessing' }
+HyperJump >> numberOfCells [
+	self shouldBeImplemented.
+]
+
 { #category : 'as yet unclassified' }
 HyperJump >> showName [
 
 	^ 'Hyper Jump'
+]
+
+{ #category : 'instance creation' }
+HyperJump >> with: parsecsToMove [ 
+	| response |
+	response := parsecsToMove anySatisfy: [ :steps | steps <= 0 ].
+	response ifTrue: [
+		Error signal: 'Parsecs to move must to be positive' ].
+	(1 to: parsecsToMove size - 1) do: [ :i |
+		(parsecsToMove at: i) < (parsecsToMove at: i + 1) ifTrue: [
+			Error signal: 'Parsecs have to be less than the earlier one' ] ].
 ]

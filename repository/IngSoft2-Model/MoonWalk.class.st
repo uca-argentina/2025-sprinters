@@ -8,6 +8,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'initialization' }
+MoonWalk class >> initializeThis [
+	^ self new initializeWith: 10.
+]
+
 { #category : 'accessing' }
 MoonWalk class >> move: numberOfCells [
 
@@ -27,6 +32,11 @@ MoonWalk >> applyTo: aShip in: aGame [
 MoonWalk >> initializeWith: cells [
 
 	numberOfCells := cells
+]
+
+{ #category : 'accessing' }
+MoonWalk >> numberOfCells [
+	^ numberOfCells
 ]
 
 { #category : 'as yet unclassified' }
