@@ -159,6 +159,17 @@ Ship >> receiveBlackHoleEffectFrom: aGame [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
+	self moveByParsecs: numberOfParsecs on: aBoard
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> recieveHyperSpaceJumpIn: aBoard [ 
+	self move: 4 in: aBoard.
+	self loseShield
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> recoverShields [
 
 	shields := 3.

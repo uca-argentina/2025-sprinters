@@ -32,7 +32,7 @@ HyperJump >> applyTo: aShip in: aGame [
 	| board parsecsToJump |
 	board := aGame board.
 	parsecsToJump := self nextParsecs.
-	aShip moveByParsecs: parsecsToJump on: board
+	aShip receiveHyperJumpIn: board moving:parsecsToJump.
 ]
 
 { #category : 'initialization' }

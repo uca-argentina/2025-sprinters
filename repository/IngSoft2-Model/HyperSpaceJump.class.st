@@ -8,8 +8,7 @@ Class {
 { #category : 'as yet unclassified' }
 HyperSpaceJump >> applyTo: aShip in: aGame [
 
-	aShip move: 4 in: aGame board.
-	aShip loseShield
+	aShip recieveHyperSpaceJumpIn: aGame board
 ]
 
 { #category : 'as yet unclassified' }
