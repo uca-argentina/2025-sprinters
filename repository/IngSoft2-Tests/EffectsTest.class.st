@@ -313,3 +313,40 @@ EffectsTest >> test012WhenCreatHuperJumpEffectWithCellsHaveToBeLessThanThePreviu
 				assert: error messageText
 				equals: 'Parsecs have to be less than the earlier one' ]
 ]
+
+{ #category : 'tests' }
+EffectsTest >> test013WhenCreatHuperJumpThenReturnName [
+
+	| parsecsToMove effect |
+	parsecsToMove := OrderedCollection new.
+	parsecsToMove add: 8.
+	parsecsToMove add: 6.
+	parsecsToMove add: 3.
+
+	effect := HyperJump with: parsecsToMove.
+	self assert: effect showName equals: 'Hyper Jump'
+]
+
+{ #category : 'tests' }
+EffectsTest >> test014WhenCreatAtomicBombThenReturnName [
+
+	| parsecsToMove effect |
+	effect := AtomicBomb new.
+	self assert: effect showName equals: 'Atomic Bomb'
+]
+
+{ #category : 'tests' }
+EffectsTest >> test015WhenCreatMoonWalkThenReturnName [
+
+	| parsecsToMove effect |
+	effect := MoonWalk new.
+	self assert: effect showName equals: 'Moon Walk'
+]
+
+{ #category : 'tests' }
+EffectsTest >> test016WhenCreatHyperSpaceJumpThenReturnName [
+
+	| parsecsToMove effect |
+	effect := HyperSpaceJump new.
+	self assert: effect showName equals: 'Hyper Space Jump'
+]

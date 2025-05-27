@@ -309,3 +309,31 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 	aGame playTurn.
 	self assert: (aGame ships at: 1) showPosition equals: 1
 ]
+
+{ #category : 'tests' }
+GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
+
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 5.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect new with: 1).
+
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	laps := 3.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps.
+	aGame playTurn.
+	self assert: (aGame ships at: 1) showPosition equals: 5
+]

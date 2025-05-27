@@ -50,3 +50,9 @@ HyperJump >> nextParsecs [
 	index := index \\ parsecsToMove size + 1.
 	^ parsecsToJump
 ]
+
+{ #category : 'as yet unclassified' }
+HyperJump >> showName [
+
+	^ 'Hyper Jump'
+]

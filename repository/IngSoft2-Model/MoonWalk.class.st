@@ -30,3 +30,9 @@ MoonWalk >> initializeWith: cells [
 
 	numberOfCells := cells
 ]
+
+{ #category : 'as yet unclassified' }
+MoonWalk >> showName [
+
+	^ 'Moon Walk'
+]

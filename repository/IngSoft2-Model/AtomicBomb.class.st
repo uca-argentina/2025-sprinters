@@ -11,3 +11,9 @@ AtomicBomb >> applyTo: aShip in: aGame [
 	aGame ships do: [ :ship | ship moveToFirstPosition ].
 	aGame ships do: [ :ship | ship loseShield ]
 ]
+
+{ #category : 'as yet unclassified' }
+AtomicBomb >> showName [
+
+	^ 'Atomic Bomb'
+]

@@ -11,3 +11,9 @@ HyperSpaceJump >> applyTo: aShip in: aGame [
 	aShip move: 4 in: aGame board.
 	aShip loseShield
 ]
+
+{ #category : 'as yet unclassified' }
+HyperSpaceJump >> showName [
+
+	^ 'Hyper Space Jump'
+]
