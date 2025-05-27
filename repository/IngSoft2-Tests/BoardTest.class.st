@@ -112,3 +112,21 @@ BoardTest >> test007WhenGivenDistributionToABoardThenAllAddUpToTheExacAmountOfCe
 	total := aBoard amountOfNoEffectCells + aBoard amountOfBlackHoleCells.
 	self assert: total equals: amountOfCells.
 ]
+
+{ #category : 'tests' }
+BoardTest >> test008WhenAskForEffectOnPositionThenBoardReturnItEffect [
+
+	| amountOfCells aX aY aWorm aBoard distributions total effect |
+	amountOfCells := 100.
+	"El numero de celdas por ahora esta logicamente implementado para que sea siempre un entero, un par"
+	aX := 1.
+	aY := 2.
+	aWorm := Worm with: aX and: aY.
+
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole new with: 1).
+
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	effect := aBoard effectOnPosition: 3.
+	self assert: effect showName equals: 'Black Hole'
+]

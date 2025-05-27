@@ -97,7 +97,7 @@ Ship >> move: numberOfCells in: aBoard [
 		            ifTrue: [ 0 ]
 		            ifFalse: [
 			            aBoard showLaps > 1
-				            ifTrue: [ newPosition \\ totalCells + 1 ]
+				            ifTrue: [ newPosition \\ totalCells  ]
 				            ifFalse: [
 					            newPosition < 0 ifTrue: [ 0 ].
 					            newPosition > totalCells

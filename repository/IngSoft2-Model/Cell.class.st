@@ -10,8 +10,9 @@ Class {
 }
 
 { #category : 'instance creation' }
-Cell class >> with: anEffect [ 
-	^ self new effect: anEffect.
+Cell class >> with: anEffect [
+
+	^ self new initializeWith: anEffect
 ]
 
 { #category : 'as yet unclassified' }
@@ -27,6 +28,12 @@ Cell >> effect: aCellClass [
 { #category : 'as yet unclassified' }
 Cell >> effectOnMovement [
 	^ cellClass effectOnMovement
+]
+
+{ #category : 'initialization' }
+Cell >> initializeWith: aCellClass [
+
+	cellClass := aCellClass
 ]
 
 { #category : 'accessing' }

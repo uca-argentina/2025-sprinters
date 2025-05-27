@@ -88,6 +88,12 @@ Board >> amountOfNoEffectCells [
 	^ self amountOfCellsOf: NoEffect.
 ]
 
+{ #category : 'as yet unclassified' }
+Board >> effectOnPosition: position [
+
+	^ (cells at: position) effect
+]
+
 { #category : 'initialization' }
 Board >> initializeWith: cells [
 

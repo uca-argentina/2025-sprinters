@@ -15,3 +15,9 @@ BlackHole >> applyTo: aShip in: aGame [
 BlackHole >> effectOnMovement [
 	^ -4.
 ]
+
+{ #category : 'as yet unclassified' }
+BlackHole >> showName [
+
+	^ 'Black Hole'
+]

@@ -100,9 +100,11 @@ Game >> play [
 { #category : 'as yet unclassified' }
 Game >> playTurn [
 
-	| actualShip |
+	| actualShip effect |
 	actualShip := turnManager nextShip.
 	actualShip moveIn: board.
+	effect := board effectOnPosition: actualShip showPosition.
+	effect applyTo: actualShip in: self.
 	(ships select: [ :ship |
 		 ship ~~ actualShip and: [
 			 ship showPosition = actualShip showPosition ] ]) do: [ :enemy |

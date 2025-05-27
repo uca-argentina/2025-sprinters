@@ -281,3 +281,31 @@ GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
 				assert: error messageText
 				equals: 'The Game has not been played yet so it doesn`t have a ranking' ]
 ]
+
+{ #category : 'tests' }
+GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
+
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 5.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole new with: 1).
+
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	laps := 3.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps.
+	aGame playTurn.
+	self assert: (aGame ships at: 1) showPosition equals: 1
+]

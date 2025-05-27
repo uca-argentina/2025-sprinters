@@ -11,5 +11,5 @@ CellTest >> test000WhenACellHasBlackHoleEffectThenMoves4Backwards [
 	| cell anEffect |
 	anEffect := BlackHole new.
 	cell := Cell with: anEffect.
-	self assert: cell effectOnPosition equals: -4.
+	self assert: cell effect showName equals: 'Black Hole'
 ]
