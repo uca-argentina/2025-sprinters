@@ -141,6 +141,24 @@ Ship >> moveToFirstPosition [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> receiveAtomicBombEffect [
+	self moveToFirstPosition. 
+	self  loseShield.
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> receiveBlackHoleEffect [
+
+	self move: -4
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> receiveBlackHoleEffectFrom: aGame [ 
+	self move:-4 in:aGame board
+	
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> recoverShields [
 
 	shields := 3.

@@ -168,7 +168,7 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 { #category : 'tests' }
 EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 |
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 distributions |
 	effect := AtomicBomb new.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
@@ -176,20 +176,19 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
-	aBoard := Board with: 10.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: effect with: 1).
+
+	aBoard := Board with: 10 and: aWorm has: distributions.
 	ships add: 'ship 1'.
-	ships add: 'ship 2'.
-	ships add: 'ship 3'.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 4.
 	ship1 := aGame ships at: 1.
-	ship2 := aGame ships at: 2.
 	aGame playTurn.
-	effect applyTo: ship1 in: aGame.
-	self assert: ship2 showShields equals: 2
+	self assert: ship1 showShields equals: 2
 ]
 
 { #category : 'tests' }

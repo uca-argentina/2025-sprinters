@@ -40,6 +40,23 @@ Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: aCollection
 		  until: anInteger
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> applyAtomicEffectOn: aShip [ 
+	ships do:[ :ship | ship receiveAtomicBombEffect]
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyMoonWalkEffectOn: aShip [ 
+	self shouldBeImplemented.
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyMoonWalkEffectOn: aShip moving: numberOfCells [
+	 ships do: [ :otherShip |
+		otherShip ~~ aShip ifTrue: [
+			otherShip move: numberOfCells * -1 in: board ] ]
+]
+
 { #category : 'accessing' }
 Game >> board [
 

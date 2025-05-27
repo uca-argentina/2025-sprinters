@@ -20,9 +20,7 @@ MoonWalk class >> move: numberOfCells [
 { #category : 'as yet unclassified' }
 MoonWalk >> applyTo: aShip in: aGame [
 
-	aGame ships do: [ :otherShip |
-		otherShip ~~ aShip ifTrue: [
-			otherShip move: numberOfCells * -1 in: aGame board ] ]
+	aGame applyMoonWalkEffectOn: aShip  moving: numberOfCells
 ]
 
 { #category : 'initialization' }

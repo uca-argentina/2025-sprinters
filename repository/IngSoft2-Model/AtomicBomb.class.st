@@ -8,8 +8,7 @@ Class {
 { #category : 'as yet unclassified' }
 AtomicBomb >> applyTo: aShip in: aGame [
 
-	aGame ships do: [ :ship | ship moveToFirstPosition ].
-	aGame ships do: [ :ship | ship loseShield ]
+	aGame applyAtomicEffectOn: aShip
 ]
 
 { #category : 'as yet unclassified' }

@@ -8,7 +8,7 @@ Class {
 { #category : 'as yet unclassified' }
 BlackHole >> applyTo: aShip in: aGame [
 
-	aShip move: -4 in: aGame board
+	aShip receiveBlackHoleEffectFrom: aGame
 ]
 
 { #category : 'as yet unclassified' }
