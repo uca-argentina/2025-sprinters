@@ -191,3 +191,125 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 	effect applyTo: ship1 in: aGame.
 	self assert: ship2 showShields equals: 2
 ]
+
+{ #category : 'tests' }
+EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
+
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions |
+	parsecsToMove := OrderedCollection new.
+	parsecsToMove add: 8.
+	parsecsToMove add: 6.
+	parsecsToMove add: 3.
+	effect := HyperJump with: parsecsToMove.
+
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 10.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aX := 1.
+	aY := 3.
+	aWorm := Worm with: aX and: aY.
+
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 0.4).
+	distributions add: (Distribution at: BlackHole with: 0.6).
+
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 4.
+	ship1 := aGame ships at: 1.
+	effect applyTo: ship1 in: aGame.
+	self assert: ship1 showPosition equals: 4
+]
+
+{ #category : 'tests' }
+EffectsTest >> test010WhenCreatHuperJumpEffectToShip1andShip2ThenShipsPositionAreDifferent [
+
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 parsecsToMove amountOfCells aX aY distributions |
+	parsecsToMove := OrderedCollection new.
+	parsecsToMove add: 8.
+	parsecsToMove add: 6.
+	parsecsToMove add: 3.
+	effect := HyperJump with: parsecsToMove.
+
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 10.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aX := 1.
+	aY := 3.
+	aWorm := Worm with: aX and: aY.
+
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 0.4).
+	distributions add: (Distribution at: BlackHole with: 0.6).
+
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 4.
+	ship1 := aGame ships at: 1.
+	ship2 := aGame ships at: 2.
+	effect applyTo: ship1 in: aGame.
+	effect applyTo: ship2 in: aGame.
+	self assert: ship2 showPosition equals: 3
+]
+
+{ #category : 'tests' }
+EffectsTest >> test011WhenCreatHuperJumpEffectWithCellsLessThanZeroThenRaiseError [
+
+	| parsecsToMove |
+	parsecsToMove := OrderedCollection new.
+	parsecsToMove add: 8.
+	parsecsToMove add: -6.
+	parsecsToMove add: 3.
+
+	self
+		should: [ HyperJump with: parsecsToMove ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'Parsecs to move must to be positive' ]
+]
+
+{ #category : 'tests' }
+EffectsTest >> test012WhenCreatHuperJumpEffectWithCellsHaveToBeLessThanThePreviusThenRaiseError [
+
+	| parsecsToMove |
+	parsecsToMove := OrderedCollection new.
+	parsecsToMove add: 8.
+	parsecsToMove add: 10.
+	parsecsToMove add: 3.
+
+	self
+		should: [ HyperJump with: parsecsToMove ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'Parsecs have to be less than the earlier one' ]
+]
