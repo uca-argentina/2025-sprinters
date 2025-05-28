@@ -41,6 +41,29 @@ Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: aCollection
 ]
 
 { #category : 'as yet unclassified' }
+Game >> applyAtomicEffectOn: aShip [ 
+	ships do:[ :ship | ship receiveAtomicBombEffect]
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyMoonWalkEffectOn: aShip [ 
+	self shouldBeImplemented.
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyMoonWalkEffectOn: aShip moving: numberOfCells [
+	 ships do: [ :otherShip |
+		otherShip ~~ aShip ifTrue: [
+			otherShip move: numberOfCells * -1 in: board ] ]
+]
+
+{ #category : 'accessing' }
+Game >> board [
+
+	^ board
+]
+
+{ #category : 'as yet unclassified' }
 Game >> currentStatus [
 
 	^ status
@@ -69,7 +92,7 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket ].
 	status := NotPlayed new.
 	turnManager:= TurnManager with:ships.
-	battleManager :=BattleManager.
+	battleManager :=BattleManager .
 	
 	
 ]
@@ -94,9 +117,11 @@ Game >> play [
 { #category : 'as yet unclassified' }
 Game >> playTurn [
 
-	| actualShip |
+	| actualShip effect |
 	actualShip := turnManager nextShip.
 	actualShip moveIn: board.
+	effect := board effectOnPosition: actualShip showPosition.
+	effect applyTo: actualShip in: self.
 	(ships select: [ :ship |
 		 ship ~~ actualShip and: [
 			 ship showPosition = actualShip showPosition ] ]) do: [ :enemy |
@@ -141,14 +166,10 @@ Game >> showRanking [
 { #category : 'as yet unclassified' }
 Game >> showShipsPositions [
 
-	status isFinished 
-		ifTrue: [
-			| result |
-			result := Dictionary new.
-			ships do: [ :ship |
-				result at: ship showName put: ship showPosition ].
-			^ result ]
-		ifFalse: [ ^ 'The Game is not over' ]
+	| result |
+	result := Dictionary new.
+	ships do: [ :ship | result at: ship showName put: ship showPosition ].
+	^ result
 ]
 
 { #category : 'as yet unclassified' }

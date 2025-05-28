@@ -12,7 +12,7 @@ ShipTest >> test000WhenCreateShipThenPositionEqualsZero [
 
 aShip := Ship newShip.
 
-self assert: aShip showPosition equals: 0.
+self assert: aShip showPosition equals: 1.
 ]
 
 { #category : 'tests' }
@@ -23,7 +23,7 @@ ShipTest >> test001WhenShipReceiveANumberThenMovesThatAmount [
 	diceGame := 2.
 	aShip move: diceGame.
 
-	self assert: aShip showPosition equals: diceGame
+	self assert: aShip showPosition equals: diceGame +1
 ]
 
 { #category : 'tests' }
@@ -58,7 +58,7 @@ ShipTest >> test004WhenShip1PositionIsLastOneAndThrow1ThenShip1StartFromTheBegin
 	aCircularBoard := Board with: 5.
 	aCircularBoard with: 2.
 	ship1 moveIn: aCircularBoard.
-	self assert: (ship1 showPosition ) equals: 1.
+	self assert: (ship1 showPosition ) equals: 2.
 ]
 
 { #category : 'tests' }
@@ -76,25 +76,31 @@ ShipTest >> test005WhenShip1Moves12CellsInABoardWith5CellsThenShip1Has2Laps [
 { #category : 'tests' }
 ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 
-	| ship1 aLoadedDice aCircularBoard ships laps aGame |
+	| ship1 aLoadedDice aCircularBoard ships laps aGame aDice dices aDiceBucket amountOfCells aWorm distributions aBoard |
 	ships := OrderedCollection new.
+	dices := OrderedCollection new.
 	ship1 := 'Ship1'.
 	ships add: ship1.
-	aCircularBoard := Board with: 5.
-	aLoadedDice := LoadedDice with: 11.
-	laps:=3.
+	aDice := LoadedDice with: 11.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 5.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	laps := 3.
 	aGame := Game
-		         with: aCircularBoard
-		         using: aLoadedDice
+		         with: aBoard
+		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps.
 	aGame play.
 
-	self assert: (aGame currentStatus showWinner:aGame )showName equals: 'Ship1'
-	
-
-
-
+	self
+		assert: (aGame currentStatus showWinner: aGame) showName
+		equals: 'Ship1'
 ]
 
 { #category : 'tests' }
@@ -187,4 +193,64 @@ ShipTest >> test014WhenShipHas2TurnToSkipAndHAsSkipped1TurnThenItHas1TurnToSkip 
 	turnManager := TurnManager with: ships.
 	actualShip := turnManager nextShip.
 	self assert: ship1 turnsThatHasToSkip equals: 1
+]
+
+{ #category : 'tests' }
+ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1 [
+
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame ship1 |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 6.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	laps := 3.
+	ships add: 'ship 1'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps.
+
+	ship1 := aGame ships at: 1.
+	ship1 moveIn:aBoard.
+	ship1 receiveBlackHoleEffectFrom: aGame.
+	self assert: ship1 showPosition equals: 3
+]
+
+{ #category : 'tests' }
+ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
+
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame ship1 |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 5.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	laps := 3.
+	ships add: 'ship 1'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps.
+
+	ship1 := aGame ships at: 1.
+	ship1 loseShield.
+	ship1 loseShield.
+	ship1 choiceToNotPlay.
+	aGame playTurn.
+	self assert: ship1 showShields equals: 3
 ]

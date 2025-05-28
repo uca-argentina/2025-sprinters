@@ -133,7 +133,7 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 { #category : 'tests' }
 GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChangeItPosition [
 
-	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame ship1 ship2 |
+	| listOfShips listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame ship1 ship2 distributions |
 	listOfShips := OrderedCollection new.
 	listOfDices := OrderedCollection new.
 	listOfShips add: 'Ship 1'.
@@ -143,7 +143,9 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 	aDiceBucket := DiceBucket with: listOfDices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
