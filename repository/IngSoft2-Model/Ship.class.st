@@ -7,7 +7,8 @@ Class {
 		'currentLap',
 		'shields',
 		'turnsToSkip',
-		'diceBucket'
+		'diceBucket',
+		'optionalTurn'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -39,6 +40,14 @@ Ship >> canPlay [
 	^ turnsToSkip = 0
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> choiceToNotPlay [
+	optionalTurn:=false. 
+	self recoverShields.
+	
+	
+]
+
 { #category : 'initialization' }
 Ship >> initializePosition [
 	position := 1.
@@ -52,6 +61,7 @@ Ship >> initializeWith: aName [
 	name := aName.
 	shields := 3.
 	turnsToSkip:=0.
+	optionalTurn:=true
 ]
 
 { #category : 'initialization' }
@@ -62,7 +72,8 @@ Ship >> initializeWith: aName and: aDiceBucket [
 	position := 1.
 	currentLap := 0.
 	turnsToSkip := 0.
-	shields := 3
+	shields := 3.
+	optionalTurn:=true
 ]
 
 { #category : 'as yet unclassified' }
@@ -177,6 +188,7 @@ Ship >> recoverShields [
 
 	shields := 3.
 	turnsToSkip :=0.
+	optionalTurn :=true.
 ]
 
 { #category : 'as yet unclassified' }
@@ -221,7 +233,7 @@ Ship >> turnsThatHasToSkip [
 { #category : 'as yet unclassified' }
 Ship >> wantsToPlay [
 
-	^ true
+	^ optionalTurn 
 ]
 
 { #category : 'as yet unclassified' }
@@ -231,7 +243,7 @@ Ship >> winAt: aBoard [
 ]
 
 { #category : 'accessing' }
-Ship >> winAt: cells until: laps [
+Ship >> winAt: arg1 until: arg2 [
 
-	^ currentLap >= laps 
+	^ currentLap >= arg2
 ]

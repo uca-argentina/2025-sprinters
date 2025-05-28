@@ -224,9 +224,6 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 		         andShipsNamed: ships
 		         until: laps.
 
-	assertedResult := OrderedCollection new.
-	assertedResult add: 'ship 1'.
-	assertedResult add: 'ship 2'.
 	(aGame ships at:2) move: 10 in: aBoard. 
 	aGame play.
 	assertedResult := OrderedCollection new.
@@ -351,4 +348,31 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 		         until: laps.
 	aGame playTurn.
 	self assert: (aGame ships at: 1) showPosition equals: 6
+]
+
+{ #category : 'tests' }
+GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
+
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 5.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	laps := 3.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps.
+	aGame playTurn.
+	self assert: (aGame ships at: 1) showShields equals: (aGame ships at: 2) showShields
 ]

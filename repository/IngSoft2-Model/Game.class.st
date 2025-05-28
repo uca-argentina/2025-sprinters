@@ -92,7 +92,7 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket ].
 	status := NotPlayed new.
 	turnManager:= TurnManager with:ships.
-	battleManager :=BattleManager.
+	battleManager :=BattleManager .
 	
 	
 ]

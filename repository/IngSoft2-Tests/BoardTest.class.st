@@ -149,3 +149,20 @@ BoardTest >> test009WhenGivenDistributionToABoardThenAllAddUpToTheExactAmountOfC
 	total := aBoard amountOfNoEffectCells + aBoard amountOfBlackHoleCells.
 	self assert: total equals: amountOfCells.
 ]
+
+{ #category : 'tests' }
+BoardTest >> test010WhenCreateBoardWithDistributionsThenEffectsOFCellsISNoEFfect [
+
+	| amountOfCells aX aY aWorm aBoard distributions |
+	amountOfCells := 4.
+	"El numero de celdas por ahora esta logicamente implementado para que sea siempre un entero, un par"
+	aX := 1.
+	aY := 2.
+	aWorm := Worm with: aX and: aY.
+
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+
+	aBoard := Board with: amountOfCells and: aWorm has: distributions andTotalParsec: 20.
+	self assert: (aBoard effectOnPosition: 3 ) className equals: 'NoEffect class'.
+]

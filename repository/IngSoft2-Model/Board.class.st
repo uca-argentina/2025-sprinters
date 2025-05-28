@@ -137,27 +137,21 @@ Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions [
 { #category : 'initialization' }
 Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions andTotalParsec: parsecs [
 
-	| cell effects |
+	| cell effects aDistributor effectsOnCells |
 	amountOfCells := aAmountOfCells.
 	wormHole := aWormHole.
 	laps := 1.
 	totalParsecs := parsecs.
-	effects := OrderedCollection new.
+	aDistributor := EffectDistributor
+		                withDistribution: distributions
+		                on: aAmountOfCells.
 
-	"Asignar cantidades exactas"
-	distributions do: [ :dist |
-		(dist probability * amountOfCells) asInteger timesRepeat: [
-			effects add: dist cellClass ] ].
-	
-	(effects size = amountOfCells) ifFalse:[(amountOfCells - effects size) timesRepeat: [effects add: NoEffect initializeThis]].
-
-	effects := effects shuffle.
-	"Crear celdas"
+	effectsOnCells := aDistributor recieveAmountOfEffects.
 	cells := OrderedCollection new.
 	1 to: amountOfCells do: [ :i |
 		cell := Cell new.
 		cell position: i.
-		cell effect: (effects at: i).
+		cell effect: (effectsOnCells at: i).
 		cells add: cell ]
 ]
 
