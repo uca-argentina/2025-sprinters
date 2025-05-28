@@ -376,3 +376,30 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 	aGame playTurn.
 	self assert: (aGame ships at: 1) showShields equals: (aGame ships at: 2) showShields
 ]
+
+{ #category : 'tests' }
+GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotReceiveTheSecondEffect [
+
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice with: 5.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	laps := 3.
+	ships add: 'ship 1'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps.
+	ship1 := aGame ships at: 1.
+	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
+	self assert: ship1 showPosition equals: 2
+]
