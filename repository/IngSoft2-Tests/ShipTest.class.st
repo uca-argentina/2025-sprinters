@@ -12,7 +12,7 @@ ShipTest >> test000WhenCreateShipThenPositionEqualsZero [
 
 aShip := Ship newShip.
 
-self assert: aShip showPosition equals: 0.
+self assert: aShip showPosition equals: 1.
 ]
 
 { #category : 'tests' }
@@ -23,7 +23,7 @@ ShipTest >> test001WhenShipReceiveANumberThenMovesThatAmount [
 	diceGame := 2.
 	aShip move: diceGame.
 
-	self assert: aShip showPosition equals: diceGame
+	self assert: aShip showPosition equals: diceGame +1
 ]
 
 { #category : 'tests' }
@@ -58,7 +58,7 @@ ShipTest >> test004WhenShip1PositionIsLastOneAndThrow1ThenShip1StartFromTheBegin
 	aCircularBoard := Board with: 5.
 	aCircularBoard with: 2.
 	ship1 moveIn: aCircularBoard.
-	self assert: (ship1 showPosition ) equals: 1.
+	self assert: (ship1 showPosition ) equals: 2.
 ]
 
 { #category : 'tests' }
@@ -221,5 +221,5 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 	ship1 := aGame ships at: 1.
 	ship1 moveIn:aBoard.
 	ship1 receiveBlackHoleEffectFrom: aGame.
-	self assert: ship1 showPosition equals: 1
+	self assert: ship1 showPosition equals: 2
 ]

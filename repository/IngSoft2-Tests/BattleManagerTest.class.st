@@ -23,5 +23,5 @@ BattleManagerTest >> test001WhenTwoShipsFightAndShip2WinsThenShip1LoseBatle [
 	ship2:= Ship  create: 'ship 2' with: aDiceBucket2.
 	battleManager := BattleManager new.
 	battleManager fightBetween: ship1 and: ship2.
-	self assert: ship1 showPosition equals: 0
+	self assert: ship1 showPosition equals: 1
 ]

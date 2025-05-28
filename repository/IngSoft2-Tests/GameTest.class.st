@@ -207,7 +207,7 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := Dice with: 10.
+	aDice := LoadedDice with: 9.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -227,9 +227,7 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 	assertedResult := OrderedCollection new.
 	assertedResult add: 'ship 1'.
 	assertedResult add: 'ship 2'.
-	(aGame ships at: 1) loseShield.
-	(aGame ships at: 1) loseShield.
-	(aGame ships at: 1) loseShield.
+	(aGame ships at:2) move: 10 in: aBoard. 
 	aGame play.
 	assertedResult := OrderedCollection new.
 	assertedResult add: 'ship 2'.
