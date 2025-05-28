@@ -69,7 +69,7 @@ Ship >> initializeWith: aName and: aDiceBucket [
 Ship >> loseFight [
 
 	self loseShield.
-	position := 0
+	position := 1
 ]
 
 { #category : 'as yet unclassified' }
