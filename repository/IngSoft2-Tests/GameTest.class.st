@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -16,7 +16,9 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -32,7 +34,7 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 { #category : 'tests' }
 GameTest >> test001WhenPlayGameThenReturnGameOver [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -40,7 +42,10 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -56,7 +61,7 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 { #category : 'tests' }
 GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 
-	| listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships |
+	| listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships distributions |
 	ships := OrderedCollection new.
 	listOfDices := OrderedCollection new.
 	ships add: 'shipOne'.
@@ -65,7 +70,9 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 	aDiceBucket := DiceBucket with: listOfDices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
 	aGame play.
 	self assert: ((aGame currentStatus) showWinner:aGame) showName equals: 'shipOne'
@@ -74,7 +81,7 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 { #category : 'tests' }
 GameTest >> test003WhenSomeShipWinThenShowPositions [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships assertedResult |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships assertedResult distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -82,7 +89,9 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	ships add: 'ship 1'.
 	aGame := Game
 		         with: aBoard
@@ -97,7 +106,7 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 { #category : 'tests' }
 GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships assertedResult |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships assertedResult distributions |
 	ships := OrderedCollection new.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -107,7 +116,9 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
 	(aGame ships at: 1) move: 10.
 	(aGame ships at: 2) move: 5.
@@ -193,19 +204,20 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 { #category : 'tests' }
 GameTest >> test008WhenGameHasPlayedThenShowRanking [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := Dice with: 10.
+	aDice := LoadedDice with: 10.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
-	ships add: 'ship 3'.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -215,9 +227,14 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 	assertedResult := OrderedCollection new.
 	assertedResult add: 'ship 1'.
 	assertedResult add: 'ship 2'.
-	assertedResult add: 'ship 3'.
+	(aGame ships at: 1) loseShield.
+	(aGame ships at: 1) loseShield.
+	(aGame ships at: 1) loseShield.
 	aGame play.
-	self assert: aGame showRanking size equals: 3
+	assertedResult := OrderedCollection .
+	assertedResult add: 'ship 2'.
+	assertedResult add: 'ship 1'.
+	self assert: aGame showRanking equals: assertedResult 
 ]
 
 { #category : 'tests' }

@@ -5,6 +5,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'as yet unclassified' }
+BlackHole class >> applyTo: aShip in: aGame [ 
+	self shouldBeImplemented.
+]
+
 { #category : 'initialization' }
 BlackHole class >> initializeThis [
 	^ self new.
@@ -19,6 +24,11 @@ BlackHole >> applyTo: aShip in: aGame [
 { #category : 'as yet unclassified' }
 BlackHole >> effectOnMovement [
 	^ -4.
+]
+
+{ #category : 'initialization' }
+BlackHole >> initializeThis [
+	^ self new.
 ]
 
 { #category : 'as yet unclassified' }

@@ -90,7 +90,6 @@ Board >> amountOfNoEffectCells [
 
 { #category : 'as yet unclassified' }
 Board >> effectOnPosition: position [
-
 	^ (cells at: position) effect
 ]
 
@@ -150,7 +149,7 @@ Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions andTot
 		(dist probability * amountOfCells) asInteger timesRepeat: [
 			effects add: dist cellClass ] ].
 	
-	(effects size equals: amountOfCells) ifFalse:[(amountOfCells - effects size) timesRepeat: [effects add: NoEffect initializeThis]].
+	(effects size = amountOfCells) ifFalse:[(amountOfCells - effects size) timesRepeat: [effects add: NoEffect initializeThis]].
 
 	effects := effects shuffle.
 	"Crear celdas"

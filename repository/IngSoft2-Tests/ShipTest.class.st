@@ -87,7 +87,7 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 	amountOfCells := 5.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: BlackHole new with: 1).
+	distributions add: (Distribution at: BlackHole with: 1).
 
 	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	laps := 3.
@@ -207,7 +207,7 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: BlackHole new with: 1).
+	distributions add: (Distribution at: BlackHole with: 1).
 
 	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	laps := 3.

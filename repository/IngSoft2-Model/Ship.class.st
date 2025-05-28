@@ -41,14 +41,14 @@ Ship >> canPlay [
 
 { #category : 'initialization' }
 Ship >> initializePosition [
-	position := 0.
+	position := 1.
 ]
 
 { #category : 'initialization' }
 Ship >> initializeWith: aName [
 
 	currentLap := 1.
-	position := 0.
+	position := 1.
 	name := aName.
 	shields := 3.
 	turnsToSkip:=0.
@@ -59,7 +59,7 @@ Ship >> initializeWith: aName and: aDiceBucket [
 
 	name := aName.
 	diceBucket := aDiceBucket.
-	position := 0.
+	position := 1.
 	currentLap := 0.
 	turnsToSkip := 0.
 	shields := 3
@@ -93,13 +93,13 @@ Ship >> move: numberOfCells in: aBoard [
 
 	currentLap := currentLap + (newPosition // totalCells).
 
-	position := newPosition < 0
-		            ifTrue: [ 0 ]
+	position := newPosition <= 0
+		            ifTrue: [ 1 ]
 		            ifFalse: [
 			            aBoard showLaps > 1
 				            ifTrue: [ newPosition \\ totalCells  ]
 				            ifFalse: [
-					            newPosition < 0 ifTrue: [ 0 ].
+					            newPosition <= 0 ifTrue: [ 1 ].
 					            newPosition > totalCells
 						            ifTrue: [ totalCells ]
 						            ifFalse: [ newPosition ] ] ]
@@ -108,18 +108,19 @@ Ship >> move: numberOfCells in: aBoard [
 { #category : 'as yet unclassified' }
 Ship >> moveByParsecs: parsecs on: aBoard [
 
-	| boardSize currentParsec newParsecPos currentParsecPos newPosition boardCells |
+	| boardSize currentParsec newParsecPos newPosition |
 	boardSize := aBoard showCells. "10 casilleros"
 	currentParsec := position * aBoard parsecsPerCell. " 2 * 2 = 4 parsecs"
 	newParsecPos := currentParsec + parsecs. " 8 parsecs´+ 4 parsec = 12 parsecs"
 	newPosition := newParsecPos // aBoard parsecsPerCell. " (12 parsecs / (2 parsec/celda ) = 6 celdas % 10 celdas = 6 celdas "
 	currentLap := currentLap + (newPosition // boardSize).
-	newPosition > boardSize
-		ifTrue: [
-			position := aBoard showLaps > 1
+	position := newPosition > boardSize
+		            ifTrue: [
+			            aBoard showLaps > 1
 				            ifTrue: [ newPosition \\ boardSize ]
 				            ifFalse: [ boardSize ] ]
-		ifFalse: [ position := newPosition ]
+		            ifFalse: [ newPosition ].
+	position <= 0 ifTrue: [ position := 1 ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -131,7 +132,7 @@ Ship >> moveIn: aBoard [
 	currentLap := currentLap + (position // aBoard showCells).
 	position > boardCells ifTrue: [
 		position := aBoard showLaps > 1
-			            ifTrue: [ position \\ boardCells ]
+			            ifTrue: [ position \\ boardCells. ]
 			            ifFalse: [ aBoard showCells ] ].
 	position := aBoard verifyPosition: self
 ]
@@ -139,7 +140,7 @@ Ship >> moveIn: aBoard [
 { #category : 'as yet unclassified' }
 Ship >> moveToFirstPosition [
 
-	position := 0
+	position := 1
 ]
 
 { #category : 'as yet unclassified' }

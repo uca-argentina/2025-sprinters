@@ -71,7 +71,7 @@ BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 	| amountOfCells aX aY aWorm aBoard aShip |
 	amountOfCells := 10.
 	aX := 4.
-	aY := 6.
+	aY :=7.
 	aWorm := Worm with: aX and: aY.
 	aBoard := Board with: amountOfCells and: aWorm.
 	aShip := Ship newShip.
