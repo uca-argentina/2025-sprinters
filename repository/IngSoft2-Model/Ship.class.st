@@ -108,22 +108,23 @@ Ship >> move: numberOfCells in: aBoard [
 		            ifTrue: [ 1 ]
 		            ifFalse: [
 			            aBoard showLaps > 1
-				            ifTrue: [ newPosition \\ totalCells  ]
+				            ifTrue: [ newPosition \\ totalCells ]
 				            ifFalse: [
 					            newPosition <= 0 ifTrue: [ 1 ].
 					            newPosition > totalCells
 						            ifTrue: [ totalCells ]
-						            ifFalse: [ newPosition ] ] ]
+						            ifFalse: [ newPosition ] ] ].
+	position := aBoard verifyPosition: self
 ]
 
 { #category : 'as yet unclassified' }
 Ship >> moveByParsecs: parsecs on: aBoard [
-
+ "escenario  --> 7 parsecs y 5 celas --> 1.4 parsecs/celd"
 	| boardSize currentParsec newParsecPos newPosition |
-	boardSize := aBoard showCells. "10 casilleros"
-	currentParsec := position * aBoard parsecsPerCell. " 2 * 2 = 4 parsecs"
-	newParsecPos := currentParsec + parsecs. " 8 parsecs´+ 4 parsec = 12 parsecs"
-	newPosition := newParsecPos // aBoard parsecsPerCell. " (12 parsecs / (2 parsec/celda ) = 6 celdas % 10 celdas = 6 celdas "
+	boardSize := aBoard showCells. "5 casilleros"
+	currentParsec := position * aBoard parsecsPerCell. " 2 * 1.4 = 2.8 parsecs"
+	newParsecPos := currentParsec + parsecs. " 8 parsecs´+ 2.8 parsec = 10.8 parsecs"
+	newPosition := newParsecPos // aBoard parsecsPerCell. " (10.8 parsecs / (1.4 parsec/celda ) = 1 celdas "
 	currentLap := currentLap + (newPosition // boardSize).
 	position := newPosition > boardSize
 		            ifTrue: [
@@ -131,7 +132,8 @@ Ship >> moveByParsecs: parsecs on: aBoard [
 				            ifTrue: [ newPosition \\ boardSize ]
 				            ifFalse: [ boardSize ] ]
 		            ifFalse: [ newPosition ].
-	position <= 0 ifTrue: [ position := 1 ]
+	position <= 0 ifTrue: [ position := 1 ].
+	position := aBoard verifyPosition: self
 ]
 
 { #category : 'as yet unclassified' }

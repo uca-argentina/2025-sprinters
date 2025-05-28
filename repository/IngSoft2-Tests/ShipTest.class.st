@@ -201,7 +201,7 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame ship1 |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 5.
+	aDice := LoadedDice with: 6.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -221,7 +221,7 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 	ship1 := aGame ships at: 1.
 	ship1 moveIn:aBoard.
 	ship1 receiveBlackHoleEffectFrom: aGame.
-	self assert: ship1 showPosition equals: 2
+	self assert: ship1 showPosition equals: 3
 ]
 
 { #category : 'tests' }

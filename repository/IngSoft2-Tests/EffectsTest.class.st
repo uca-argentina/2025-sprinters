@@ -11,7 +11,7 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions amountOfCells effect |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice with: 9.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
@@ -26,10 +26,10 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 		         andShipsNamed: ships
 		         until: 1.
 	ship1 := aGame ships at: 1.
-	ship1 move: 5.
+	ship1 move: 6.
 	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showPosition equals: 2
+	self assert: ship1 showPosition equals: 3
 ]
 
 { #category : 'tests' }

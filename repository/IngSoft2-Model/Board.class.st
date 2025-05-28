@@ -158,7 +158,7 @@ Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions andTot
 { #category : 'as yet unclassified' }
 Board >> parsecsPerCell [
 
-	^ totalParsecs / amountOfCells
+	^ totalParsecs // amountOfCells
 ]
 
 { #category : 'as yet unclassified' }

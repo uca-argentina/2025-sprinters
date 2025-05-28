@@ -71,14 +71,3 @@ HyperJump >> showName [
 
 	^ 'Hyper Jump'
 ]
-
-{ #category : 'instance creation' }
-HyperJump >> with: parsecsToMove [ 
-	| response |
-	response := parsecsToMove anySatisfy: [ :steps | steps <= 0 ].
-	response ifTrue: [
-		Error signal: 'Parsecs to move must to be positive' ].
-	(1 to: parsecsToMove size - 1) do: [ :i |
-		(parsecsToMove at: i) < (parsecsToMove at: i + 1) ifTrue: [
-			Error signal: 'Parsecs have to be less than the earlier one' ] ].
-]

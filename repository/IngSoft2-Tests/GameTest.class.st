@@ -300,7 +300,7 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 5.
+	aDice := LoadedDice with: 6.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -319,7 +319,7 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 		         andShipsNamed: ships
 		         until: laps.
 	aGame playTurn.
-	self assert: (aGame ships at: 1) showPosition equals: 2
+	self assert: (aGame ships at: 1) showPosition equals: 3
 ]
 
 { #category : 'tests' }
@@ -356,7 +356,7 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions dices1 aDiceBucket1 dices2 aDiceBucket2 ship1 ship2 |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
-	aDice := LoadedDice with: 5.
+	aDice := LoadedDice with: 6.
 	dices1 add: aDice.
 	aDiceBucket1 := DiceBucket with: dices1.
 	aDice := LoadedDice with: 4.
@@ -379,11 +379,11 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 		         using: aDiceBucket1
 		         andShipsNamed: ships
 		         until: laps.
-	ship2 move: 5 in: aBoard.
+	ship2 move: 6 in: aBoard.
 	aGame playTurn.
 	self
 		assert: ship1 showShields + ship1 showPosition
-		equals: 5 
+		equals: 6
 ]
 
 { #category : 'tests' }
@@ -392,7 +392,7 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 5.
+	aDice := LoadedDice with: 6.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -410,7 +410,7 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 		         until: laps.
 	ship1 := aGame ships at: 1.
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
-	self assert: ship1 showPosition equals: 2
+	self assert: ship1 showPosition equals: 3
 ]
 
 { #category : 'tests' }
