@@ -119,8 +119,7 @@ Game >> isBefore: shipA than: shipB [
 { #category : 'as yet unclassified' }
 Game >> play [
 
-	status := Started new.
-	[ status isFinished ] whileFalse: [ self playTurn ].
+	status play:self.
 
 	^ 'Game over'
 ]
