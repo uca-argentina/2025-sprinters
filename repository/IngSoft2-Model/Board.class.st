@@ -72,6 +72,12 @@ Board >> amountOfBlackHoleCells [
 	^ self amountOfCellsOf: 'BlackHole'.
 ]
 
+{ #category : 'accessing' }
+Board >> amountOfCells [
+
+	^ amountOfCells
+]
+
 { #category : 'as yet unclassified' }
 Board >> amountOfCellsOf: anEffectOrClass [
 

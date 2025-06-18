@@ -99,7 +99,7 @@ Ship >> move: numberOfCells [
 Ship >> move: numberOfCells in: aBoard [
 
 	| totalCells newPosition |
-	totalCells := aBoard showCells.
+	totalCells := aBoard amountOfCells.
 	newPosition := position + numberOfCells.
 
 	currentLap := currentLap + (newPosition // totalCells).
@@ -121,7 +121,7 @@ Ship >> move: numberOfCells in: aBoard [
 Ship >> moveByParsecs: parsecs on: aBoard [
  "escenario  --> 7 parsecs y 5 celas --> 1.4 parsecs/celd"
 	| boardSize currentParsec newParsecPos newPosition |
-	boardSize := aBoard showCells. "5 casilleros"
+	boardSize := aBoard amountOfCells. "5 casilleros"
 	currentParsec := position * aBoard parsecsPerCell. " 2 * 1.4 = 2.8 parsecs"
 	newParsecPos := currentParsec + parsecs. " 8 parsecs´+ 2.8 parsec = 10.8 parsecs"
 	newPosition := newParsecPos // aBoard parsecsPerCell. " (10.8 parsecs / (1.4 parsec/celda ) = 1 celdas "
@@ -141,12 +141,12 @@ Ship >> moveIn: aBoard [
 
 	| boardCells |
 	position := position + self throwDices.
-	boardCells := aBoard showCells.
-	currentLap := currentLap + (position // aBoard showCells).
+	boardCells := aBoard amountOfCells.
+	currentLap := currentLap + (position // aBoard amountOfCells).
 	position > boardCells ifTrue: [
 		position := aBoard showLaps > 1
 			            ifTrue: [ position \\ boardCells. ]
-			            ifFalse: [ aBoard showCells ] ].
+			            ifFalse: [ aBoard amountOfCells ] ].
 	position := aBoard verifyPosition: self
 ]
 
@@ -241,7 +241,7 @@ Ship >> wantsToPlay [
 { #category : 'as yet unclassified' }
 Ship >> winAt: aBoard [
 
-	^ position >= aBoard showCells
+	^ position >= aBoard amountOfCells
 ]
 
 { #category : 'accessing' }

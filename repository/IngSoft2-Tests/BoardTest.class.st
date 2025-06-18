@@ -11,7 +11,7 @@ BoardTest >> test000WhenCreateBoardWithAmountOfCellsThenShowAmountOfCells [
 	| aBoard amountOfCells |
 	amountOfCells := 10.
 	aBoard := Board with: amountOfCells.
-	self assert: aBoard showCells equals: amountOfCells
+	self assert: aBoard amountOfCells equals: amountOfCells
 ]
 
 { #category : 'tests' }
