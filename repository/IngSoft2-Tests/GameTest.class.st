@@ -198,7 +198,7 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 	ships add: 'ship 3'.
 	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
 
-	self assert: (aGame ships at: 1) showPosition equals: 1
+	self assert: (aGame ships at: 1) position equals: 1
 ]
 
 { #category : 'tests' }
@@ -319,7 +319,7 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 		         andShipsNamed: ships
 		         until: laps.
 	aGame playTurn.
-	self assert: (aGame ships at: 1) showPosition equals: 3
+	self assert: (aGame ships at: 1) position equals: 3
 ]
 
 { #category : 'tests' }
@@ -347,7 +347,7 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 		         andShipsNamed: ships
 		         until: laps.
 	aGame playTurn.
-	self assert: (aGame ships at: 1) showPosition equals: 6
+	self assert: (aGame ships at: 1) position equals: 6
 ]
 
 { #category : 'tests' }
@@ -382,7 +382,7 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 	ship2 move: 6 in: aBoard.
 	aGame playTurn.
 	self
-		assert: ship1 showShields + ship1 showPosition
+		assert: ship1 showShields + ship1 position
 		equals: 6
 ]
 
@@ -410,7 +410,7 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 		         until: laps.
 	ship1 := aGame ships at: 1.
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
-	self assert: ship1 showPosition equals: 3
+	self assert: ship1 position equals: 3
 ]
 
 { #category : 'tests' }
@@ -439,5 +439,5 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 		         andShipsNamed: ships
 		         until: laps.
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
-	self assert: (aGame ships at:1) showPosition equals: 1
+	self assert: (aGame ships at:1) position equals: 1
 ]

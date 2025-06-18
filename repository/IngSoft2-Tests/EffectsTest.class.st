@@ -29,7 +29,7 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 	ship1 move: 6.
 	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showPosition equals: 3
+	self assert: ship1 position equals: 3
 ]
 
 { #category : 'tests' }
@@ -55,7 +55,7 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 	ship1 move: 2.
 	effect := (distributions at:1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showPosition equals: 1
+	self assert: ship1 position equals: 1
 ]
 
 { #category : 'tests' }
@@ -80,7 +80,7 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 	ship1 := aGame ships at: 1.
 	effect := (distributions at:1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showPosition equals: 5
+	self assert: ship1 position equals: 5
 ]
 
 { #category : 'tests' }
@@ -137,7 +137,7 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 	effect := (distributions at: 1) cellClass.
 
 	effect applyTo: ship1 in: aGame.
-	self assert: ship2 showPosition equals: 1
+	self assert: ship2 position equals: 1
 ]
 
 { #category : 'tests' }
@@ -167,7 +167,7 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 	ship2 move: 23 in:aBoard.
 	effect := (distributions at:1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: (ship1 showPosition + ship2 showPosition) equals: 2
+	self assert: (ship1 position + ship2 position) equals: 2
 ]
 
 { #category : 'tests' }
@@ -197,7 +197,7 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 	ship2 move: 23 in:aBoard.
 	effect := (distributions at:1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship2 showLaps equals: 2
+	self assert: ship2 laps equals: 2
 ]
 
 { #category : 'tests' }
@@ -265,7 +265,7 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 	effect := (distributions at:1) cellClass.
 	ship1 move: 4 in: aBoard.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showPosition equals: 10.
+	self assert: ship1 position equals: 10.
 ]
 
 { #category : 'tests' }
@@ -308,7 +308,7 @@ EffectsTest >> test010WhenCreatHuperJumpEffectToShip1andShip2ThenShipsPositionAr
 	effect := (distributions at:1) cellClass.
 	effect applyTo: ship1 in: aGame.
 	effect applyTo: ship2 in: aGame.
-	self assert: (ship1 showPosition + ship2 showPosition) equals: 11.
+	self assert: (ship1 position + ship2 position) equals: 11.
 ]
 
 { #category : 'tests' }

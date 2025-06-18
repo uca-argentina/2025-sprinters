@@ -161,22 +161,16 @@ Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions andTot
 		cells add: cell ]
 ]
 
+{ #category : 'accessing' }
+Board >> laps [
+
+	^ laps
+]
+
 { #category : 'as yet unclassified' }
 Board >> parsecsPerCell [
 
 	^ totalParsecs // amountOfCells
-]
-
-{ #category : 'as yet unclassified' }
-Board >> showCells [
-
-	^ amountOfCells
-]
-
-{ #category : 'as yet unclassified' }
-Board >> showLaps [
-
-	^ laps
 ]
 
 { #category : 'as yet unclassified' }
@@ -189,9 +183,9 @@ Board >> showSpecialCells [
 Board >> verifyPosition: aShip [
 
 	| shipPosition |
-	shipPosition := aShip showPosition.
+	shipPosition := aShip position.
 	wormHole ifNotNil: [
-		^ wormHole transportIfConnectedTo: aShip showPosition ].
+		^ wormHole transportIfConnectedTo: aShip position ].
 	^ shipPosition   
 ]
 

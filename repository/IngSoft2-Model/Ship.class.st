@@ -76,6 +76,12 @@ Ship >> initializeWith: aName and: aDiceBucket [
 	optionalTurn:=true
 ]
 
+{ #category : 'accessing' }
+Ship >> laps [
+
+	^ currentLap
+]
+
 { #category : 'as yet unclassified' }
 Ship >> loseFight [
 
@@ -107,7 +113,7 @@ Ship >> move: numberOfCells in: aBoard [
 	position := newPosition <= 0
 		            ifTrue: [ 1 ]
 		            ifFalse: [
-			            aBoard showLaps > 1
+			            aBoard laps > 1
 				            ifTrue: [ newPosition \\ totalCells ]
 				            ifFalse: [
 					            newPosition <= 0 ifTrue: [ 1 ].
@@ -128,7 +134,7 @@ Ship >> moveByParsecs: parsecs on: aBoard [
 	currentLap := currentLap + (newPosition // boardSize).
 	position := newPosition > boardSize
 		            ifTrue: [
-			            aBoard showLaps > 1
+			            aBoard laps > 1
 				            ifTrue: [ newPosition \\ boardSize ]
 				            ifFalse: [ boardSize ] ]
 		            ifFalse: [ newPosition ].
@@ -144,7 +150,7 @@ Ship >> moveIn: aBoard [
 	boardCells := aBoard amountOfCells.
 	currentLap := currentLap + (position // aBoard amountOfCells).
 	position > boardCells ifTrue: [
-		position := aBoard showLaps > 1
+		position := aBoard laps > 1
 			            ifTrue: [ position \\ boardCells. ]
 			            ifFalse: [ aBoard amountOfCells ] ].
 	position := aBoard verifyPosition: self
@@ -154,6 +160,12 @@ Ship >> moveIn: aBoard [
 Ship >> moveToFirstPosition [
 
 	position := 1
+]
+
+{ #category : 'accessing' }
+Ship >> position [
+
+	^ position
 ]
 
 { #category : 'as yet unclassified' }
@@ -191,12 +203,6 @@ Ship >> recoverShields [
 	shields := 3.
 	turnsToSkip :=0.
 	optionalTurn :=true.
-]
-
-{ #category : 'as yet unclassified' }
-Ship >> showLaps [
-
-	^ currentLap
 ]
 
 { #category : 'as yet unclassified' }

@@ -130,11 +130,11 @@ Game >> playTurn [
 	| actualShip effect |
 	actualShip := turnManager nextShip.
 	actualShip moveIn: board.
-	effect := board effectOnPosition: actualShip showPosition.
+	effect := board effectOnPosition: actualShip position.
 	effect applyTo: actualShip in: self.
 	(ships select: [ :ship |
 		 ship ~~ actualShip and: [
-			 ship showPosition = actualShip showPosition ] ]) do: [ :enemy |
+			 ship position = actualShip position ] ]) do: [ :enemy |
 		battleManager fightBetween: actualShip and: enemy ].
 	self someShipWon
 ]
@@ -148,10 +148,10 @@ Game >> ships [
 Game >> shipsSortedByPosition [
 
 	^ ships copy sort: [ :a :b |
-		  a showLaps > b showLaps or: [
-			  a showLaps = b showLaps and: [
-				  a showPosition > b showPosition or: [
-					  a showPosition = b showPosition and: [
+		  a laps > b laps or: [
+			  a laps = b laps and: [
+				  a position > b position or: [
+					  a position = b position and: [
 						  self isBefore: a than: b ] ] ] ] ]
 ]
 
@@ -179,7 +179,7 @@ Game >> showShipsPositions [
 
 	| result |
 	result := Dictionary new.
-	ships do: [ :ship | result at: ship showName put: ship showPosition ].
+	ships do: [ :ship | result at: ship showName put: ship position ].
 	^ result
 ]
 
@@ -187,7 +187,7 @@ Game >> showShipsPositions [
 Game >> someShipWon [
 
 	| laps |
-	laps := board showLaps.
+	laps := board laps.
 	winner := ships
 		          detect: [ :ship |
 			          laps isNil

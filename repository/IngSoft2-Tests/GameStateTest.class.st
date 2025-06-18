@@ -154,5 +154,5 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 	ship1:=aGame ships at:1.
 	ship2:=aGame ships at:2.
 	
-	self deny: (ship1 showPosition) equals: (ship2 showPosition)
+	self deny: (ship1 position) equals: (ship2 position)
 ]
