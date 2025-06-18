@@ -124,7 +124,7 @@ ShipTest >> test008WhenShipIsCreatedThenShipShieldsAre3 [
 	| ship1  |
 	ship1 := Ship create: 'Ship1'.
 
-	self assert: ship1 showShields equals: 3
+	self assert: ship1 shields equals: 3
 ]
 
 { #category : 'tests' }
@@ -133,7 +133,7 @@ ShipTest >> test009WhenShipIsCreatedAndThenLoseAShieldThenShipShieldsAre2 [
 	| ship1  |
 	ship1 := Ship create: 'Ship1'.
 	ship1 loseShield.
-	self assert: ship1 showShields equals: 2
+	self assert: ship1 shields equals: 2
 ]
 
 { #category : 'tests' }
@@ -142,7 +142,7 @@ ShipTest >> test010WhenShipRecoverItsShieldsThenShipShieldsAre3 [
 	| ship1  |
 	ship1 := Ship create: 'Ship1'.
 	ship1 recoverShields.
-	self assert: ship1 showShields equals: 3
+	self assert: ship1 shields equals: 3
 ]
 
 { #category : 'tests' }
@@ -252,5 +252,5 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 	ship1 loseShield.
 	ship1 choiceToNotPlay.
 	aGame playTurn.
-	self assert: ship1 showShields equals: 3
+	self assert: ship1 shields equals: 3
 ]

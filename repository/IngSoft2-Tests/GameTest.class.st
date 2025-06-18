@@ -382,7 +382,7 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 	ship2 move: 6 in: aBoard.
 	aGame playTurn.
 	self
-		assert: ship1 showShields + ship1 position
+		assert: ship1 shields + ship1 position
 		equals: 6
 ]
 

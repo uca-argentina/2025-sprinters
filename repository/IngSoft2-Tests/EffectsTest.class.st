@@ -106,7 +106,7 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 	ship1 := aGame ships at: 1.
 	effect := (distributions at:1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showShields equals: 2
+	self assert: ship1 shields equals: 2
 ]
 
 { #category : 'tests' }
@@ -223,7 +223,7 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 		         until: 4.
 	ship1 := aGame ships at: 1.
 	aGame playTurn.
-	self assert: ship1 showShields equals: 2
+	self assert: ship1 shields equals: 2
 ]
 
 { #category : 'tests' }

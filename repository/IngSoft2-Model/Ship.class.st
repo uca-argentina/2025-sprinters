@@ -211,15 +211,10 @@ Ship >> recoverShields [
 	optionalTurn :=true.
 ]
 
-{ #category : 'as yet unclassified' }
-Ship >> showName [
+{ #category : 'accessing' }
+Ship >> shields [
 
-	^ name.
-]
-
-{ #category : 'as yet unclassified' }
-Ship >> showShields [
-	^shields
+	^ shields
 ]
 
 { #category : 'as yet unclassified' }
