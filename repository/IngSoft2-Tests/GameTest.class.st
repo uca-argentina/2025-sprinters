@@ -28,7 +28,7 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 		         using: aDiceBucket
 		         andShipsNamed: ships.
 	aGame play.
-	self assert: aGame showWinner isNotNil
+	self assert: ((aGame currentStatus) showWinner:aGame) isNotNil
 ]
 
 { #category : 'tests' }

@@ -186,11 +186,6 @@ Game >> showShipsPositions [
 ]
 
 { #category : 'as yet unclassified' }
-Game >> showWinner [
-	^ winner.
-]
-
-{ #category : 'as yet unclassified' }
 Game >> someShipWon [
 
 	| laps |
