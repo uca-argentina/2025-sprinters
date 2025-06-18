@@ -88,7 +88,7 @@ BoardTest >> test006WhenShipMoveMoreThanCellsInTheBoardThenPositionIsAmountOfCel
 	aY := 2.
 	aWorm := Worm with: aX and: aY.
 	aBoard := Board with: amountOfCells and: aWorm.
-	loadedDice := LoadedDice with: 6.
+	loadedDice := LoadedDice withSequence: #(6).
 	aShip := Ship create: 'ship1' with: loadedDice.
 	aShip moveIn: aBoard.
 	self assert: (aBoard verifyPosition: aShip) equals: 4

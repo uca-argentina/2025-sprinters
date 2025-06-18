@@ -52,8 +52,8 @@ ShipTest >> test003WhenCreateAShipWithNameThatIsNotAStringThenRaiceError [
 
 { #category : 'tests' }
 ShipTest >> test004WhenShip1PositionIsLastOneAndThrow1ThenShip1StartFromTheBeginning [
-	| ship1 aLoadedDice aCircularBoard dice |
-	dice:=LoadedDice with:1.
+	| ship1  aCircularBoard dice |
+	dice:=LoadedDice withSequence: #(1).
 	ship1 :=Ship create: 'Ship1' with:dice.
 	aCircularBoard := Board with: 5.
 	aCircularBoard with: 2.
@@ -65,7 +65,7 @@ ShipTest >> test004WhenShip1PositionIsLastOneAndThrow1ThenShip1StartFromTheBegin
 ShipTest >> test005WhenShip1Moves12CellsInABoardWith5CellsThenShip1Has2Laps [
 
 	| ship1  aCircularBoard dice |
-	dice:=LoadedDice with:16.
+	dice:=LoadedDice withSequence: #(16).
 	ship1 := Ship create: 'Ship1' with:dice.
 	aCircularBoard := Board with: 5.
 	aCircularBoard with: 3.
@@ -81,7 +81,7 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 	dices := OrderedCollection new.
 	ship1 := 'Ship1'.
 	ships add: ship1.
-	aDice := LoadedDice with: 11.
+	aDice := LoadedDice withSequence: #(11).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 5.
@@ -108,7 +108,7 @@ ShipTest >> test007WhenShipThrow11AndBoardHas5CellsThenShipWinAt2LapsReturnsTrue
 
 	| ship1 aLoadedDice aCircularBoard ships laps aGame cells |
 	ships := OrderedCollection new.
-	aLoadedDice := LoadedDice with: 11.
+	aLoadedDice := LoadedDice withSequence: #(11).
 	ship1 := Ship create: 'Ship1' with:aLoadedDice .
 	aCircularBoard := Board with: 5.
 	aCircularBoard with: 2.
@@ -201,7 +201,7 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame ship1 |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 6.
+	aDice := LoadedDice withSequence: #(6).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -230,7 +230,7 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame ship1 |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 5.
+	aDice := LoadedDice withSequence: #(5).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.

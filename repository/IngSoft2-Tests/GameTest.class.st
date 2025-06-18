@@ -111,7 +111,7 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 5.
+	aDice := LoadedDice withSequence: #(5).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -207,7 +207,7 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 9.
+	aDice := LoadedDice withSequence: #( 6 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -224,12 +224,12 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 		         andShipsNamed: ships
 		         until: laps.
 
-	(aGame ships at:2) move: 10 in: aBoard. 
+	(aGame ships at: 2) move: 10 in: aBoard.
 	aGame play.
 	assertedResult := OrderedCollection new.
 	assertedResult add: 'ship 2'.
 	assertedResult add: 'ship 1'.
-	self assert: aGame showRanking equals: assertedResult 
+	self assert: aGame showRanking equals: assertedResult
 ]
 
 { #category : 'tests' }
@@ -300,7 +300,7 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 6.
+	aDice := LoadedDice withSequence: #(6).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -328,7 +328,7 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 5.
+	aDice := LoadedDice withSequence: #(5).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -356,7 +356,7 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions dices1 aDiceBucket1 dices2 aDiceBucket2 ship1 ship2 |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
-	aDice := LoadedDice with: 6.
+	aDice := LoadedDice withSequence: #(6).
 	dices1 add: aDice.
 	aDiceBucket1 := DiceBucket with: dices1.
 	aDice := LoadedDice with: 4.
@@ -392,7 +392,7 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 6.
+	aDice := LoadedDice withSequence: #(6).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -419,13 +419,9 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 dices2 aDiceBucket2 ship2 |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
-	aDice := LoadedDice with: 4.
+	aDice := LoadedDice withSequence: #( 14 3 ).
 	dices1 add: aDice.
 	aDiceBucket1 := DiceBucket with: dices1.
-	aDice := LoadedDice with: 3.
-	dices2 := OrderedCollection new.
-	dices2 add: aDice.
-	aDiceBucket2 := DiceBucket with: dices2.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
@@ -433,15 +429,15 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 
 	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	laps := 3.
-	ship1 :=  Ship create:'ship 1' with: aDiceBucket1.
-	ship2:= Ship create:'ship 2' with: aDiceBucket2.
-	ships add: ship1 .
-	ships add:  ship2.
-	aGame := FixGame
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships add: ship1.
+	ships add: ship2.
+	aGame := Game
 		         with: aBoard
-		         using: aDiceBucket
+		         using: aDiceBucket1
 		         andShipsNamed: ships
 		         until: laps.
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
-	self assert: ship2 showShields equals: 2
+	self assert: (aGame ships at:1) showPosition equals: 1
 ]

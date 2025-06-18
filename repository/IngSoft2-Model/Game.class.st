@@ -119,10 +119,8 @@ Game >> isBefore: shipA than: shipB [
 { #category : 'as yet unclassified' }
 Game >> play [
 
-	| actualShip cellsToMove |
 	status := Started new.
-	[ self someShipWon = false ] whileTrue: [ self playTurn ].
-	status := Finished new.
+	[ status isFinished ] whileFalse: [ self playTurn ].
 
 	^ 'Game over'
 ]
@@ -138,7 +136,8 @@ Game >> playTurn [
 	(ships select: [ :ship |
 		 ship ~~ actualShip and: [
 			 ship showPosition = actualShip showPosition ] ]) do: [ :enemy |
-		battleManager fightBetween: actualShip and: enemy ]
+		battleManager fightBetween: actualShip and: enemy ].
+	self someShipWon
 ]
 
 { #category : 'accessing' }
@@ -197,5 +196,5 @@ Game >> someShipWon [
 				          ifFalse: [ ship winAt: board until: laps ] ]
 		          ifNone: [ nil ].
 
-	^ winner isNotNil
+	winner ifNotNil:[status:=Finished new]
 ]

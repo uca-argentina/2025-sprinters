@@ -2,7 +2,9 @@ Class {
 	#name : 'LoadedDice',
 	#superclass : 'Object',
 	#instVars : [
-		'amountOfFaces'
+		'amountOfFaces',
+		'index',
+		'throwns'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -14,15 +16,24 @@ LoadedDice class >> with: aAmountOfFaces [
 	^ self new initializeWith: aAmountOfFaces
 ]
 
-{ #category : 'initialization' }
-LoadedDice >> initializeWith: aAmountOfFaces [
+{ #category : 'as yet unclassified' }
+LoadedDice class >> withSequence: throwns [
 
-	amountOfFaces := aAmountOfFaces.
-	
+	^ self new initializeWith: throwns
+]
+
+{ #category : 'initialization' }
+LoadedDice >> initializeWith: amountOfThrowns [
+
+	index := 1.
+	throwns := amountOfThrowns
 ]
 
 { #category : 'as yet unclassified' }
 LoadedDice >> throw [
 
-	^ amountOfFaces
+	| result |
+	result := throwns at: index.
+	index := (index \\ throwns size + 1).
+	^ result
 ]
