@@ -64,11 +64,6 @@ Game >> applyHyperSpaceJumpEffectOn: aShip [
 ]
 
 { #category : 'as yet unclassified' }
-Game >> applyMoonWalkEffectOn: aShip [ 
-	self shouldBeImplemented.
-]
-
-{ #category : 'as yet unclassified' }
 Game >> applyMoonWalkEffectOn: aShip moving: numberOfCells [
 	 ships do: [ :otherShip |
 		otherShip ~~ aShip ifTrue: [

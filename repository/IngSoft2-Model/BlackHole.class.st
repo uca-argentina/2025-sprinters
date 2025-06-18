@@ -21,11 +21,6 @@ BlackHole >> applyTo: aShip in: aGame [
 	aGame applyBlackHoleEffectOm: aShip
 ]
 
-{ #category : 'as yet unclassified' }
-BlackHole >> effectOnMovement [
-	^ -4.
-]
-
 { #category : 'initialization' }
 BlackHole >> initializeThis [
 	^ self new.

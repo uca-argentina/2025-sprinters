@@ -9,8 +9,8 @@ Class {
 GameStateTest >> test000WhenGameIsNotPlayedThenPlayingStateIsFalse [
 
 	| gameState |
-	gameState := NotPlayed new.
-	 self assert: gameState isPlaying equals: false
+	gameState := Started new.
+	 self assert: gameState isFinished equals: false
 ]
 
 { #category : 'tests' }
@@ -26,7 +26,7 @@ GameStateTest >> test002WhenGameIsStartedThenPlayingdStateIsTrue [
 
 	| gameState |
 	gameState := Started new.
-	self assert: gameState isPlaying equals: true
+	self assert: gameState isFinished equals: false
 ]
 
 { #category : 'tests' }
@@ -50,7 +50,7 @@ GameStateTest >> test005WhenGameIsFinishedThenPlayingStateIsFalse [
 
 	| gameState |
 	gameState := Finished new.
-	self assert: gameState isPlaying equals: false
+	self assert: gameState isFinished equals: true
 ]
 
 { #category : 'tests' }
