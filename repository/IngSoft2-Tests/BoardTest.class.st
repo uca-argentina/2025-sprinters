@@ -23,7 +23,7 @@ BoardTest >> test001WhenPlayGameThenReturnGameOver [
 	aY := 6.
 	aWorm := Worm with: aX and: aY. 
 	aBoard := Board with: amountOfCells and: aWorm.
-	self assert: aBoard showSpecialCells equals: {aX. aY}.
+	self assert: aBoard specialCells equals: {aX. aY}.
 ]
 
 { #category : 'tests' }

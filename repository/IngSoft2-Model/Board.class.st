@@ -174,9 +174,9 @@ Board >> parsecsPerCell [
 ]
 
 { #category : 'as yet unclassified' }
-Board >> showSpecialCells [
+Board >> specialCells [
 
-	^ wormHole showPositions: self
+	^ wormHole positions: self
 ]
 
 { #category : 'as yet unclassified' }

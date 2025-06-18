@@ -46,7 +46,7 @@ Worm >> positionY [
 ]
 
 { #category : 'as yet unclassified' }
-Worm >> showPositions: aBoard [ 
+Worm >> positions: aBoard [ 
 	^ { positionX. positionY. } .
 ]
 
