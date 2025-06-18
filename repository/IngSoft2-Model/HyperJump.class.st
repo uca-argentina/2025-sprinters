@@ -1,6 +1,6 @@
 Class {
 	#name : 'HyperJump',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#instVars : [
 		'parsecsToMove',
 		'index'
@@ -37,7 +37,7 @@ HyperJump >> applyTo: aShip in: aGame [
 	| board parsecsToJump |
 	board := aGame board.
 	parsecsToJump := self nextParsecs.
-	aShip receiveHyperJumpIn: board moving:parsecsToJump.
+	aGame applyHyperJumEffectOn: aShip moving: parsecsToJump
 ]
 
 { #category : 'initialization' }

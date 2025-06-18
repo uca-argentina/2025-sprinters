@@ -1,6 +1,6 @@
 Class {
 	#name : 'BlackHole',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -18,7 +18,7 @@ BlackHole class >> initializeThis [
 { #category : 'as yet unclassified' }
 BlackHole >> applyTo: aShip in: aGame [
 
-	aShip receiveBlackHoleEffectFrom: aGame
+	aGame applyBlackHoleEffectOm: aShip
 ]
 
 { #category : 'as yet unclassified' }

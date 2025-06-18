@@ -46,6 +46,24 @@ Game >> applyAtomicEffectOn: aShip [
 ]
 
 { #category : 'as yet unclassified' }
+Game >> applyBlackHoleEffectOm: aShip [
+
+	aShip receiveBlackHoleEffectFrom: self
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyHyperJumEffectOn: aShip moving: parsecsToJump [
+
+	aShip receiveHyperJumpIn: board moving: parsecsToJump
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyHyperSpaceJumpEffectOn: aShip [
+
+	aShip recieveHyperSpaceJumpIn: board
+]
+
+{ #category : 'as yet unclassified' }
 Game >> applyMoonWalkEffectOn: aShip [ 
 	self shouldBeImplemented.
 ]

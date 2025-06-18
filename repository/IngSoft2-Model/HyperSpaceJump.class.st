@@ -1,6 +1,6 @@
 Class {
 	#name : 'HyperSpaceJump',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -13,7 +13,7 @@ HyperSpaceJump class >> initializeThis [
 { #category : 'as yet unclassified' }
 HyperSpaceJump >> applyTo: aShip in: aGame [
 
-	aShip recieveHyperSpaceJumpIn: aGame board
+	aGame applyHyperSpaceJumpEffectOn: aShip
 ]
 
 { #category : 'as yet unclassified' }
