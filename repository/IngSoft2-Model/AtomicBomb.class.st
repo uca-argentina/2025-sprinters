@@ -15,9 +15,3 @@ AtomicBomb >> applyTo: aShip in: aGame [
 
 	aGame applyAtomicEffectOn: aShip
 ]
-
-{ #category : 'as yet unclassified' }
-AtomicBomb >> showName [
-
-	^ 'Atomic Bomb'
-]

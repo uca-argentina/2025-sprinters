@@ -38,9 +38,3 @@ MoonWalk >> initializeWith: cells [
 MoonWalk >> numberOfCells [
 	^ numberOfCells
 ]
-
-{ #category : 'as yet unclassified' }
-MoonWalk >> showName [
-
-	^ 'Moon Walk'
-]

@@ -128,7 +128,7 @@ BoardTest >> test008WhenAskForEffectOnPositionThenBoardReturnItEffect [
 
 	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	effect := aBoard effectOnPosition: 3.
-	self assert: effect showName equals: 'Black Hole'
+	self assert: effect className equals: 'BlackHole'
 ]
 
 { #category : 'tests' }

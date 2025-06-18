@@ -75,7 +75,7 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
 	aGame play.
-	self assert: ((aGame currentStatus) showWinner:aGame) showName equals: 'shipOne'
+	self assert: ((aGame currentStatus) showWinner:aGame) name equals: 'shipOne'
 ]
 
 { #category : 'tests' }
@@ -260,7 +260,7 @@ GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionRe
 	ship1 move: 7.
 	ship3 move: 20.
 	result := aGame shipsSortedByPosition.
-	self assert: (result at: 1) showName equals: 'ship 3'
+	self assert: (result at: 1) name equals: 'ship 3'
 ]
 
 { #category : 'tests' }

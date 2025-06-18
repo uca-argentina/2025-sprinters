@@ -33,7 +33,7 @@ ShipTest >> test002WhenCreateAShipWithNameThenReturnShipsName [
 	shipName := 'Ship 1'.
 	aShip := Ship create: shipName.
 
-	self assert: aShip showName equals: shipName
+	self assert: aShip name equals: shipName
 ]
 
 { #category : 'tests' }
@@ -99,7 +99,7 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 	aGame play.
 
 	self
-		assert: (aGame currentStatus showWinner: aGame) showName
+		assert: (aGame currentStatus showWinner: aGame) name
 		equals: 'Ship1'
 ]
 

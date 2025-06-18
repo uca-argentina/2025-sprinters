@@ -15,9 +15,3 @@ HyperSpaceJump >> applyTo: aShip in: aGame [
 
 	aGame applyHyperSpaceJumpEffectOn: aShip
 ]
-
-{ #category : 'as yet unclassified' }
-HyperSpaceJump >> showName [
-
-	^ 'Hyper Space Jump'
-]

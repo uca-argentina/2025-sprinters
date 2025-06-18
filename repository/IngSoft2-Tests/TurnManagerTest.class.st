@@ -74,7 +74,7 @@ TurnManagerTest >> test004WhenShip1DoesNotWantsToPlayThenReturnShip2 [
 	ships add: ship2.
 	turnManager := TurnManager with: ships.
 	actualShip := turnManager nextShip.
-	self assert: actualShip showName equals: 'ship2'
+	self assert: actualShip name  equals: 'ship2'
 ]
 
 { #category : 'tests' }
@@ -91,7 +91,7 @@ TurnManagerTest >> test005WhenShip1andShip2DoNotWantsToPlayThenReturnShip3 [
 	turnManager := TurnManager with: ships.
 	actualShip := turnManager nextShip.
 	actualShip := turnManager nextShip.
-	self assert: actualShip showName equals: 'ship3'.
+	self assert: actualShip name equals: 'ship3'.
 ]
 
 { #category : 'tests' }
@@ -110,7 +110,7 @@ TurnManagerTest >> test006WhenShip1CanNotPlayThenNextPlayableShipIsShip2 [
 	ship1 loseShield.
 	turnManager := TurnManager with: ships.
 	actualShip := turnManager nextPlayableShip.
-	self assert: actualShip showName equals: 'ship2'.
+	self assert: actualShip name equals: 'ship2'.
 ]
 
 { #category : 'tests' }
@@ -129,7 +129,7 @@ TurnManagerTest >> test007WhenShip1CanNotPlayThenNextShipIsShip2 [
 	ship1 loseShield.
 	turnManager := TurnManager with: ships.
 	actualShip := turnManager nextShip.
-	self assert: actualShip showName equals: 'ship2'.
+	self assert: actualShip name equals: 'ship2'.
 ]
 
 { #category : 'tests' }

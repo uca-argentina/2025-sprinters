@@ -98,7 +98,7 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: listOfShips.
 
 	gameState := Finished new.
-	self assert: (gameState showWinner: aGame) showName equals: shipOne
+	self assert: (gameState showWinner: aGame) name equals: shipOne
 ]
 
 { #category : 'tests' }

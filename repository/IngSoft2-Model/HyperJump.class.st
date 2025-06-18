@@ -65,9 +65,3 @@ HyperJump >> nextParsecs [
 HyperJump >> numberOfCells [
 	self shouldBeImplemented.
 ]
-
-{ #category : 'as yet unclassified' }
-HyperJump >> showName [
-
-	^ 'Hyper Jump'
-]

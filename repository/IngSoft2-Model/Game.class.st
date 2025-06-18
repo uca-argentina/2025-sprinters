@@ -166,7 +166,7 @@ Game >> showRanking [
 			sorted := self shipsSortedByPosition.
 
 			[ top <= 3 and: [ top <= sorted size ] ] whileTrue: [
-				ranking add: (sorted at: top) showName.
+				ranking add: (sorted at: top) name.
 				top := top + 1 ].
 			^ ranking ]
 		ifFalse: [
@@ -179,7 +179,7 @@ Game >> showShipsPositions [
 
 	| result |
 	result := Dictionary new.
-	ships do: [ :ship | result at: ship showName put: ship position ].
+	ships do: [ :ship | result at: ship name put: ship position ].
 	^ result
 ]
 

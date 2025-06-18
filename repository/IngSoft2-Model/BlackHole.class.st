@@ -25,9 +25,3 @@ BlackHole >> applyTo: aShip in: aGame [
 BlackHole >> initializeThis [
 	^ self new.
 ]
-
-{ #category : 'as yet unclassified' }
-BlackHole >> showName [
-
-	^ 'Black Hole'
-]

@@ -163,6 +163,12 @@ Ship >> moveToFirstPosition [
 ]
 
 { #category : 'accessing' }
+Ship >> name [
+
+	^ name
+]
+
+{ #category : 'accessing' }
 Ship >> position [
 
 	^ position
@@ -209,11 +215,6 @@ Ship >> recoverShields [
 Ship >> showName [
 
 	^ name.
-]
-
-{ #category : 'as yet unclassified' }
-Ship >> showPosition [
-	^ position.
 ]
 
 { #category : 'as yet unclassified' }
