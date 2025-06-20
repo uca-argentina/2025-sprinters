@@ -112,56 +112,32 @@ Ship >> move: numberOfCells [
 { #category : 'as yet unclassified' }
 Ship >> move: numberOfCells in: aBoard [
 
-	| totalCells newPosition |
-	totalCells := aBoard amountOfCells.
+	| newPosition result |
 	newPosition := position + numberOfCells.
-
-	currentLap := currentLap + (newPosition // totalCells).
-
-	position := newPosition <= 0
-		            ifTrue: [ 1 ]
-		            ifFalse: [
-			            aBoard laps > 1
-				            ifTrue: [ newPosition \\ totalCells ]
-				            ifFalse: [
-					            newPosition <= 0 ifTrue: [ 1 ].
-					            newPosition > totalCells
-						            ifTrue: [ totalCells ]
-						            ifFalse: [ newPosition ] ] ].
-	position := aBoard verifyPosition: self
+	result := aBoard move: newPosition at: currentLap having: 0.
+	position := result at: 1.
+	position := aBoard verifyPosition: position.
+	currentLap := result at: 2
 ]
 
 { #category : 'as yet unclassified' }
 Ship >> moveByParsecs: parsecs on: aBoard [
- "escenario  --> 7 parsecs y 5 celas --> 1.4 parsecs/celd"
-	| boardSize currentParsec newParsecPos newPosition |
-	boardSize := aBoard amountOfCells. "5 casilleros"
-	currentParsec := position * aBoard parsecsPerCell. " 2 * 1.4 = 2.8 parsecs"
-	newParsecPos := currentParsec + parsecs. " 8 parsecs´+ 2.8 parsec = 10.8 parsecs"
-	newPosition := newParsecPos // aBoard parsecsPerCell. " (10.8 parsecs / (1.4 parsec/celda ) = 1 celdas "
-	currentLap := currentLap + (newPosition // boardSize).
-	position := newPosition > boardSize
-		            ifTrue: [
-			            aBoard laps > 1
-				            ifTrue: [ newPosition \\ boardSize ]
-				            ifFalse: [ boardSize ] ]
-		            ifFalse: [ newPosition ].
-	position <= 0 ifTrue: [ position := 1 ].
-	position := aBoard verifyPosition: self
+
+	| result |
+	result := aBoard move: position at: currentLap having: parsecs.
+	position := result at: 1.
+	currentLap := result at: 2
 ]
 
 { #category : 'as yet unclassified' }
 Ship >> moveIn: aBoard [
 
-	| boardCells |
+	| result |
 	position := position + self throwDices.
-	boardCells := aBoard amountOfCells.
-	currentLap := currentLap + (position // aBoard amountOfCells).
-	position > boardCells ifTrue: [
-		position := aBoard laps > 1
-			            ifTrue: [ position \\ boardCells. ]
-			            ifFalse: [ aBoard amountOfCells ] ].
-	position := aBoard verifyPosition: self
+
+	result := aBoard move: position at: currentLap having: 0.
+	position := result at: 1.
+	currentLap := result at: 2
 ]
 
 { #category : 'as yet unclassified' }
@@ -189,15 +165,13 @@ Ship >> receiveAtomicBombEffect [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> receiveBlackHoleEffect [
+Ship >> receiveBlackHoleEffectFrom: aBoard [
 
-	self move: -4
-]
-
-{ #category : 'as yet unclassified' }
-Ship >> receiveBlackHoleEffectFrom: aGame [ 
-	self move:-4 in:aGame board
-	
+	| newPosition result |
+	newPosition := position - 4.
+	result := aBoard move: newPosition at: currentLap having: 0.
+	position := result at: 1.
+	currentLap := result at: 2
 ]
 
 { #category : 'as yet unclassified' }
@@ -206,8 +180,13 @@ Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> recieveHyperSpaceJumpIn: aBoard [ 
-	self move: 4 in: aBoard.
+Ship >> recieveHyperSpaceJumpIn: aBoard [
+
+	| newPosition result |
+	newPosition := position + 4.
+	result := aBoard move: newPosition at: currentLap having: 0.
+	position := result at: 1.
+	currentLap := result at: 2.
 	self loseShield
 ]
 
