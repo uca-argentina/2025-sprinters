@@ -62,10 +62,7 @@ Board >> amountOfNoEffectCells [
 { #category : 'as yet unclassified' }
 Board >> effectOnPosition: position [
 
-	| cell effect |
-	cell := cells at: position.
-	effect := cell effect value.
-	^ effect
+	^ (cells at: position) effect value
 ]
 
 { #category : 'initialization' }
