@@ -84,21 +84,26 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 { #category : 'tests' }
 GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 
-	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame |
+	| listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
 	listOfShips add: shipOne.
-	aDice := Dice with: 5.
+	aDice := LoadedDice withSequence: #( 10 ).
 	listOfDices add: aDice.
 	aDiceBucket := DiceBucket with: listOfDices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
-	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: listOfShips.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
 
-	gameState := Finished new.
-	self assert: (gameState showWinner: aGame) name equals: shipOne
+	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: listOfShips.
+	aGame play.
+	self assert: aGame showWinner name equals: shipOne
 ]
 
 { #category : 'tests' }

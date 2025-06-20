@@ -81,7 +81,7 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 	dices := OrderedCollection new.
 	ship1 := 'Ship1'.
 	ships add: ship1.
-	aDice := LoadedDice withSequence: #(11).
+	aDice := LoadedDice withSequence: #( 11 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 5.
@@ -98,9 +98,7 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 		         until: laps.
 	aGame play.
 
-	self
-		assert: (aGame currentStatus showWinner: aGame) name
-		equals: 'Ship1'
+	self assert: aGame showWinner name equals: 'Ship1'
 ]
 
 { #category : 'tests' }

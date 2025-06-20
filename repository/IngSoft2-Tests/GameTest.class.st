@@ -23,12 +23,9 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships.
+	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
 	aGame play.
-	self assert: ((aGame currentStatus) showWinner:aGame) isNotNil
+	self assert: aGame showWinner isNotNil
 ]
 
 { #category : 'tests' }
@@ -75,7 +72,7 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 	aBoard := Board with: amountOfCells and: aWorm has: distributions.
 	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
 	aGame play.
-	self assert: ((aGame currentStatus) showWinner:aGame) name equals: 'shipOne'
+	self assert: (aGame showWinner) name equals: 'shipOne'
 ]
 
 { #category : 'tests' }
