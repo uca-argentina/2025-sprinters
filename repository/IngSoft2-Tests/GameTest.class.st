@@ -23,7 +23,11 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1.
 	aGame play.
 	self assert: aGame showWinner isNotNil
 ]
