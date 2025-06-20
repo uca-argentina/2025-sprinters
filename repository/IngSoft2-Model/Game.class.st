@@ -46,7 +46,7 @@ Game >> applyAtomicEffectOn: aShip [
 ]
 
 { #category : 'as yet unclassified' }
-Game >> applyBlackHoleEffectOm: aShip [
+Game >> applyBlackHoleEffectOn: aShip [
 
 	aShip receiveBlackHoleEffectFrom: self
 ]
@@ -147,12 +147,7 @@ Game >> ships [
 { #category : 'as yet unclassified' }
 Game >> shipsSortedByPosition [
 
-	^ ships copy sort: [ :a :b |
-		  a laps > b laps or: [
-			  a laps = b laps and: [
-				  a position > b position or: [
-					  a position = b position and: [
-						  self isBefore: a than: b ] ] ] ] ]
+	^ ships copy sort: [ :a :b | a isAheadOf: b ]
 ]
 
 { #category : 'as yet unclassified' }

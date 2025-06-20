@@ -18,10 +18,5 @@ BlackHole class >> initializeThis [
 { #category : 'as yet unclassified' }
 BlackHole >> applyTo: aShip in: aGame [
 
-	aGame applyBlackHoleEffectOm: aShip
-]
-
-{ #category : 'initialization' }
-BlackHole >> initializeThis [
-	^ self new.
+	aGame applyBlackHoleEffectOn: aShip
 ]

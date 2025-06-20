@@ -76,6 +76,14 @@ Ship >> initializeWith: aName and: aDiceBucket [
 	optionalTurn:=true
 ]
 
+{ #category : 'testing' }
+Ship >> isAheadOf: anotherShip [
+
+	^ self laps > anotherShip laps or: [
+		  self laps = anotherShip laps and: [
+			  self position > anotherShip position ] ]
+]
+
 { #category : 'accessing' }
 Ship >> laps [
 
