@@ -442,3 +442,35 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
 	self assert: (aGame ships at:1) position equals: 1
 ]
+
+{ #category : 'tests' }
+GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNotTransferThrowTheWormHole [
+
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 dices2 aDiceBucket2 ship2 |
+	ships := OrderedCollection new.
+	dices1 := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 7 5 ).
+	dices1 add: aDice.
+	aDiceBucket1 := DiceBucket with: dices1.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships add: ship1.
+	ships add: ship2.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket1
+		         andShipsNamed: ships
+		         until: laps.
+	aGame playTurn.
+	self assert: (aGame ships at: 1) position equals: 4
+]

@@ -62,7 +62,10 @@ Board >> amountOfNoEffectCells [
 { #category : 'as yet unclassified' }
 Board >> effectOnPosition: position [
 
-	^ (cells at: position) effect value className
+	| cell effect |
+	cell := cells at: position.
+	effect := cell effect value.
+	^ effect
 ]
 
 { #category : 'initialization' }
@@ -93,9 +96,31 @@ Board >> laps [
 ]
 
 { #category : 'as yet unclassified' }
+Board >> moveThrowTheLaps: currentLap this: position [
+
+	^ currentLap + (position // amountOfCells)
+]
+
+{ #category : 'as yet unclassified' }
 Board >> parsecsPerCell [
 
 	^ totalParsecs // amountOfCells
+]
+
+{ #category : 'as yet unclassified' }
+Board >> sendValidPosition: newPosition [
+
+	| position |
+	position := newPosition <= 0
+		            ifTrue: [ 1 ]
+		            ifFalse: [
+			            laps > 1
+				            ifTrue: [ newPosition \\ amountOfCells ]
+				            ifFalse: [
+					            newPosition <= 0 ifTrue: [ 1 ].
+					            newPosition min: amountOfCells ] ].
+	position := self verifyPosition: position.
+	^ position
 ]
 
 { #category : 'as yet unclassified' }
