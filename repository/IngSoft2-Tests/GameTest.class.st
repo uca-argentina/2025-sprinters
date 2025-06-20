@@ -141,8 +141,8 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 		          has: distributions
 		          andTotalParsec: 20.
 	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
-	(aGame ships at: 1) move: 10.
-	(aGame ships at: 2) move: 5.
+	(aGame ships at: 1) move: 10 in: aBoard.
+	(aGame ships at: 2) move: 5 in: aBoard.
 	aGame play.
 	assertedResult := Dictionary new.
 	assertedResult at: 'ship 1' put: 10.
@@ -277,10 +277,10 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 { #category : 'tests' }
 GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionReturnShip1AtFirst [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps result ship1 ship2 ship3 distributions |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps result distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #(10 7 20).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -301,12 +301,10 @@ GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionRe
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps.
-	ship1 := aGame ships at: 1.
-	ship2 := aGame ships at: 2.
-	ship3 := aGame ships at: 3.
-	ship2 move: 10.
-	ship1 move: 7.
-	ship3 move: 20.
+
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
 	result := aGame shipsSortedByPosition.
 	self assert: (result at: 1) name equals: 'ship 3'
 ]
@@ -433,8 +431,8 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 		          has: distributions
 		          andTotalParsec: 20.
 	laps := 3.
-	ship1 := Ship create: 'ship 1' with: aDiceBucket1.
-	ship2 := Ship create: 'ship 2' with: aDiceBucket2.
+	ship1 := Ship create: 'ship 1'.
+	ship2 := Ship create: 'ship 2'.
 	ships add: ship1.
 	ships add:ship2.
 	aGame := FixGame

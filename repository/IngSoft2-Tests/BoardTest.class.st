@@ -114,7 +114,7 @@ BoardTest >> test004WhenCreateBoardWithCellsNotIntegerThenReturnsError [
 { #category : 'tests' }
 BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 
-	| amountOfCells aX aY aWorm aBoard aShip distributions |
+	| amountOfCells aX aY aWorm aBoard aShip distributions aLoadedDice|
 	amountOfCells := 10.
 	aX := 4.
 	aY := 7.
@@ -126,8 +126,9 @@ BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 		          and: aWorm
 		          has: distributions
 		          andTotalParsec: 20.
-	aShip := Ship newShip.
-	aShip move: 6.
+	aLoadedDice := LoadedDice withSequence: #(6).
+	aShip := Ship create: 'ship 1'.
+	aShip move: 6 in: aBoard.
 	self assert: (aBoard verifyPosition: aShip) equals: 4
 ]
 
@@ -147,8 +148,8 @@ BoardTest >> test006WhenShipMoveMoreThanCellsInTheBoardThenPositionIsAmountOfCel
 		          has: distributions
 		          andTotalParsec: 20.
 	loadedDice := LoadedDice withSequence: #( 6 ).
-	aShip := Ship create: 'ship1' with: loadedDice.
-	aShip moveIn: aBoard.
+	aShip := Ship create: 'ship1'.
+	aShip move: (loadedDice throw) in: aBoard.
 	self assert: (aBoard verifyPosition: aShip) equals: 4
 ]
 

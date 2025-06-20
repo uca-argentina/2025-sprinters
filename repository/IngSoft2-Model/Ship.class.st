@@ -23,17 +23,6 @@ Ship class >> create: aName [
 	^ self new initializeWith: aName
 ]
 
-{ #category : 'as yet unclassified' }
-Ship class >> create: aName with: aDiceBucket [
-
-	^ self new initializeWith: aName and: aDiceBucket
-]
-
-{ #category : 'instance creation' }
-Ship class >> newShip [
-	^ self new initializePosition.
-]
-
 { #category : 'testing' }
 Ship >> canPlay [
 
@@ -49,11 +38,6 @@ Ship >> choiceToNotPlay [
 ]
 
 { #category : 'initialization' }
-Ship >> initializePosition [
-	position := 1.
-]
-
-{ #category : 'initialization' }
 Ship >> initializeWith: aName [
 
 	currentLap := 1.
@@ -61,18 +45,6 @@ Ship >> initializeWith: aName [
 	name := aName.
 	shields := 3.
 	turnsToSkip:=0.
-	optionalTurn:=true
-]
-
-{ #category : 'initialization' }
-Ship >> initializeWith: aName and: aDiceBucket [
-
-	name := aName.
-	diceBucket := aDiceBucket.
-	position := 1.
-	currentLap := 0.
-	turnsToSkip := 0.
-	shields := 3.
 	optionalTurn:=true
 ]
 
@@ -108,11 +80,6 @@ Ship >> loseShield [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> move: numberOfCells [ 
-	position := position + numberOfCells.
-]
-
-{ #category : 'as yet unclassified' }
 Ship >> move: numberOfCells in: aBoard [
 
 	| newPosition result |
@@ -128,17 +95,6 @@ Ship >> moveByParsecs: parsecs on: aBoard [
 
 	| result |
 	result := aBoard move: position at: currentLap having: parsecs.
-	position := result at: 1.
-	currentLap := result at: 2
-]
-
-{ #category : 'as yet unclassified' }
-Ship >> moveIn: aBoard [
-
-	| result |
-	position := position + self throwDices.
-
-	result := aBoard move: position at: currentLap having: 0.
 	position := result at: 1.
 	currentLap := result at: 2
 ]

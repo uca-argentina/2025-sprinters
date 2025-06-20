@@ -92,8 +92,9 @@ Game >> currentTopPlayer [
 Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
 
 	board := aBoard.
-	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket].
+	ships := shipsNames collect: [ :aName | Ship create: aName ].
 	status := Started new.
+	bucketOfDices := aDiceBucket.
 	turnManager:= TurnManager with:ships.
 	battleManager :=BattleManager new.
 ]
@@ -102,7 +103,8 @@ Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
 Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
 
 	board := aCircularBoard with:numberOfLaps .
-	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket ].
+	ships := shipsNames collect: [ :aName | Ship create: aName ].
+	bucketOfDices := aDiceBucket.
 	status := Started new.
 	turnManager:= TurnManager with:ships.
 	battleManager :=BattleManager .
@@ -129,7 +131,7 @@ Game >> playTurn [
 
 	| actualShip effect positionToMove |
 	actualShip := turnManager nextShip.
-	positionToMove := actualShip throwDices.
+	positionToMove := bucketOfDices throw.
 	actualShip move: positionToMove in: board.
 	effect := board effectOnPosition: actualShip position.
 	effect applyTo: actualShip in: self.

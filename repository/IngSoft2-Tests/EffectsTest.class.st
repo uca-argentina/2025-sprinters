@@ -30,7 +30,7 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 		         andShipsNamed: ships
 		         until: 1.
 	ship1 := aGame ships at: 1.
-	ship1 move: 6.
+	ship1 move: 6 in: aBoard.
 	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
 	self assert: ship1 position equals: 3
@@ -60,7 +60,7 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 		         andShipsNamed: ships
 		         until: 1.
 	ship1 := aGame ships at: 1.
-	ship1 move: 2.
+	ship1 move: 2 in: aBoard.
 	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
 	self assert: ship1 position equals: 1
