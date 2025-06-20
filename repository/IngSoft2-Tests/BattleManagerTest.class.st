@@ -22,3 +22,21 @@ BattleManagerTest >> test001WhenTwoShipsFightAndShip2WinsThenShip1LoseBatle [
 	battleManager fightBetween: ship1 and: ship2.
 	self assert: ship1 position equals: 1
 ]
+
+{ #category : 'tests' }
+BattleManagerTest >> test002WhenShipThree [
+
+	| ships dices1 aDice1 aDiceBucket1 dices2 amountOfCells  ship1 ship2 battleManager |
+	ships := OrderedCollection new.
+	dices1 := OrderedCollection new.
+	aDice1 := LoadedDice withSequence: #(6 9).
+	dices1 add: aDice1.
+	aDiceBucket1 := DiceBucket with: dices1.
+	dices2 := OrderedCollection new.
+	amountOfCells := 10.
+	ship1:= Ship create: 'ship 1' with: aDiceBucket1.
+	ship2:= Ship  create: 'ship 2' with: aDiceBucket1.
+	battleManager := BattleManager new.
+	battleManager fightBetween: ship1 and: ship2.
+	self assert: ship1 position equals: 1
+]

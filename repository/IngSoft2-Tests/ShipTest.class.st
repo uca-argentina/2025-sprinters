@@ -251,40 +251,41 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 
 	ship1 := aGame ships at: 1.
 	ship1 moveIn:aBoard.
-	ship1 receiveBlackHoleEffectFrom: aGame.
+	ship1 receiveBlackHoleEffectFrom: aBoard.
 	self assert: ship1 position equals: 3
 ]
 
 { #category : 'tests' }
 ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 
-	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame ship1 |
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #(5).
+	aDice := LoadedDice withSequence: #( 5 3 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: BlackHole with: 1).
-	aBoard := aBoard := Board
+	distributions add: (Distribution at: HyperSpaceJump with: 1).
+	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
 		          andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
+	ships add: 'ship 2'.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps.
-
-	ship1 := aGame ships at: 1.
-	ship1 loseShield.
-	ship1 loseShield.
-	ship1 choiceToNotPlay.
 	aGame playTurn.
-	self assert: ship1 shields equals: 3
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	aGame skipTurnForShipNamed: 'ship 1'.
+	aGame playTurn.
+	self assert: (aGame ships at: 1) shields equals: 2
 ]

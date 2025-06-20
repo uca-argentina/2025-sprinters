@@ -131,13 +131,13 @@ Board >> specialCells [
 ]
 
 { #category : 'as yet unclassified' }
-Board >> verifyPosition: aShip [
+Board >> verifyPosition: position [
 
-	| shipPosition |
-	shipPosition := aShip position.
+	| newPosition |
+	newPosition := position.
 	wormHole ifNotNil: [
-		^ wormHole transportIfConnectedTo: aShip position ].
-	^ shipPosition   
+		newPosition := wormHole transportIfConnectedTo: position ].
+	^ newPosition
 ]
 
 { #category : 'instance creation' }

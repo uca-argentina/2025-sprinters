@@ -101,7 +101,10 @@ Ship >> loseFight [
 Ship >> loseShield [
 
 	shields := shields - 1.
-	shields = 0 ifTrue: [ turnsToSkip := 2 ]
+	shields = 0 ifFalse: [ ^ self ].
+
+	self recoverShields.
+	turnsToSkip := 2
 ]
 
 { #category : 'as yet unclassified' }
@@ -161,7 +164,7 @@ Ship >> position [
 { #category : 'as yet unclassified' }
 Ship >> receiveAtomicBombEffect [
 	self moveToFirstPosition. 
-	self  loseShield.
+	self loseShield.
 ]
 
 { #category : 'as yet unclassified' }
