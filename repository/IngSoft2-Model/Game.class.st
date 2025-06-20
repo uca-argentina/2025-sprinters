@@ -88,15 +88,6 @@ Game >> currentTopPlayer [
 	^ self shipsSortedByPosition at: 1.
 ]
 
-{ #category : 'as yet unclassified' }
-Game >> findShipBy: shipName [
-
-	| debug |
-	^ ships detect: [ :ship |
-		  debug := ship name.
-		  debug = shipName ]
-]
-
 { #category : 'initialization' }
 Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
 
@@ -196,9 +187,7 @@ Game >> showWinner [
 
 { #category : 'as yet unclassified' }
 Game >> skipTurnForShipNamed: shipName [ 
-	| shipFound |
-	shipFound := self findShipBy: shipName.
-	shipFound choiceToNotPlay.
+	turnManager skipTurnForShipNamed: shipName.
 ]
 
 { #category : 'as yet unclassified' }

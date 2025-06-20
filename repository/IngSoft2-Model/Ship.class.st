@@ -221,7 +221,8 @@ Ship >> throwDices [
 
 { #category : 'as yet unclassified' }
 Ship >> turnsThatHasToSkip [
-	^turnsToSkip 
+
+	^ turnsToSkip
 ]
 
 { #category : 'as yet unclassified' }

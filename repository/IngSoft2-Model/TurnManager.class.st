@@ -17,6 +17,12 @@ TurnManager class >> with: ships [
 	^ self new initializeWith: ships
 ]
 
+{ #category : 'as yet unclassified' }
+TurnManager >> findShipBy: shipName [
+
+	^ ships detect: [ :ship | ship name = shipName ]
+]
+
 { #category : 'initialization' }
 TurnManager >> initializeWith: shipCollection [ 
 	turn := 1.
@@ -55,4 +61,11 @@ TurnManager >> nextShipThatWantToPlay: actualShip [
 		ifFalse: [
 			actualShip skipTurn.
 			^ self nextShip ]
+]
+
+{ #category : 'as yet unclassified' }
+TurnManager >> skipTurnForShipNamed: shipName [	
+	| shipFound |
+	shipFound := self findShipBy: shipName.
+	shipFound choiceToNotPlay.
 ]
