@@ -97,7 +97,7 @@ ShipTest >> test005WhenShip1Moves12CellsInABoardWith5CellsThenShip1Has2Laps [
 		                  andTotalParsec: 20.
 	aCircularBoard with: 3.
 	ship1 move: (dice throw) in: aCircularBoard.
-	self assert: ship1 laps equals: 3
+	self assert: ship1 laps equals: 4
 ]
 
 { #category : 'tests' }
@@ -148,10 +148,10 @@ ShipTest >> test007WhenShipThrow11AndBoardHas5CellsThenShipWinAt2LapsReturnsTrue
 		                  has: distributions
 		                  andTotalParsec: 20.
 	aCircularBoard with: 2.
-	ship1 move: (aLoadedDice throw) in: aCircularBoard.
+	ship1 move: aLoadedDice throw in: aCircularBoard.
 	laps := 2.
 
-	self assert: (ship1 winAt: aCircularBoard until: laps) equals: true
+	self assert: (ship1 winAt: aCircularBoard) equals: true
 ]
 
 { #category : 'tests' }
@@ -293,5 +293,5 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 	aGame playTurn.
 	aGame skipTurnForShipNamed: 'ship 1'.
 	aGame playTurn.
-	self assert: (aGame ships at: 1) shields equals: 2
+	self assert: (aGame ships at: 1) shields equals: 3
 ]

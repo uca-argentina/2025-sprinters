@@ -76,7 +76,8 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: listOfShips.
+		         andShipsNamed: listOfShips
+		         until: 0.
 	gameState := Started new.
 	self
 		should: [ gameState showWinner: aGame ]
@@ -111,7 +112,8 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: listOfShips.
+		         andShipsNamed: listOfShips
+		         until: 0.
 	aGame play.
 	self assert: aGame showWinner name equals: shipOne
 ]
@@ -139,7 +141,8 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: listOfShips.
+		         andShipsNamed: listOfShips
+		         until: 0.
 	gameState := NotPlayed new.
 
 	self
@@ -174,10 +177,11 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: listOfShips.
+		         andShipsNamed: listOfShips
+		         until: 0.
 	aGame playTurn.
-	ship1:=aGame ships at:1.
-	ship2:=aGame ships at:2.
-	
-	self deny: (ship1 position) equals: (ship2 position)
+	ship1 := aGame ships at: 1.
+	ship2 := aGame ships at: 2.
+
+	self deny: ship1 position equals: ship2 position
 ]

@@ -50,10 +50,10 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          andTotalParsec: 20.
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 
 
 	ships add: 'ship 1'.
@@ -62,7 +62,8 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: ships.
+		         andShipsNamed: ships
+		         until: 0.
 
 	self assert: aGame play equals: 'Game over'
 ]
@@ -82,13 +83,17 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          andTotalParsec: 20.
-	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 0.
 	aGame play.
-	self assert: (aGame showWinner) name equals: 'shipOne'
+	self assert: aGame showWinner name equals: 'shipOne'
 ]
 
 { #category : 'tests' }
@@ -97,7 +102,7 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships assertedResult distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := Dice with: 5.
+	aDice := LoadedDice withSequence: #( 5 8 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -105,15 +110,16 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          andTotalParsec: 20.
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 	ships add: 'ship 1'.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: ships.
+		         andShipsNamed: ships
+		         until: 0.
 	aGame play.
 	assertedResult := Dictionary new.
 	assertedResult at: 'ship 1' put: 10.
@@ -128,7 +134,7 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #(5).
+	aDice := LoadedDice withSequence: #( 5 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -136,11 +142,15 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          andTotalParsec: 20.
-	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 0.
 	(aGame ships at: 1) move: 10 in: aBoard.
 	(aGame ships at: 2) move: 5 in: aBoard.
 	aGame play.
@@ -164,10 +174,10 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          andTotalParsec: 20.
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -175,7 +185,11 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 
 	self
 		should: [
-		Game with: aBoard using: aDiceBucket andShipsNamed: ships ]
+			Game
+				with: aBoard
+				using: aDiceBucket
+				andShipsNamed: ships
+				until: 0 ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -197,14 +211,18 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          andTotalParsec: 20.
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 
 	self
 		should: [
-		Game with: aBoard using: aDiceBucket andShipsNamed: ships ]
+			Game
+				with: aBoard
+				using: aDiceBucket
+				andShipsNamed: ships
+				until: 0 ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -226,15 +244,19 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          andTotalParsec: 20.
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 0.
 
 	self assert: (aGame ships at: 1) position equals: 1
 ]
@@ -411,10 +433,10 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 { #category : 'tests' }
 GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 
-	| aDice aBoard amountOfCells aWorm aGame ships laps distributions dices1 aDiceBucket1 dices2 aDiceBucket2 ship1 ship2 |
+	| aDice aBoard amountOfCells aWorm aGame ships laps distributions dices1 aDiceBucket1 dices2 aDiceBucket2 ship1 ship2 ship |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
-	aDice := LoadedDice withSequence: #(6).
+	aDice := LoadedDice withSequence: #( 6 3 3 5 ).
 	dices1 add: aDice.
 	aDiceBucket1 := DiceBucket with: dices1.
 	aDice := LoadedDice with: 4.
@@ -422,29 +444,28 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 	dices2 add: aDice.
 	aDiceBucket2 := DiceBucket with: dices2.
 	amountOfCells := 10.
-	aWorm := Worm with: 2 and: 4.
+	aWorm := Worm with: 9 and: 10.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
 	aBoard := aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          andTotalParsec: 20.
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 	laps := 3.
-	ship1 := Ship create: 'ship 1'.
-	ship2 := Ship create: 'ship 2'.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
 	ships add: ship1.
-	ships add:ship2.
-	aGame := FixGame
+	ships add: ship2.
+	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket1
 		         andShipsNamed: ships
 		         until: laps.
-	ship2 move: 6 in: aBoard.
 	aGame playTurn.
-	self
-		assert: ship1 shields + ship1 position
-		equals: 6
+	aGame playTurn.
+	ship := aGame ships at: 1.
+	self assert: ship shields + ship position equals: 6
 ]
 
 { #category : 'tests' }

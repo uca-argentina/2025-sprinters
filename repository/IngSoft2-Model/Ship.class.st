@@ -31,10 +31,9 @@ Ship >> canPlay [
 
 { #category : 'as yet unclassified' }
 Ship >> choiceToNotPlay [
-	optionalTurn:=false. 
+
 	self recoverShields.
-	
-	
+	turnsToSkip := turnsToSkip + 1
 ]
 
 { #category : 'initialization' }
@@ -176,6 +175,12 @@ Ship >> throwDices [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> throwDicesWith: aDiceBucket [
+
+	^ aDiceBucket throw
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> turnsThatHasToSkip [
 
 	^ turnsToSkip
@@ -190,11 +195,6 @@ Ship >> wantsToPlay [
 { #category : 'as yet unclassified' }
 Ship >> winAt: aBoard [
 
-	^ position >= aBoard amountOfCells
-]
-
-{ #category : 'accessing' }
-Ship >> winAt: arg1 until: arg2 [
-
-	^ currentLap >= arg2
+	^ (currentLap = aBoard laps and: position >= aBoard amountOfCells)
+		  or: currentLap > aBoard laps
 ]

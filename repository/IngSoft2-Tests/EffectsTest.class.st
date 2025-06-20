@@ -201,7 +201,7 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 	effect := AtomicBomb.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #( 0 23 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
@@ -220,12 +220,9 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 4.
-	ship1 := aGame ships at: 1.
-	ship2 := aGame ships at: 2.
-	ship2 move: 23 in: aBoard.
-	effect := (distributions at: 1) cellClass.
-	effect applyTo: ship1 in: aGame.
-	self assert: ship2 laps equals: 2
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (aGame ships at: 2) laps equals: 2
 ]
 
 { #category : 'tests' }
@@ -269,7 +266,7 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #(4 5 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -294,9 +291,7 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 		         andShipsNamed: ships
 		         until: 4.
 	ship1 := aGame ships at: 1.
-	effect := (distributions at:1) cellClass.
-	ship1 move: 4 in: aBoard.
-	effect applyTo: ship1 in: aGame.
+	aGame playTurn .
 	self assert: ship1 position equals: 10.
 ]
 

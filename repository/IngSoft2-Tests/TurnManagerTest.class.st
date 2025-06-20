@@ -68,13 +68,14 @@ TurnManagerTest >> test004WhenShip1DoesNotWantsToPlayThenReturnShip2 [
 
 	| ships ship1 ship2 turnManager actualShip |
 	ships := OrderedCollection new.
-	ship1 := LazyShip create: 'ship1'.
+	ship1 := Ship create: 'ship1'.
 	ship2 := Ship create: 'ship2'.
 	ships add: ship1.
 	ships add: ship2.
 	turnManager := TurnManager with: ships.
+	turnManager skipTurnForShipNamed: 'ship1'.
 	actualShip := turnManager nextShip.
-	self assert: actualShip name  equals: 'ship2'
+	self assert: actualShip name equals: 'ship2'
 ]
 
 { #category : 'tests' }

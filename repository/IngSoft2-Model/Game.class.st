@@ -15,22 +15,6 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Game class >> with: aBoard using: aDiceBucket andShipsNamed: shipsNames [
-
-	| listOfShips |
-	shipsNames size = 0 ifTrue: [
-		^ Error signal: 'List of ships must not be empty.' ].
-	listOfShips := Set new.
-	shipsNames do: [ :ship | listOfShips add: ship ].
-	listOfShips size = shipsNames size ifFalse: [
-		^ Error signal: 'Ship´s name must not be reapeated.' ].
-	^ self new
-		  initializeWith: aBoard
-		  using: aDiceBucket
-		  andShipsNamed: shipsNames
-]
-
-{ #category : 'as yet unclassified' }
 Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: aCollection until: anInteger [
 
 	^ self new 
@@ -89,27 +73,14 @@ Game >> currentTopPlayer [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
-
-	board := aBoard.
-	ships := shipsNames collect: [ :aName | Ship create: aName ].
-	status := Started new.
-	bucketOfDices := aDiceBucket.
-	turnManager:= TurnManager with:ships.
-	battleManager :=BattleManager new.
-]
-
-{ #category : 'initialization' }
 Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
 
-	board := aCircularBoard with:numberOfLaps .
+	board := aCircularBoard with: numberOfLaps.
 	ships := shipsNames collect: [ :aName | Ship create: aName ].
 	bucketOfDices := aDiceBucket.
 	status := Started new.
-	turnManager:= TurnManager with:ships.
-	battleManager :=BattleManager .
-	
-	
+	turnManager := TurnManager with: ships.
+	battleManager := BattleManager with: aDiceBucket
 ]
 
 { #category : 'testing' }
@@ -129,15 +100,17 @@ Game >> play [
 { #category : 'as yet unclassified' }
 Game >> playTurn [
 
-	| actualShip effect positionToMove |
+	| actualShip effect positionToMove shipsInSamePosition |
 	actualShip := turnManager nextShip.
 	positionToMove := bucketOfDices throw.
 	actualShip move: positionToMove in: board.
 	effect := board effectOnPosition: actualShip position.
 	effect applyTo: actualShip in: self.
-	(ships select: [ :ship |
-		 ship ~~ actualShip and: [
-			 ship position = actualShip position ] ]) do: [ :enemy |
+	shipsInSamePosition := ships select: [ :ship |
+		                       ship ~~ actualShip and: [
+			                       ship position = actualShip position and:
+				                       ship laps = actualShip laps ] ].
+	shipsInSamePosition do: [ :enemy |
 		battleManager fightBetween: actualShip and: enemy ].
 	self someShipWon
 ]
@@ -197,12 +170,6 @@ Game >> someShipWon [
 
 	| laps |
 	laps := board laps.
-	winner := ships
-		          detect: [ :ship |
-			          laps isNil
-				          ifTrue: [ ship winAt: board ]
-				          ifFalse: [ ship winAt: board until: laps ] ]
-		          ifNone: [ nil ].
-
-	winner ifNotNil:[status:=Finished new]
+	winner := ships detect: [ :ship | ship winAt: board ] ifNone: [ nil ].
+	winner ifNotNil: [ status := Finished new ]
 ]
