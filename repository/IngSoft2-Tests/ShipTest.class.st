@@ -95,7 +95,7 @@ ShipTest >> test005WhenShip1Moves12CellsInABoardWith5CellsThenShip1Has2Laps [
 { #category : 'tests' }
 ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 
-	| ship1 aLoadedDice aCircularBoard ships laps aGame aDice dices aDiceBucket amountOfCells aWorm distributions aBoard |
+	| ship1 ships laps aGame aDice dices aDiceBucket amountOfCells aWorm distributions aBoard |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	ship1 := 'Ship1'.
@@ -108,7 +108,11 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
 
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	laps := 3.
 	aGame := Game
 		         with: aBoard
@@ -232,8 +236,11 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
 	aGame := Game
@@ -261,8 +268,11 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
 	aGame := Game

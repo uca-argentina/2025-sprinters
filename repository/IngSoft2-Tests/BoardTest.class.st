@@ -178,7 +178,7 @@ BoardTest >> test007WhenGivenDistributionToABoardThenAllAddUpToTheExacAmountOfCe
 { #category : 'tests' }
 BoardTest >> test008WhenAskForEffectOnPositionThenBoardReturnItEffect [
 
-	| amountOfCells aX aY aWorm aBoard distributions total effect |
+	| amountOfCells aX aY aWorm aBoard distributions effect |
 	amountOfCells := 4.
 	"El numero de celdas por ahora esta logicamente implementado para que sea siempre un entero, un par"
 	aX := 1.
@@ -194,7 +194,7 @@ BoardTest >> test008WhenAskForEffectOnPositionThenBoardReturnItEffect [
 		          has: distributions
 		          andTotalParsec: 100.
 	effect := aBoard effectOnPosition: 3.
-	self assert: effect equals: 'BlackHole'
+	self assert: effect className equals: 'BlackHole'
 ]
 
 { #category : 'tests' }
@@ -238,5 +238,5 @@ BoardTest >> test010WhenCreateBoardWithDistributionsThenEffectsOFCellsISNoEFfect
 		          and: aWorm
 		          has: distributions
 		          andTotalParsec: 20.
-	self assert: (aBoard effectOnPosition: 3) equals: 'NoEffect'
+	self assert: (aBoard effectOnPosition: 3) className equals: 'NoEffect'
 ]

@@ -18,7 +18,11 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -45,7 +49,11 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 
 
 	ships add: 'ship 1'.
@@ -73,7 +81,11 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
 	aGame play.
 	self assert: (aGame showWinner) name equals: 'shipOne'
@@ -92,7 +104,11 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	ships add: 'ship 1'.
 	aGame := Game
 		         with: aBoard
@@ -119,7 +135,11 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
 	(aGame ships at: 1) move: 10.
 	(aGame ships at: 2) move: 5.
@@ -133,7 +153,7 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 { #category : 'tests' }
 GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -141,7 +161,13 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -160,7 +186,7 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 { #category : 'tests' }
 GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -168,8 +194,13 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
-
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 
 	self
 		should: [
@@ -184,7 +215,7 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 { #category : 'tests' }
 GameTest >> test007WhenCreateGameThenGameCreateShips [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -192,7 +223,13 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -215,7 +252,11 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	laps := 1.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -236,7 +277,7 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 { #category : 'tests' }
 GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionReturnShip1AtFirst [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult result ship1 ship2 ship3 |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps result ship1 ship2 ship3 distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice with: 10.
@@ -244,7 +285,13 @@ GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionRe
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -267,7 +314,7 @@ GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionRe
 { #category : 'tests' }
 GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice with:10.
@@ -275,7 +322,13 @@ GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -308,8 +361,11 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -336,8 +392,11 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -354,7 +413,7 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 { #category : 'tests' }
 GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions dices1 aDiceBucket1 dices2 aDiceBucket2 ship1 ship2 |
+	| aDice aBoard amountOfCells aWorm aGame ships laps distributions dices1 aDiceBucket1 dices2 aDiceBucket2 ship1 ship2 |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
 	aDice := LoadedDice withSequence: #(6).
@@ -368,8 +427,11 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	laps := 3.
 	ship1 := Ship create: 'ship 1' with: aDiceBucket1.
 	ship2 := Ship create: 'ship 2' with: aDiceBucket2.
@@ -400,8 +462,11 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
 	aGame := Game
@@ -417,7 +482,7 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 { #category : 'tests' }
 GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShipThenFight [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 dices2 aDiceBucket2 ship2 |
+	| aDice aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 ship2 |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
 	aDice := LoadedDice withSequence: #( 14 3 ).
@@ -427,8 +492,11 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	laps := 3.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.

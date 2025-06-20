@@ -56,7 +56,7 @@ GameStateTest >> test005WhenGameIsFinishedThenPlayingStateIsFalse [
 { #category : 'tests' }
 GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 
-	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame |
+	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
@@ -66,7 +66,13 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 	aDiceBucket := DiceBucket with: listOfDices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -97,7 +103,11 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
 
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -109,7 +119,7 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 { #category : 'tests' }
 GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 
-	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame |
+	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
@@ -119,7 +129,13 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 	aDiceBucket := DiceBucket with: listOfDices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -150,7 +166,11 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket

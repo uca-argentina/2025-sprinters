@@ -32,7 +32,7 @@ Board class >> with: aAmountOfCells and: aWormHole has: aDistribution andTotalPa
 { #category : 'as yet unclassified' }
 Board >> amountOfBlackHoleCells [
 
-	^ self amountOfCellsOf: 'BlackHole'.
+	^ self amountOfCellsOf: 'BlackHole class'.
 ]
 
 { #category : 'accessing' }
@@ -62,7 +62,7 @@ Board >> amountOfNoEffectCells [
 { #category : 'as yet unclassified' }
 Board >> effectOnPosition: position [
 
-	^ (cells at: position) effect value className
+	^ (cells at: position) effect value
 ]
 
 { #category : 'initialization' }

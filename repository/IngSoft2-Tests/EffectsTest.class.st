@@ -231,7 +231,7 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 { #category : 'tests' }
 EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 distributions |
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions |
 	effect := AtomicBomb.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
