@@ -119,7 +119,7 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 0.
+		         until: 1.
 	aGame play.
 	assertedResult := Dictionary new.
 	assertedResult at: 'ship 1' put: 10.
@@ -189,7 +189,7 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 				with: aBoard
 				using: aDiceBucket
 				andShipsNamed: ships
-				until: 0 ]
+				until: 1 ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self

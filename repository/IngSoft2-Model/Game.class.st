@@ -15,12 +15,34 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: aCollection until: anInteger [
+Game class >> validateUniqueNames: ships [
 
-	^ self new 
+	| uniqueNames duplicatedNames |
+	uniqueNames := Set new.
+	duplicatedNames := OrderedCollection new.
+
+	ships do: [ :shipName |
+		(uniqueNames includes: shipName)
+			ifTrue: [ duplicatedNames add: shipName ]
+			ifFalse: [ uniqueNames add: shipName ] ].
+
+	duplicatedNames isEmpty ifFalse: [
+		^ Error signal: 'Ship´s name must not be reapeated.' ].
+
+	^ ships
+]
+
+{ #category : 'as yet unclassified' }
+Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: shipsName until: anInteger [
+
+	shipsName ifEmpty: [
+		^ Error signal: 'List of ships must not be empty.' ].
+	self validateUniqueNames: shipsName.
+
+	^ self new
 		  initializeWith: aCircularBoard
 		  using: aLoadedDice
-		  andShipsNamed: aCollection
+		  andShipsNamed: shipsName
 		  until: anInteger
 ]
 
