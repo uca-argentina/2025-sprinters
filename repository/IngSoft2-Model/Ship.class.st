@@ -116,6 +116,7 @@ Ship >> move: numberOfCells in: aBoard [
 	newPosition := position + numberOfCells.
 	result := aBoard move: newPosition at: currentLap having: 0.
 	position := result at: 1.
+	position := aBoard verifyPosition: position.
 	currentLap := result at: 2
 ]
 
@@ -164,9 +165,13 @@ Ship >> receiveAtomicBombEffect [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> receiveBlackHoleEffectFrom: aGame [ 
-	self move:-4 in:aGame board
-	
+Ship >> receiveBlackHoleEffectFrom: aBoard [
+
+	| newPosition result |
+	newPosition := position - 4.
+	result := aBoard move: newPosition at: currentLap having: 0.
+	position := result at: 1.
+	currentLap := result at: 2
 ]
 
 { #category : 'as yet unclassified' }
@@ -175,8 +180,13 @@ Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> recieveHyperSpaceJumpIn: aBoard [ 
-	self move: 4 in: aBoard.
+Ship >> recieveHyperSpaceJumpIn: aBoard [
+
+	| newPosition result |
+	newPosition := position + 4.
+	result := aBoard move: newPosition at: currentLap having: 0.
+	position := result at: 1.
+	currentLap := result at: 2.
 	self loseShield
 ]
 

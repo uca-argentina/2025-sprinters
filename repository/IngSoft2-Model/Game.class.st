@@ -48,7 +48,7 @@ Game >> applyAtomicEffectOn: aShip [
 { #category : 'as yet unclassified' }
 Game >> applyBlackHoleEffectOn: aShip [
 
-	aShip receiveBlackHoleEffectFrom: self
+	aShip receiveBlackHoleEffectFrom: board 
 ]
 
 { #category : 'as yet unclassified' }

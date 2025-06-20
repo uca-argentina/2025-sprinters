@@ -112,7 +112,6 @@ Board >> move: distance at: lap having: parsecs [
 				            ifFalse: [
 					            newPosition <= 0 ifTrue: [ 1 ].
 					            newPosition min: amountOfCells ] ].
-	position := self verifyPosition: position.
 	^ {position. currentLap.}.
 ]
 
@@ -126,22 +125,6 @@ Board >> moveThrowTheLaps: currentLap this: position [
 Board >> parsecsPerCell [
 
 	^ totalParsecs // amountOfCells
-]
-
-{ #category : 'as yet unclassified' }
-Board >> sendValidPosition: newPosition [
-
-	| position |
-	position := newPosition <= 0
-		            ifTrue: [ 1 ]
-		            ifFalse: [
-			            laps > 1
-				            ifTrue: [ newPosition \\ amountOfCells ]
-				            ifFalse: [
-					            newPosition <= 0 ifTrue: [ 1 ].
-					            newPosition min: amountOfCells ] ].
-	position := self verifyPosition: position.
-	^ position
 ]
 
 { #category : 'as yet unclassified' }
