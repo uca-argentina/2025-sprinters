@@ -8,87 +8,145 @@ Class {
 { #category : 'tests' }
 BoardTest >> test000WhenCreateBoardWithAmountOfCellsThenShowAmountOfCells [
 
-	| aBoard amountOfCells |
+	| aBoard amountOfCells aWorm distributions |
 	amountOfCells := 10.
-	aBoard := Board with: amountOfCells.
+	aWorm := Worm with: 4 and: 6.
+
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	self assert: aBoard amountOfCells equals: amountOfCells
 ]
 
 { #category : 'tests' }
 BoardTest >> test001WhenPlayGameThenReturnGameOver [
 
-	| aBoard amountOfCells aWorm aX aY |
+	| aBoard amountOfCells aWorm aX aY distributions |
 	amountOfCells := 10.
 	aX := 4.
 	aY := 6.
-	aWorm := Worm with: aX and: aY. 
-	aBoard := Board with: amountOfCells and: aWorm.
-	self assert: aBoard specialCells equals: {aX. aY}.
+	aWorm := Worm with: aX and: aY.
+
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	self assert: aBoard specialCells equals: {
+			aX.
+			aY }
 ]
 
 { #category : 'tests' }
 BoardTest >> test002WhenCreateBoardWithWrongWormHolePostionThenReturnsError [
 
-	| amountOfCells aWorm |
+	| amountOfCells aWorm distributions |
 	amountOfCells := 10.
-	aWorm := Worm with: 4 and: 11. 
-	self 
-	
-	should: [ Board with: amountOfCells and: aWorm.]
-	raise: Error 
-	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Position of the worm hole exceed amount board`s cells' ].
+	aWorm := Worm with: 4 and: 11.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	self
+		should: [
+			Board
+				with: amountOfCells
+				and: aWorm
+				has: distributions
+				andTotalParsec: 20 ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'Position of the worm hole exceed amount board`s cells' ]
 ]
 
 { #category : 'tests' }
 BoardTest >> test003WhenCreateBoardWithCellsLessThan1ThenReturnsError [
 
-	| amountOfCells aWorm |
+	| amountOfCells aWorm distributions |
 	amountOfCells := 0.
-	aWorm := Worm with: 4 and: 11. 
-	self 
-	
-	should: [ Board with: amountOfCells and: aWorm.]
-	raise: Error 
-	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Amount of cells must be greater than zero' ].
+	aWorm := Worm with: 4 and: 11.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	self
+		should: [
+			Board
+				with: amountOfCells
+				and: aWorm
+				has: distributions
+				andTotalParsec: 20 ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'Amount of cells must be greater than zero' ]
 ]
 
 { #category : 'tests' }
 BoardTest >> test004WhenCreateBoardWithCellsNotIntegerThenReturnsError [
 
-	| amountOfCells aWorm |
+	| amountOfCells aWorm distributions |
 	amountOfCells := 3.14.
-	aWorm := Worm with: 4 and: 11. 
-	self 
-	
-	should: [ Board with: amountOfCells and: aWorm.]
-	raise: Error 
-	withExceptionDo: [ :error | self assert: (error messageText) equals: 'Amount of cells must be an integer' ].
+	aWorm := Worm with: 4 and: 11.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	self
+		should: [
+			Board
+				with: amountOfCells
+				and: aWorm
+				has: distributions
+				andTotalParsec: 20 ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'Amount of cells must be an integer' ]
 ]
 
 { #category : 'tests' }
 BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 
-	| amountOfCells aX aY aWorm aBoard aShip |
+	| amountOfCells aX aY aWorm aBoard aShip distributions |
 	amountOfCells := 10.
 	aX := 4.
-	aY :=7.
+	aY := 7.
 	aWorm := Worm with: aX and: aY.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	aShip := Ship newShip.
 	aShip move: 6.
-	self assert: (aBoard verifyPosition: aShip) equals: 4.
+	self assert: (aBoard verifyPosition: aShip) equals: 4
 ]
 
 { #category : 'tests' }
 BoardTest >> test006WhenShipMoveMoreThanCellsInTheBoardThenPositionIsAmountOfCells [
 
-	| amountOfCells aX aY aWorm aBoard aShip loadedDice |
+	| amountOfCells aX aY aWorm aBoard aShip loadedDice distributions |
 	amountOfCells := 4.
 	aX := 1.
 	aY := 2.
 	aWorm := Worm with: aX and: aY.
-	aBoard := Board with: amountOfCells and: aWorm.
-	loadedDice := LoadedDice withSequence: #(6).
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	loadedDice := LoadedDice withSequence: #( 6 ).
 	aShip := Ship create: 'ship1' with: loadedDice.
 	aShip moveIn: aBoard.
 	self assert: (aBoard verifyPosition: aShip) equals: 4
@@ -98,7 +156,7 @@ BoardTest >> test006WhenShipMoveMoreThanCellsInTheBoardThenPositionIsAmountOfCel
 BoardTest >> test007WhenGivenDistributionToABoardThenAllAddUpToTheExacAmountOfCells [
 
 	| amountOfCells aX aY aWorm aBoard distributions total |
-	amountOfCells := 100.
+	amountOfCells := 5.
 	"El numero de celdas por ahora esta logicamente implementado para que sea siempre un entero, un par"
 	aX := 1.
 	aY := 2.
@@ -108,16 +166,20 @@ BoardTest >> test007WhenGivenDistributionToABoardThenAllAddUpToTheExacAmountOfCe
 	distributions add: (Distribution at: NoEffect with: 0.4).
 	distributions add: (Distribution at: BlackHole with: 0.6).
 
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 100.
 	total := aBoard amountOfNoEffectCells + aBoard amountOfBlackHoleCells.
-	self assert: total equals: amountOfCells.
+	self assert: total equals: amountOfCells
 ]
 
 { #category : 'tests' }
 BoardTest >> test008WhenAskForEffectOnPositionThenBoardReturnItEffect [
 
 	| amountOfCells aX aY aWorm aBoard distributions total effect |
-	amountOfCells := 100.
+	amountOfCells := 4.
 	"El numero de celdas por ahora esta logicamente implementado para que sea siempre un entero, un par"
 	aX := 1.
 	aY := 2.
@@ -126,16 +188,20 @@ BoardTest >> test008WhenAskForEffectOnPositionThenBoardReturnItEffect [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
 
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 100.
 	effect := aBoard effectOnPosition: 3.
-	self assert: effect className equals: 'BlackHole'
+	self assert: effect equals: 'BlackHole'
 ]
 
 { #category : 'tests' }
 BoardTest >> test009WhenGivenDistributionToABoardThenAllAddUpToTheExactAmountOfCellsAs4 [
 
 	| amountOfCells aX aY aWorm aBoard distributions total |
-	amountOfCells := 4.
+	amountOfCells := 2.
 	"El numero de celdas por ahora esta logicamente implementado para que sea siempre un entero, un par"
 	aX := 1.
 	aY := 2.
@@ -145,9 +211,13 @@ BoardTest >> test009WhenGivenDistributionToABoardThenAllAddUpToTheExactAmountOfC
 	distributions add: (Distribution at: NoEffect with: 0.4).
 	distributions add: (Distribution at: BlackHole with: 0.6).
 
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 1.
 	total := aBoard amountOfNoEffectCells + aBoard amountOfBlackHoleCells.
-	self assert: total equals: amountOfCells.
+	self assert: total equals: amountOfCells
 ]
 
 { #category : 'tests' }
@@ -163,6 +233,10 @@ BoardTest >> test010WhenCreateBoardWithDistributionsThenEffectsOFCellsISNoEFfect
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
 
-	aBoard := Board with: amountOfCells and: aWorm has: distributions andTotalParsec: 20.
-	self assert: (aBoard effectOnPosition: 3 ) className equals: 'NoEffect class'.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	self assert: (aBoard effectOnPosition: 3) equals: 'NoEffect'
 ]

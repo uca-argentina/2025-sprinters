@@ -12,43 +12,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-Board class >> with: aAmountOfCells [
-
-	aAmountOfCells isInteger ifFalse: [
-		^ Error signal: 'Amount of cells must be an integer' ].
-	aAmountOfCells < 1 ifTrue: [
-		^ Error signal: 'Amount of cells must be greater than zero' ].
-	nil.
-	^ self new initializeWith: aAmountOfCells
-]
-
-{ #category : 'as yet unclassified' }
-Board class >> with: aAmountOfCells and: aWormHole [ 
-
-	aAmountOfCells isInteger ifFalse: [
-		^ Error signal: 'Amount of cells must be an integer' ].
-	aAmountOfCells < 1 ifTrue: [
-		^ Error signal: 'Amount of cells must be greater than zero' ].
-	(aWormHole isInside: aAmountOfCells) ifFalse: [
-		^ Error signal:
-			  'Position of the worm hole exceed amount board`s cells' ].
-	^ self new initializeWith: aAmountOfCells and: aWormHole
-]
-
-{ #category : 'as yet unclassified' }
-Board class >> with: aAmountOfCells and: aWormHole has: aDistribution [
-
-	aAmountOfCells isInteger ifFalse: [
-		^ Error signal: 'Amount of cells must be an integer' ].
-	aAmountOfCells < 1 ifTrue: [
-		^ Error signal: 'Amount of cells must be greater than zero' ].
-	(aWormHole isInside: aAmountOfCells) ifFalse: [
-		^ Error signal:
-			  'Position of the worm hole exceed amount board`s cells' ].
-	^ self new initializeWith: aAmountOfCells and: aWormHole has: aDistribution.
-]
-
 { #category : 'as yet unclassified' }
 Board class >> with: aAmountOfCells and: aWormHole has: aDistribution andTotalParsec: parsecs [
 
@@ -81,63 +44,25 @@ Board >> amountOfCells [
 { #category : 'as yet unclassified' }
 Board >> amountOfCellsOf: anEffectOrClass [
 
-	| count |
+	| count effect classEffect |
 	count := 0.
 	cells do: [ :cell |
-		(cell effect className= anEffectOrClass) ifTrue: [
-			count := count + 1 ] ].
+		effect := cell effect.
+		classEffect := effect className.
+		classEffect = anEffectOrClass ifTrue: [ count := count + 1 ] ].
 	^ count
 ]
 
 { #category : 'as yet unclassified' }
 Board >> amountOfNoEffectCells [
-	^ self amountOfCellsOf: 'NoEffect'.
+
+	^ self amountOfCellsOf: 'NoEffect class'
 ]
 
 { #category : 'as yet unclassified' }
 Board >> effectOnPosition: position [
-	^ (cells at: position) effect
-]
 
-{ #category : 'initialization' }
-Board >> initializeWith: cells [
-
-	amountOfCells := cells.
-	laps := 1
-]
-
-{ #category : 'initialization' }
-Board >> initializeWith: aAmountOfCells and: aWormHole [
-	amountOfCells := aAmountOfCells.
-	wormHole := aWormHole.
-	laps:=1.
-]
-
-{ #category : 'initialization' }
-Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions [
-
-	| cell effects |
-	amountOfCells := aAmountOfCells.
-	wormHole := aWormHole.
-	laps := 1.
-
-	effects := OrderedCollection new.
-
-	"Asignar cantidades exactas"
-	distributions do: [ :dist |
-		(dist probability * amountOfCells) asInteger timesRepeat: [
-			effects add: dist cellClass ] ].
-	
-	(effects size = amountOfCells) ifFalse:[(amountOfCells - effects size) timesRepeat: [effects add: NoEffect initializeThis]].
-
-	effects := effects shuffle.
-	"Crear celdas"
-	cells := OrderedCollection new.
-	1 to: amountOfCells do: [ :i |
-		cell := Cell new.
-		cell position: i.
-		cell effect: (effects at: i).
-		cells add: cell ]
+	^ (cells at: position) effect value className
 ]
 
 { #category : 'initialization' }

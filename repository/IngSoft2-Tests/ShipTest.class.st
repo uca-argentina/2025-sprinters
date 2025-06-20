@@ -52,22 +52,41 @@ ShipTest >> test003WhenCreateAShipWithNameThatIsNotAStringThenRaiceError [
 
 { #category : 'tests' }
 ShipTest >> test004WhenShip1PositionIsLastOneAndThrow1ThenShip1StartFromTheBeginning [
-	| ship1  aCircularBoard dice |
-	dice:=LoadedDice withSequence: #(1).
-	ship1 :=Ship create: 'Ship1' with:dice.
-	aCircularBoard := Board with: 5.
+
+	| ship1 aCircularBoard dice amountOfCells aX aY aWorm distributions aBoard |
+	dice := LoadedDice withSequence: #( 4 1 ).
+	ship1 := Ship create: 'Ship1' with: dice.
+	amountOfCells := 4.
+	aX := 1.
+	aY := 2.
+	aWorm := Worm with: aX and: aY.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aCircularBoard := Board
+		                  with: amountOfCells
+		                  and: aWorm
+		                  has: distributions
+		                  andTotalParsec: 20.
 	aCircularBoard with: 2.
 	ship1 moveIn: aCircularBoard.
-	self assert: (ship1 position ) equals: 2.
+	self assert: ship1 position equals: 2
 ]
 
 { #category : 'tests' }
 ShipTest >> test005WhenShip1Moves12CellsInABoardWith5CellsThenShip1Has2Laps [
 
-	| ship1  aCircularBoard dice |
-	dice:=LoadedDice withSequence: #(16).
-	ship1 := Ship create: 'Ship1' with:dice.
-	aCircularBoard := Board with: 5.
+	| ship1 aCircularBoard dice aWorm distributions |
+	dice := LoadedDice withSequence: #( 16 ).
+	ship1 := Ship create: 'Ship1' with: dice.
+
+	aWorm := Worm with: 1 and: 2.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aCircularBoard := Board
+		                  with: 5
+		                  and: aWorm
+		                  has: distributions
+		                  andTotalParsec: 20.
 	aCircularBoard with: 3.
 	ship1 moveIn: aCircularBoard.
 	self assert: ship1 laps equals: 3
@@ -104,11 +123,18 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 { #category : 'tests' }
 ShipTest >> test007WhenShipThrow11AndBoardHas5CellsThenShipWinAt2LapsReturnsTrue [
 
-	| ship1 aLoadedDice aCircularBoard ships laps aGame cells |
+	| ship1 aLoadedDice aCircularBoard ships laps aGame cells aWorm distributions |
 	ships := OrderedCollection new.
-	aLoadedDice := LoadedDice withSequence: #(11).
-	ship1 := Ship create: 'Ship1' with:aLoadedDice .
-	aCircularBoard := Board with: 5.
+	aLoadedDice := LoadedDice withSequence: #( 11 ).
+	ship1 := Ship create: 'Ship1' with: aLoadedDice.
+	aWorm := Worm with: 1 and: 2.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aCircularBoard := Board
+		                  with: 5
+		                  and: aWorm
+		                  has: distributions
+		                  andTotalParsec: 20.
 	aCircularBoard with: 2.
 	ship1 moveIn: aCircularBoard.
 	laps := 2.
