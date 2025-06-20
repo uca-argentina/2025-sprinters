@@ -127,9 +127,10 @@ Game >> play [
 { #category : 'as yet unclassified' }
 Game >> playTurn [
 
-	| actualShip effect |
+	| actualShip effect positionToMove |
 	actualShip := turnManager nextShip.
-	actualShip moveIn: board.
+	positionToMove := actualShip throwDices.
+	actualShip move: positionToMove in: board.
 	effect := board effectOnPosition: actualShip position.
 	effect applyTo: actualShip in: self.
 	(ships select: [ :ship |

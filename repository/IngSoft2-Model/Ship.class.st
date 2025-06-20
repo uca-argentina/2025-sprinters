@@ -112,28 +112,31 @@ Ship >> move: numberOfCells [
 { #category : 'as yet unclassified' }
 Ship >> move: numberOfCells in: aBoard [
 
-	| newPosition |
+	| newPosition result |
 	newPosition := position + numberOfCells.
-
-	currentLap := aBoard moveThrowTheLaps: currentLap this: position.
-
-	position := aBoard sendValidPosition: newPosition
+	result := aBoard move: newPosition at: currentLap having: 0.
+	position := result at: 1.
+	currentLap := result at: 2
 ]
 
 { #category : 'as yet unclassified' }
 Ship >> moveByParsecs: parsecs on: aBoard [
 
-	position := aBoard sendValidPosition: position throw: parsecs
+	| result |
+	result := aBoard move: position at: currentLap having: parsecs.
+	position := result at: 1.
+	currentLap := result at: 2
 ]
 
 { #category : 'as yet unclassified' }
 Ship >> moveIn: aBoard [
 
-	| boardCells |
+	| result |
 	position := position + self throwDices.
-	boardCells := aBoard amountOfCells.
-	currentLap := aBoard moveThrowTheLaps: currentLap this: position.
-	position := aBoard sendValidPosition: position
+
+	result := aBoard move: position at: currentLap having: 0.
+	position := result at: 1.
+	currentLap := result at: 2
 ]
 
 { #category : 'as yet unclassified' }
