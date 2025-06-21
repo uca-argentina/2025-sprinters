@@ -18,7 +18,11 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
 	amountOfCells := 10.
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	ships add: 'ship 1'.
 	aGame := Game
 		         with: aBoard
@@ -26,10 +30,10 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 		         andShipsNamed: ships
 		         until: 1.
 	ship1 := aGame ships at: 1.
-	ship1 move: 6.
+	ship1 move: 6 in: aBoard.
 	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showPosition equals: 3
+	self assert: ship1 position equals: 3
 ]
 
 { #category : 'tests' }
@@ -44,7 +48,11 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 	aWorm := Worm with: 2 and: 8.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-	aBoard := Board with: 10.
+	aBoard := Board
+		          with: 10
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	ships add: 'ship 1'.
 	aGame := Game
 		         with: aBoard
@@ -52,10 +60,10 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 		         andShipsNamed: ships
 		         until: 1.
 	ship1 := aGame ships at: 1.
-	ship1 move: 2.
-	effect := (distributions at:1) cellClass.
+	ship1 move: 2 in: aBoard.
+	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showPosition equals: 1
+	self assert: ship1 position equals: 1
 ]
 
 { #category : 'tests' }
@@ -70,7 +78,11 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 	aWorm := Worm with: 2 and: 8.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: HyperSpaceJump with: 1).
-	aBoard := Board with: 10.
+	aBoard := Board
+		          with: 10
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	ships add: 'ship 1'.
 	aGame := Game
 		         with: aBoard
@@ -78,9 +90,9 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 		         andShipsNamed: ships
 		         until: 1.
 	ship1 := aGame ships at: 1.
-	effect := (distributions at:1) cellClass.
+	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showPosition equals: 5
+	self assert: ship1 position equals: 5
 ]
 
 { #category : 'tests' }
@@ -96,7 +108,11 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 	aWorm := Worm with: 2 and: 8.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: HyperSpaceJump with: 1).
-	aBoard := Board with: 10.
+	aBoard := Board
+		          with: 10
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	ships add: 'ship 1'.
 	aGame := Game
 		         with: aBoard
@@ -104,9 +120,9 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 		         andShipsNamed: ships
 		         until: 1.
 	ship1 := aGame ships at: 1.
-	effect := (distributions at:1) cellClass.
+	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showShields equals: 2
+	self assert: ship1 shields equals: 2
 ]
 
 { #category : 'tests' }
@@ -123,7 +139,11 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 	aWorm := Worm with: 2 and: 8.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: MoonWalk with: 1).
-	aBoard := Board with: 10.
+	aBoard := Board
+		          with: 10
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	aGame := Game
@@ -133,11 +153,11 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 		         until: 2.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
-	ship2 move: 13 in: aBoard .
+	ship2 move: 13 in: aBoard.
 	effect := (distributions at: 1) cellClass.
 
 	effect applyTo: ship1 in: aGame.
-	self assert: ship2 showPosition equals: 1
+	self assert: ship2 position equals: 1
 ]
 
 { #category : 'tests' }
@@ -153,7 +173,11 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 	aWorm := Worm with: 2 and: 8.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: AtomicBomb with: 1).
-	aBoard := Board with: 10.
+	aBoard := Board
+		          with: 10
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
@@ -164,10 +188,10 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 		         until: 4.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
-	ship2 move: 23 in:aBoard.
-	effect := (distributions at:1) cellClass.
+	ship2 move: 23 in: aBoard.
+	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
-	self assert: (ship1 showPosition + ship2 showPosition) equals: 2
+	self assert: ship1 position + ship2 position equals: 2
 ]
 
 { #category : 'tests' }
@@ -177,13 +201,17 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 	effect := AtomicBomb.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #( 0 23 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: AtomicBomb with: 1).
-	aBoard := Board with: 10.
+	aBoard := Board
+		          with: 10
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
@@ -192,29 +220,30 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 4.
-	ship1 := aGame ships at: 1.
-	ship2 := aGame ships at: 2.
-	ship2 move: 23 in:aBoard.
-	effect := (distributions at:1) cellClass.
-	effect applyTo: ship1 in: aGame.
-	self assert: ship2 showLaps equals: 2
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (aGame ships at: 2) laps equals: 2
 ]
 
 { #category : 'tests' }
 EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 distributions |
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions |
 	effect := AtomicBomb.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #( 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	aWorm := Worm with: 2 and: 8.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: effect with: 1).
 
-	aBoard := Board with: 10 and: aWorm has: distributions.
+	aBoard := Board
+		          with: 10
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	ships add: 'ship 1'.
 	aGame := Game
 		         with: aBoard
@@ -223,13 +252,13 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 		         until: 4.
 	ship1 := aGame ships at: 1.
 	aGame playTurn.
-	self assert: ship1 showShields equals: 2
+	self assert: ship1 shields equals: 2
 ]
 
 { #category : 'tests' }
 EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions |
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions |
 	parsecsToMove := OrderedCollection new.
 	parsecsToMove add: 8.
 	parsecsToMove add: 6.
@@ -237,12 +266,12 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #(2 5 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
-	aX := 1.
-	aY := 3.
+	aX := 2.
+	aY := 9.
 	aWorm := Worm with: aX and: aY.
 
 	distributions := OrderedCollection new.
@@ -262,10 +291,8 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 		         andShipsNamed: ships
 		         until: 4.
 	ship1 := aGame ships at: 1.
-	effect := (distributions at:1) cellClass.
-	ship1 move: 4 in: aBoard.
-	effect applyTo: ship1 in: aGame.
-	self assert: ship1 showPosition equals: 10.
+	aGame playTurn .
+	self assert: ship1 position equals: 8.
 ]
 
 { #category : 'tests' }
@@ -308,7 +335,7 @@ EffectsTest >> test010WhenCreatHuperJumpEffectToShip1andShip2ThenShipsPositionAr
 	effect := (distributions at:1) cellClass.
 	effect applyTo: ship1 in: aGame.
 	effect applyTo: ship2 in: aGame.
-	self assert: (ship1 showPosition + ship2 showPosition) equals: 11.
+	self assert: (ship1 position + ship2 position) equals: 11.
 ]
 
 { #category : 'tests' }

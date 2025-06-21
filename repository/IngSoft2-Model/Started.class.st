@@ -11,10 +11,9 @@ Started >> isFinished [
 	^ false
 ]
 
-{ #category : 'testing' }
-Started >> isPlaying [
-
-	^ true
+{ #category : 'as yet unclassified' }
+Started >> play:aGame [
+	 [aGame currentStatus isFinished ] whileFalse: [ aGame playTurn ].
 ]
 
 { #category : 'as yet unclassified' }

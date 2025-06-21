@@ -11,10 +11,11 @@ Finished >> isFinished [
 	^ true
 ]
 
-{ #category : 'testing' }
-Finished >> isPlaying [
+{ #category : 'as yet unclassified' }
+Finished >> play: aGame [
 
-	^ false
+	^ Error signal:
+		  'The game has already been played, you can not play any more.'
 ]
 
 { #category : 'as yet unclassified' }

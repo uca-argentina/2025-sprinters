@@ -1,6 +1,6 @@
 Class {
 	#name : 'MoonWalk',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#instVars : [
 		'numberOfCells'
 	],
@@ -37,10 +37,4 @@ MoonWalk >> initializeWith: cells [
 { #category : 'accessing' }
 MoonWalk >> numberOfCells [
 	^ numberOfCells
-]
-
-{ #category : 'as yet unclassified' }
-MoonWalk >> showName [
-
-	^ 'Moon Walk'
 ]

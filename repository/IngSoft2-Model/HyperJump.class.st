@@ -1,6 +1,6 @@
 Class {
 	#name : 'HyperJump',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#instVars : [
 		'parsecsToMove',
 		'index'
@@ -34,10 +34,11 @@ HyperJump class >> with: parsecsToMove [
 { #category : 'as yet unclassified' }
 HyperJump >> applyTo: aShip in: aGame [
 
-	| board parsecsToJump |
+	| board parsecsToJump cellsToJump |
 	board := aGame board.
 	parsecsToJump := self nextParsecs.
-	aShip receiveHyperJumpIn: board moving:parsecsToJump.
+	cellsToJump := (parsecsToJump / board parsecsPerCell) floor.
+	aGame applyHyperJumEffectOn: aShip moving: cellsToJump 
 ]
 
 { #category : 'initialization' }
@@ -64,10 +65,4 @@ HyperJump >> nextParsecs [
 { #category : 'accessing' }
 HyperJump >> numberOfCells [
 	self shouldBeImplemented.
-]
-
-{ #category : 'as yet unclassified' }
-HyperJump >> showName [
-
-	^ 'Hyper Jump'
 ]

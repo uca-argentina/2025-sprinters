@@ -68,13 +68,14 @@ TurnManagerTest >> test004WhenShip1DoesNotWantsToPlayThenReturnShip2 [
 
 	| ships ship1 ship2 turnManager actualShip |
 	ships := OrderedCollection new.
-	ship1 := LazyShip create: 'ship1'.
+	ship1 := Ship create: 'ship1'.
 	ship2 := Ship create: 'ship2'.
 	ships add: ship1.
 	ships add: ship2.
 	turnManager := TurnManager with: ships.
+	turnManager skipTurnForShipNamed: 'ship1'.
 	actualShip := turnManager nextShip.
-	self assert: actualShip showName equals: 'ship2'
+	self assert: actualShip name equals: 'ship2'
 ]
 
 { #category : 'tests' }
@@ -82,16 +83,17 @@ TurnManagerTest >> test005WhenShip1andShip2DoNotWantsToPlayThenReturnShip3 [
 
 	| ships ship1 ship2 turnManager actualShip ship3 |
 	ships := OrderedCollection new.
-	ship1 := LazyShip create: 'ship1'.
-	ship2 := LazyShip create: 'ship2'.
+	ship1 := Ship create: 'ship1'.
+	ship2 := Ship create: 'ship2'.
 	ship3 := Ship create: 'ship3'.
 	ships add: ship1.
 	ships add: ship2.
 	ships add: ship3.
 	turnManager := TurnManager with: ships.
+	turnManager skipTurnForShipNamed: 'ship1'.
+	turnManager skipTurnForShipNamed: 'ship2'.
 	actualShip := turnManager nextShip.
-	actualShip := turnManager nextShip.
-	self assert: actualShip showName equals: 'ship3'.
+	self assert: actualShip name equals: 'ship3'
 ]
 
 { #category : 'tests' }
@@ -110,7 +112,7 @@ TurnManagerTest >> test006WhenShip1CanNotPlayThenNextPlayableShipIsShip2 [
 	ship1 loseShield.
 	turnManager := TurnManager with: ships.
 	actualShip := turnManager nextPlayableShip.
-	self assert: actualShip showName equals: 'ship2'.
+	self assert: actualShip name equals: 'ship2'.
 ]
 
 { #category : 'tests' }
@@ -129,7 +131,7 @@ TurnManagerTest >> test007WhenShip1CanNotPlayThenNextShipIsShip2 [
 	ship1 loseShield.
 	turnManager := TurnManager with: ships.
 	actualShip := turnManager nextShip.
-	self assert: actualShip showName equals: 'ship2'.
+	self assert: actualShip name equals: 'ship2'.
 ]
 
 { #category : 'tests' }

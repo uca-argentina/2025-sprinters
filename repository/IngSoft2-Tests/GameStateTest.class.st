@@ -9,8 +9,8 @@ Class {
 GameStateTest >> test000WhenGameIsNotPlayedThenPlayingStateIsFalse [
 
 	| gameState |
-	gameState := NotPlayed new.
-	 self assert: gameState isPlaying equals: false
+	gameState := Started new.
+	 self assert: gameState isFinished equals: false
 ]
 
 { #category : 'tests' }
@@ -26,7 +26,7 @@ GameStateTest >> test002WhenGameIsStartedThenPlayingdStateIsTrue [
 
 	| gameState |
 	gameState := Started new.
-	self assert: gameState isPlaying equals: true
+	self assert: gameState isFinished equals: false
 ]
 
 { #category : 'tests' }
@@ -50,13 +50,13 @@ GameStateTest >> test005WhenGameIsFinishedThenPlayingStateIsFalse [
 
 	| gameState |
 	gameState := Finished new.
-	self assert: gameState isPlaying equals: false
+	self assert: gameState isFinished equals: true
 ]
 
 { #category : 'tests' }
 GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 
-	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame |
+	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
@@ -66,11 +66,18 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 	aDiceBucket := DiceBucket with: listOfDices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: listOfShips.
+		         andShipsNamed: listOfShips
+		         until: 0.
 	gameState := Started new.
 	self
 		should: [ gameState showWinner: aGame ]
@@ -84,27 +91,37 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 { #category : 'tests' }
 GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 
-	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame |
+	| listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
 	listOfShips add: shipOne.
-	aDice := Dice with: 5.
+	aDice := LoadedDice withSequence: #( 10 ).
 	listOfDices add: aDice.
 	aDiceBucket := DiceBucket with: listOfDices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
-	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: listOfShips.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
 
-	gameState := Finished new.
-	self assert: (gameState showWinner: aGame) showName equals: shipOne
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: listOfShips
+		         until: 0.
+	aGame play.
+	self assert: aGame showWinner name equals: shipOne
 ]
 
 { #category : 'tests' }
 GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 
-	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame |
+	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
@@ -114,11 +131,18 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 	aDiceBucket := DiceBucket with: listOfDices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: listOfShips.
+		         andShipsNamed: listOfShips
+		         until: 0.
 	gameState := NotPlayed new.
 
 	self
@@ -145,14 +169,19 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: listOfShips.
+		         andShipsNamed: listOfShips
+		         until: 0.
 	aGame playTurn.
-	ship1:=aGame ships at:1.
-	ship2:=aGame ships at:2.
-	
-	self deny: (ship1 showPosition) equals: (ship2 showPosition)
+	ship1 := aGame ships at: 1.
+	ship2 := aGame ships at: 2.
+
+	self deny: ship1 position equals: ship2 position
 ]
