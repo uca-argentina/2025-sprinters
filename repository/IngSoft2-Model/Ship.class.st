@@ -10,7 +10,8 @@ Class {
 		'diceBucket',
 		'optionalTurn',
 		'cards',
-		'bonusThrow'
+		'bonusThrow',
+		'bonusBattle'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -53,6 +54,11 @@ Ship >> choiceToNotPlay [
 	turnsToSkip := turnsToSkip + 1
 ]
 
+{ #category : 'testing' }
+Ship >> hasNotAsMercery: aShip [ 
+	self shouldBeImplemented.
+]
+
 { #category : 'initialization' }
 Ship >> initializeWith: aName [
 
@@ -67,6 +73,7 @@ Ship >> initializeWith: aName [
 
 { #category : 'initialization' }
 Ship >> initializeWith: aName and: aDiceBucket using: aCardFactory [
+
 	currentLap := 1.
 	position := 1.
 	name := aName.
@@ -75,7 +82,8 @@ Ship >> initializeWith: aName and: aDiceBucket using: aCardFactory [
 	optionalTurn := true.
 	cards := aCardFactory generateInitialCards.
 	diceBucket := aDiceBucket.
-	bonusThrow := 0
+	bonusThrow := 0.
+	bonusBattle := OrderedCollection new
 ]
 
 { #category : 'testing' }
@@ -160,6 +168,12 @@ Ship >> receiveHyperJumpIn: aBoard moving: numberOfCells [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> receiveMercenaryCardEffectWith: aShip [
+
+	bonusBattle add: aShip
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> receiveSpeedCardEffect [
 
 	bonusThrow := bonusThrow + 1
@@ -228,6 +242,12 @@ Ship >> use: aTypeOfCard [
 		ifNone: [
 		^ Error signal: 'You can not play a card that you do not have' ].
 	aTypeOfCard applyTo: self
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> use: aCard with: aShip [
+
+	aCard applyTo: self using: aShip
 ]
 
 { #category : 'as yet unclassified' }

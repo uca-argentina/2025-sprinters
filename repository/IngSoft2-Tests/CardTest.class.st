@@ -70,3 +70,35 @@ CardTest >> test002WhenShipWantsTOPlayThatITDOesNotHaveThenRaiseError [
 				assert: error messageText
 				equals: 'You can not play a card that you do not have' ]
 ]
+
+{ #category : 'tests' }
+CardTest >> test003WhenShipUseMercenaryCardWithShip2ThenTheyDoNotBattle [
+
+	| aDice dices aDiceBucket ship ship1 ship2 ship3 mercenary battleManager ships amountOfCells aWorm distributions aBoard laps aGame |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 6 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
+	laps := 3.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps.
+	aGame shipNamed: 'ship 1' useCard: MercenaryCard with: 'ship 2'.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: ship1 shields equals: mercenary shields
+]

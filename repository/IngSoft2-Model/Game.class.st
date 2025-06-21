@@ -94,6 +94,12 @@ Game >> currentTopPlayer [
 	^ self shipsSortedByPosition at: 1.
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> findShipBy: aName [
+
+	^ ships detect: [ :ship | ship name = aName ]
+]
+
 { #category : 'initialization' }
 Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
 
@@ -135,8 +141,18 @@ Game >> playTurn [
 			                       ship position = actualShip position and:
 				                       ship laps = actualShip laps ] ].
 	shipsInSamePosition do: [ :enemy |
-		battleManager fightBetween: actualShip and: enemy ].
+		(actualShip hasNotAsMercery: enemy)
+			ifTrue: [ battleManager fightBetween: actualShip and: enemy ] ].
 	self someShipWon
+]
+
+{ #category : 'as yet unclassified' }
+Game >> shipNamed: aShip1 useCard: aCard with: aShip2 [
+
+	| ship1 ship2 |
+	ship1 := self findShipBy: aShip1.
+	ship2 := self findShipBy: aShip2.
+	ship1 use: aCard with: ship2
 ]
 
 { #category : 'accessing' }
