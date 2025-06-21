@@ -8,7 +8,8 @@ Class {
 		'ships',
 		'status',
 		'turnManager',
-		'battleManager'
+		'battleManager',
+		'cards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -47,6 +48,21 @@ Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: shipsName u
 ]
 
 { #category : 'as yet unclassified' }
+Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: shipsName until: anInteger and: aCardDeck [
+
+	shipsName ifEmpty: [
+		^ Error signal: 'List of ships must not be empty.' ].
+	self validateUniqueNames: shipsName.
+
+	^ self new
+		  initializeWith: aCircularBoard
+		  using: aLoadedDice
+		  andShipsNamed: shipsName
+		  until: anInteger
+		  and: aCardDeck
+]
+
+{ #category : 'as yet unclassified' }
 Game >> applyAtomicEffectOn: aShip [ 
 	ships do:[ :ship | ship receiveAtomicBombEffect]
 ]
@@ -55,6 +71,12 @@ Game >> applyAtomicEffectOn: aShip [
 Game >> applyBlackHoleEffectOn: aShip [
 
 	aShip receiveBlackHoleEffectFrom: board 
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyCardGiverEffect: aShip on: aGame [
+
+	aShip receiveCardGIverEffectFrom: aGame
 ]
 
 { #category : 'as yet unclassified' }
@@ -83,6 +105,12 @@ Game >> board [
 ]
 
 { #category : 'as yet unclassified' }
+Game >> cardCanBeDealt [
+
+	^ (cards amountOfCardsInDeck = 0) 
+]
+
+{ #category : 'as yet unclassified' }
 Game >> currentStatus [
 
 	^ status
@@ -103,6 +131,18 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 	status := Started new.
 	turnManager := TurnManager with: ships.
 	battleManager := BattleManager with: aDiceBucket
+]
+
+{ #category : 'initialization' }
+Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps and: aCardDeck [
+
+	board := aCircularBoard with: numberOfLaps.
+	ships := shipsNames collect: [ :aName | Ship create: aName withDeck: aCardDeck ].
+	bucketOfDices := aDiceBucket.
+	status := Started new.
+	turnManager := TurnManager with: ships.
+	battleManager := BattleManager with: aDiceBucket.
+	cards := aCardDeck
 ]
 
 { #category : 'testing' }

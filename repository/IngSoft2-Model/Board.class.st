@@ -60,6 +60,11 @@ Board >> amountOfNoEffectCells [
 ]
 
 { #category : 'as yet unclassified' }
+Board >> cardCanBeDealt [
+	self shouldBeImplemented.
+]
+
+{ #category : 'as yet unclassified' }
 Board >> effectOnPosition: position [
 
 	^ (cells at: position) effect value

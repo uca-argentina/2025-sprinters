@@ -295,3 +295,32 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 	aGame playTurn.
 	self assert: (aGame ships at: 1) shields equals: 3
 ]
+
+{ #category : 'tests' }
+ShipTest >> test017WhenCreateAShipThenHasTwoCards [
+
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame firstShip |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 5 3 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: HyperSpaceJump with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 3.
+	ships add: 'ship 1'.
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps.
+	firstShip := aGame ships at:1.
+	 self assert: firstShip cards size equals: 2.
+]

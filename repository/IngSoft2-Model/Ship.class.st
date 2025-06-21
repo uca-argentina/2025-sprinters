@@ -8,7 +8,8 @@ Class {
 		'shields',
 		'turnsToSkip',
 		'diceBucket',
-		'optionalTurn'
+		'optionalTurn',
+		'cards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -23,10 +24,25 @@ Ship class >> create: aName [
 	^ self new initializeWith: aName
 ]
 
+{ #category : 'as yet unclassified' }
+Ship class >> create: aName withDeck: aCardDeck [
+
+	aName isString ifFalse: [
+		^ Error signal: 'Ship´s name must be a string.' ].
+
+	^ self new initializeWith: aName withADeck: aCardDeck
+]
+
 { #category : 'testing' }
 Ship >> canPlay [
 
 	^ turnsToSkip = 0
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> cards [
+
+	^ cards
 ]
 
 { #category : 'as yet unclassified' }
@@ -45,6 +61,21 @@ Ship >> initializeWith: aName [
 	shields := 3.
 	turnsToSkip:=0.
 	optionalTurn:=true
+]
+
+{ #category : 'initialization' }
+Ship >> initializeWith: aName withADeck: aCardDeck [
+
+	currentLap := 1.
+	position := 1.
+	name := aName.
+	shields := 3.
+	turnsToSkip := 0.
+	optionalTurn := true.
+	cards := OrderedCollection new.
+    2 timesRepeat: [
+        self receiveCard: aCardDeck randomCard.
+    ].
 ]
 
 { #category : 'testing' }
@@ -121,6 +152,12 @@ Ship >> receiveBlackHoleEffectFrom: aBoard [
 	result := aBoard move: newPosition at: currentLap having: 0.
 	position := result at: 1.
 	currentLap := result at: 2
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> receiveCard: aCard [
+
+	cards add: aCard
 ]
 
 { #category : 'as yet unclassified' }
