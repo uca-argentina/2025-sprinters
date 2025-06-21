@@ -162,7 +162,7 @@ Game >> playTurn [
 
 	| actualShip effect positionToMove shipsInSamePosition |
 	actualShip := turnManager nextShip.
-	positionToMove := (bucketOfDices throw) + actualShip giveBonusThrow.
+	positionToMove := bucketOfDices throw + actualShip giveBonusThrow.
 	actualShip move: positionToMove in: board.
 	effect := board effectOnPosition: actualShip position.
 	effect applyTo: actualShip in: self.
@@ -171,8 +171,9 @@ Game >> playTurn [
 			                       ship position = actualShip position and:
 				                       ship laps = actualShip laps ] ].
 	shipsInSamePosition do: [ :enemy |
-		(actualShip hasNotAsMercery: enemy)
-			ifTrue: [ battleManager fightBetween: actualShip and: enemy ] ].
+		((actualShip hasAsMercery: enemy name) or: [
+			 enemy hasAsMercery: actualShip name ]) ifFalse: [
+			battleManager fightBetween: actualShip and: enemy ] ].
 	self someShipWon
 ]
 

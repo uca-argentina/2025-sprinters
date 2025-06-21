@@ -11,7 +11,8 @@ Class {
 		'optionalTurn',
 		'cards',
 		'bonusThrow',
-		'bonusBattle'
+		'bonusBattle',
+		'shipsIAmMercenaryTo'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -33,15 +34,6 @@ Ship class >> create: aName with: aDiceBucket andReceiveCardsFrom: aCardFactory 
 		^ Error signal: 'Ship´s name must be a string.' ].
 
 	^ self new initializeWith: aName and: aDiceBucket using: aCardFactory
-]
-
-{ #category : 'as yet unclassified' }
-Ship class >> create: aName withDeck: aCardDeck [
-
-	aName isString ifFalse: [
-		^ Error signal: 'Ship´s name must be a string.' ].
-
-	^ self new initializeWith: aName withADeck: aCardDeck
 ]
 
 { #category : 'testing' }
@@ -69,8 +61,15 @@ Ship >> giveBonusThrow [
 ]
 
 { #category : 'testing' }
-Ship >> hasNotAsMercery: aShip [ 
-	self shouldBeImplemented.
+Ship >> hasAsMercery: aShip [
+
+	^ bonusBattle anySatisfy: [ :ship | aShip = ship name ]
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> helpToFightWith: aDiceBucket [
+
+	^ aDiceBucket throw
 ]
 
 { #category : 'initialization' }
@@ -83,7 +82,8 @@ Ship >> initializeWith: aName [
 	turnsToSkip := 0.
 	optionalTurn := true.
 	bonusThrow := 0.
-	bonusBattle := OrderedCollection new
+	bonusBattle := OrderedCollection new.
+	shipsIAmMercenaryTo := OrderedCollection new
 ]
 
 { #category : 'initialization' }
@@ -248,12 +248,6 @@ Ship >> skipTurn [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> throwBucket [
-
-	^ diceBucket throw + self useBonusThrow
-]
-
-{ #category : 'as yet unclassified' }
 Ship >> throwDices [
 
 	^ diceBucket throw
@@ -262,7 +256,11 @@ Ship >> throwDices [
 { #category : 'as yet unclassified' }
 Ship >> throwDicesWith: aDiceBucket [
 
-	^ aDiceBucket throw
+	| count |
+	count := 0.
+	bonusBattle do: [ :mercenaryShip |
+		count := count + (mercenaryShip helpToFightWith: aDiceBucket) ].
+	^ aDiceBucket throw + count
 ]
 
 { #category : 'as yet unclassified' }
@@ -272,22 +270,16 @@ Ship >> turnsThatHasToSkip [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> use: aTypeOfCard [
-
-	cards
-		detect: [ :card | card classSide = aTypeOfCard classSide ]
-		ifNone: [
-		^ Error signal: 'You can not play a card that you do not have' ].
-	aTypeOfCard applyTo: self
-]
-
-{ #category : 'as yet unclassified' }
 Ship >> use: aCard with: aShip [
 
 	| index |
+	index := cards indexOf: (cards
+			          detect: [ :card | card class = aCard class ]
+			          ifNone: [
+			          Error signal:
+				          'You can not use a card that you do not have' ]).
 	aCard applyTo: self using: aShip.
-	index := cards indexOf: (cards detect:[:card | card class = aCard class]).
-	cards removeAt: index.
+	cards removeAt: index
 ]
 
 { #category : 'as yet unclassified' }
