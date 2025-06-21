@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-CardFactory class >> generateInitialCards [
+CardFactory >> generateInitialCards [
 
 	| cards |
 	cards := OrderedCollection new.
@@ -22,7 +22,7 @@ CardFactory class >> generateInitialCards [
 ]
 
 { #category : 'as yet unclassified' }
-CardFactory class >> randomCard [
+CardFactory >> randomCard [
 
 	| random index |
 	cards := {

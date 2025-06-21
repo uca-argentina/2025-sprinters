@@ -10,7 +10,6 @@ Class {
 		'diceBucket',
 		'optionalTurn',
 		'cards',
-		'aName',
 		'bonusThrow'
 	],
 	#category : 'IngSoft2-Model',
@@ -27,9 +26,12 @@ Ship class >> create: aName [
 ]
 
 { #category : 'as yet unclassified' }
-Ship class >> create: aName with: aDiceBucket [
+Ship class >> create: aName with: aDiceBucket andReceiveCardsFrom: aCardFactory [
 
-	^ self new initializeWith: aName and: aDiceBucket
+	aName isString ifFalse: [
+		^ Error signal: 'Ship´s name must be a string.' ].
+
+	^ self new initializeWith: aName and: aDiceBucket using: aCardFactory
 ]
 
 { #category : 'testing' }
@@ -64,15 +66,14 @@ Ship >> initializeWith: aName [
 ]
 
 { #category : 'initialization' }
-Ship >> initializeWith: aName and: aDiceBucket [
-
+Ship >> initializeWith: aName and: aDiceBucket using: aCardFactory [
 	currentLap := 1.
 	position := 1.
 	name := aName.
 	shields := 3.
 	turnsToSkip := 0.
 	optionalTurn := true.
-	cards := CardFactory generateInitialCards.
+	cards := aCardFactory generateInitialCards.
 	diceBucket := aDiceBucket.
 	bonusThrow := 0
 ]
@@ -222,6 +223,10 @@ Ship >> turnsThatHasToSkip [
 { #category : 'as yet unclassified' }
 Ship >> use: aTypeOfCard [
 
+	cards
+		detect: [ :card | card classSide = aTypeOfCard classSide ]
+		ifNone: [
+		^ Error signal: 'You can not play a card that you do not have' ].
 	aTypeOfCard applyTo: self
 ]
 

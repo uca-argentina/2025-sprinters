@@ -35,12 +35,38 @@ CardTest >> test000WhenCreateSpeedCardThenShipSumOneInItThrow [
 { #category : 'tests' }
 CardTest >> test001WhenUseSpeedCardThenApplyItEffect [
 
-	| aDice dices aDiceBucket amountOfCells aWorm distributions aBoard ships aGame ship |
+	| aDice dices aDiceBucket amountOfCells aWorm distributions aBoard ships aGame ship fixedCardFactory |
 	aDice := LoadedDice withSequence: #( 6 ).
 	dices := OrderedCollection new.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
-	ship := Ship create: 'ship' with: aDiceBucket.
+	fixedCardFactory := FixedCardFactory with: SpeedCard.
+	ship := Ship
+		        create: 'ship'
+		        with: aDiceBucket
+		        andReceiveCardsFrom: fixedCardFactory.
 	ship use: SpeedCard.
 	self assert: ship throwBucket equals: 7
+]
+
+{ #category : 'tests' }
+CardTest >> test002WhenShipWantsTOPlayThatITDOesNotHaveThenRaiseError [
+
+	| aDice dices aDiceBucket ship |
+	aDice := LoadedDice withSequence: #( 6 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	ship := Ship
+		        create: 'ship'
+		        with: aDiceBucket
+		        andReceiveCardsFrom: (FixedCardFactory with: MercenaryCard).
+
+	self
+		should: [ ship use: SpeedCard ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'You can not play a card that you do not have' ]
 ]
