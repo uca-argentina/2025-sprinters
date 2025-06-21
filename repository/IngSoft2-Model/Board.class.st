@@ -68,7 +68,7 @@ Board >> effectOnPosition: position [
 { #category : 'initialization' }
 Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions andTotalParsec: parsecs [
 
-	| cell effects aDistributor effectsOnCells |
+	| cell aDistributor effectsOnCells |
 	amountOfCells := aAmountOfCells.
 	wormHole := aWormHole.
 	laps := 1.

@@ -258,7 +258,7 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 { #category : 'tests' }
 EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions |
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions |
 	parsecsToMove := OrderedCollection new.
 	parsecsToMove add: 8.
 	parsecsToMove add: 6.
@@ -266,12 +266,12 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #(4 5 ).
+	aDice := LoadedDice withSequence: #(2 5 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
-	aX := 1.
-	aY := 3.
+	aX := 2.
+	aY := 9.
 	aWorm := Worm with: aX and: aY.
 
 	distributions := OrderedCollection new.
@@ -292,7 +292,7 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 		         until: 4.
 	ship1 := aGame ships at: 1.
 	aGame playTurn .
-	self assert: ship1 position equals: 10.
+	self assert: ship1 position equals: 8.
 ]
 
 { #category : 'tests' }

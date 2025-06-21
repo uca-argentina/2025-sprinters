@@ -90,15 +90,6 @@ Ship >> move: numberOfCells in: aBoard [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> moveByParsecs: parsecs on: aBoard [
-
-	| result |
-	result := aBoard move: position at: currentLap having: parsecs.
-	position := result at: 1.
-	currentLap := result at: 2
-]
-
-{ #category : 'as yet unclassified' }
 Ship >> moveToFirstPosition [
 
 	position := 1
@@ -133,8 +124,8 @@ Ship >> receiveBlackHoleEffectFrom: aBoard [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
-	self moveByParsecs: numberOfParsecs on: aBoard
+Ship >> receiveHyperJumpIn: aBoard moving: numberOfCells [
+	self move: numberOfCells in: aBoard
 ]
 
 { #category : 'as yet unclassified' }

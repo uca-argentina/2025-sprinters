@@ -58,9 +58,9 @@ Game >> applyBlackHoleEffectOn: aShip [
 ]
 
 { #category : 'as yet unclassified' }
-Game >> applyHyperJumEffectOn: aShip moving: parsecsToJump [
+Game >> applyHyperJumEffectOn: aShip moving: cellsToJump [
 
-	aShip receiveHyperJumpIn: board moving: parsecsToJump
+	aShip receiveHyperJumpIn: board moving: cellsToJump
 ]
 
 { #category : 'as yet unclassified' }
