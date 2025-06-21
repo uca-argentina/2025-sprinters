@@ -97,6 +97,7 @@ Game >> currentTopPlayer [
 { #category : 'initialization' }
 Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
 
+	| cardFactory |
 	board := aCircularBoard with: numberOfLaps.
 	ships := shipsNames collect: [ :aName | Ship create: aName ].
 	bucketOfDices := aDiceBucket.

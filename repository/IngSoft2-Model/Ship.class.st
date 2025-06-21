@@ -8,7 +8,10 @@ Class {
 		'shields',
 		'turnsToSkip',
 		'diceBucket',
-		'optionalTurn'
+		'optionalTurn',
+		'cards',
+		'aName',
+		'bonusThrow'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -23,10 +26,22 @@ Ship class >> create: aName [
 	^ self new initializeWith: aName
 ]
 
+{ #category : 'as yet unclassified' }
+Ship class >> create: aName with: aDiceBucket [
+
+	^ self new initializeWith: aName and: aDiceBucket
+]
+
 { #category : 'testing' }
 Ship >> canPlay [
 
 	^ turnsToSkip = 0
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> cards [
+
+	^ cards
 ]
 
 { #category : 'as yet unclassified' }
@@ -43,8 +58,23 @@ Ship >> initializeWith: aName [
 	position := 1.
 	name := aName.
 	shields := 3.
-	turnsToSkip:=0.
-	optionalTurn:=true
+	turnsToSkip := 0.
+	optionalTurn := true.
+	cards := CardFactory generateInitialCards
+]
+
+{ #category : 'initialization' }
+Ship >> initializeWith: aName and: aDiceBucket [
+
+	currentLap := 1.
+	position := 1.
+	name := aName.
+	shields := 3.
+	turnsToSkip := 0.
+	optionalTurn := true.
+	cards := CardFactory generateInitialCards.
+	diceBucket := aDiceBucket.
+	bonusThrow := 0
 ]
 
 { #category : 'testing' }
@@ -129,6 +159,12 @@ Ship >> receiveHyperJumpIn: aBoard moving: numberOfCells [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> receiveSpeedCardEffect [
+
+	bonusThrow := bonusThrow + 1
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> recieveHyperSpaceJumpIn: aBoard [
 
 	| newPosition result |
@@ -160,6 +196,12 @@ Ship >> skipTurn [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> throwBucket [
+
+	^ diceBucket throw + self useBonusThrow
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> throwDices [
 
 	^ diceBucket throw
@@ -175,6 +217,22 @@ Ship >> throwDicesWith: aDiceBucket [
 Ship >> turnsThatHasToSkip [
 
 	^ turnsToSkip
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> use: aTypeOfCard [
+
+	aTypeOfCard applyTo: self
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> useBonusThrow [
+
+	| increment |
+	increment := 0.
+	bonusThrow > 0 ifTrue: [ increment := 1 ].
+	bonusThrow := bonusThrow - 1.
+	^ increment
 ]
 
 { #category : 'as yet unclassified' }
