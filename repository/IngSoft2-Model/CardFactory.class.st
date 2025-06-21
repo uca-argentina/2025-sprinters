@@ -2,7 +2,9 @@ Class {
 	#name : 'CardFactory',
 	#superclass : 'Object',
 	#instVars : [
-		'cards'
+		'cards',
+		'givenCards',
+		'typesOfCards'
 	],
 	#classInstVars : [
 		'cards'
@@ -11,27 +13,32 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
-CardFactory >> generateInitialCards [
+{ #category : 'accessing' }
+CardFactory class >> withTypes: cardsTypes [
 
-	| cards |
-	cards := OrderedCollection new.
-	cards add: self randomCard.
-	cards add: self randomCard.
-	^ cards
+	^ self new initializeWithTypesOfCards: cardsTypes
 ]
 
 { #category : 'as yet unclassified' }
-CardFactory >> randomCard [
+CardFactory >> generateInitialCards [
 
-	| random index |
-	cards := {
-		         SpeedCard.
-		         AccelerationCard.
-		         MercenaryCard.
-		         CancellationCard.
-		         RedoCard.
-		         RepeatCard }.
-	index := Random new nextIntegerBetween: 1 and: cards size.
-	^ cards at: index
+	| initialCards random |
+	initialCards := OrderedCollection new.
+	initialCards add: (self randomCard:
+			 (Random new nextIntegerBetween: 1 and: typesOfCards cards size)).
+	initialCards add: (self randomCard:
+			 (Random new nextIntegerBetween: 1 and: typesOfCards cards size)).
+	^ initialCards
+]
+
+{ #category : 'initialization' }
+CardFactory >> initializeWithTypesOfCards: cardsTypes [
+
+	typesOfCards := cardsTypes.
+]
+
+{ #category : 'as yet unclassified' }
+CardFactory >> randomCard: index [
+
+	^ (typesOfCards cards at: index) generateRandomCard.
 ]

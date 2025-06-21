@@ -8,7 +8,8 @@ Class {
 		'ships',
 		'status',
 		'turnManager',
-		'battleManager'
+		'battleManager',
+		'cards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -44,6 +45,20 @@ Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: shipsName u
 		  using: aLoadedDice
 		  andShipsNamed: shipsName
 		  until: anInteger
+]
+
+{ #category : 'as yet unclassified' }
+Game class >> with: aBoard using: aLoadedDice andShipsNamed: shipsName until: laps having: aCardDeck [ 
+	shipsName ifEmpty: [
+		^ Error signal: 'List of ships must not be empty.' ].
+	self validateUniqueNames: shipsName.
+
+	^ self new
+		  initializeWith: aBoard
+		  using: aLoadedDice
+		  andShipsNamed: shipsName
+		  until: laps
+		  having: aCardDeck.
 ]
 
 { #category : 'as yet unclassified' }
@@ -107,6 +122,21 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 	cardFactory:=CardFactory new.
 	board := aCircularBoard with: numberOfLaps.
 	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket  andReceiveCardsFrom: cardFactory ].
+	bucketOfDices := aDiceBucket.
+	status := Started new.
+	turnManager := TurnManager with: ships.
+	battleManager := BattleManager with: aDiceBucket
+]
+
+{ #category : 'initialization' }
+Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps having: cardTypes [
+
+	| cardFactory |
+	cardFactory := CardFactory withTypes: cardTypes.
+	board := aCircularBoard with: numberOfLaps.
+	ships := shipsNames collect: [ :aName |
+		         Ship create: aName].
+	ships do: [ :ship | ship recieveCardsFrom: cardFactory].
 	bucketOfDices := aDiceBucket.
 	status := Started new.
 	turnManager := TurnManager with: ships.

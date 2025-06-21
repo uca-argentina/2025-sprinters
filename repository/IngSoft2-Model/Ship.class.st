@@ -35,6 +35,15 @@ Ship class >> create: aName with: aDiceBucket andReceiveCardsFrom: aCardFactory 
 	^ self new initializeWith: aName and: aDiceBucket using: aCardFactory
 ]
 
+{ #category : 'as yet unclassified' }
+Ship class >> create: aName withDeck: aCardDeck [
+
+	aName isString ifFalse: [
+		^ Error signal: 'Ship´s name must be a string.' ].
+
+	^ self new initializeWith: aName withADeck: aCardDeck
+]
+
 { #category : 'testing' }
 Ship >> canPlay [
 
@@ -68,7 +77,6 @@ Ship >> initializeWith: aName [
 	shields := 3.
 	turnsToSkip := 0.
 	optionalTurn := true.
-	cards := CardFactory generateInitialCards
 ]
 
 { #category : 'initialization' }
@@ -84,6 +92,20 @@ Ship >> initializeWith: aName and: aDiceBucket using: aCardFactory [
 	diceBucket := aDiceBucket.
 	bonusThrow := 0.
 	bonusBattle := OrderedCollection new
+]
+
+{ #category : 'initialization' }
+Ship >> initializeWith: aName withADeck: aCardDeck [
+
+	| giver |
+	currentLap := 1.
+	position := 1.
+	name := aName.
+	shields := 3.
+	turnsToSkip := 0.
+	optionalTurn := true.
+	giver := CardFactory new.
+	cards := giver generateInitialCards.
 ]
 
 { #category : 'testing' }
@@ -177,6 +199,12 @@ Ship >> receiveMercenaryCardEffectWith: aShip [
 Ship >> receiveSpeedCardEffect [
 
 	bonusThrow := bonusThrow + 1
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> recieveCardsFrom: cardFactory [
+
+	cards := cardFactory generateInitialCards
 ]
 
 { #category : 'as yet unclassified' }

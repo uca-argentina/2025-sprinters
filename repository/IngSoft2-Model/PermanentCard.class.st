@@ -5,6 +5,15 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'as yet unclassified' }
+PermanentCard >> generateRandomCard [
+
+
+	| classes |
+	classes := self class subclasses.
+	^ classes at: (Random new nextIntegerBetween: 1 and: classes size). 
+]
+
 { #category : 'testing' }
 PermanentCard >> isPermanent [
 
