@@ -162,7 +162,7 @@ Game >> playTurn [
 
 	| actualShip effect positionToMove shipsInSamePosition |
 	actualShip := turnManager nextShip.
-	positionToMove := bucketOfDices throw.
+	positionToMove := (bucketOfDices throw) + actualShip giveBonusThrow.
 	actualShip move: positionToMove in: board.
 	effect := board effectOnPosition: actualShip position.
 	effect applyTo: actualShip in: self.

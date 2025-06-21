@@ -25,9 +25,9 @@ CardFactory >> generateInitialCards [
 	| initialCards random |
 	initialCards := OrderedCollection new.
 	initialCards add: (self randomCard:
-			 (Random new nextIntegerBetween: 1 and: typesOfCards cards size)).
+			 (Random new nextIntegerBetween: 1 and: typesOfCards size)).
 	initialCards add: (self randomCard:
-			 (Random new nextIntegerBetween: 1 and: typesOfCards cards size)).
+			 (Random new nextIntegerBetween: 1 and: typesOfCards size)).
 	^ initialCards
 ]
 
@@ -40,5 +40,5 @@ CardFactory >> initializeWithTypesOfCards: cardsTypes [
 { #category : 'as yet unclassified' }
 CardFactory >> randomCard: index [
 
-	^ (typesOfCards cards at: index) generateRandomCard.
+	^ (typesOfCards at: index) generateRandomCard.
 ]

@@ -10,7 +10,7 @@ InstantCard >> generateRandomCard [
 
 	| classes |
 	classes := self class subclasses.
-	^ classes at: (Random new nextIntegerBetween: 1 and: classes size). 
+	^ (classes at: (Random new nextIntegerBetween: 1 and: classes size)) new. 
 ]
 
 { #category : 'testing' }

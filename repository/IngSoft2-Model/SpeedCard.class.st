@@ -10,3 +10,9 @@ SpeedCard class >> applyTo: aShip [
 
 	aShip receiveSpeedCardEffect
 ]
+
+{ #category : 'as yet unclassified' }
+SpeedCard >> applyTo: aShip using: aShip2 [
+
+	aShip receiveSpeedCardEffect
+]

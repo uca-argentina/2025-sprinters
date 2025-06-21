@@ -27,31 +27,48 @@ CardTest >> test000WhenCreateSpeedCardThenShipSumOneInItThrow [
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: InstantCard new.
 	typesOfCards add: PermanentCard new.
-	cards := CardDeck withDeck: typesOfCards.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-					having: cards.
+					having: typesOfCards .
 	self assert: (aGame ships at: 1) cards size equals: 2
 ]
 
 { #category : 'tests' }
-CardTest >> test001WhenUseSpeedCardThenApplyItEffect [
+CardTest >> test001WhenUseSpeedCardFromDeckThenApplyItEffect [
 
-	| aDice dices aDiceBucket ship fixedCardFactory |
+	| aDice dices aDiceBucket ship fixedCardFactory distributions aBoard amountOfCells aWorm laps ship1 ships aGame aCard cards typesOfCards |
 	aDice := LoadedDice withSequence: #( 6 ).
 	dices := OrderedCollection new.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
-	fixedCardFactory := FixedCardFactory with: SpeedCard.
-	ship := Ship
-		        create: 'ship'
-		        with: aDiceBucket
-		        andReceiveCardsFrom: fixedCardFactory.
-	ship use: SpeedCard.
-	self assert: ship throwBucket equals: 7
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	amountOfCells := 10. 
+	aWorm := Worm with: 2 and: 4.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: (SpeedCard new)).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+					having: typesOfCards .
+	aCard := SpeedCard new.
+	aGame shipNamed: ship1 useCard: aCard with: ship1.
+	aGame playTurn.
+	self assert: (aGame findShipBy: ship1) position equals: 8
 ]
 
 { #category : 'tests' }
@@ -109,15 +126,15 @@ CardTest >> test003WhenShipUseMercenaryCardWithShip2ThenTheyDoNotBattle [
 ]
 
 { #category : 'tests' }
-CardTest >> test004WhenUseSpeedCardFromDeckThenApplyItEffect [
+CardTest >> test004WhenAShipUseSpeedCardThenIsRemovedFromDeckOfShip [
 
-	| aDice dices aDiceBucket ship fixedCardFactory distributions aBoard amountOfCells aWorm laps ship1 ships aGame |
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame aCard typesOfCards |
 	aDice := LoadedDice withSequence: #( 6 ).
 	dices := OrderedCollection new.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: BlackHole with: 1).
+	distributions add: (Distribution at: NoEffect with: 1).
 	amountOfCells := 10. 
 	aWorm := Worm with: 2 and: 4.
 	aBoard := Board
@@ -129,12 +146,16 @@ CardTest >> test004WhenUseSpeedCardFromDeckThenApplyItEffect [
 	ship1 := 'ship 1'.
 	ships := OrderedCollection new.
 	ships add: ship1.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: (SpeedCard new)).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps.
-
-	ship use: SpeedCard.
-	self assert: ship throwBucket equals: 7
+		         until: 1
+					having: typesOfCards .
+	aCard := SpeedCard new.
+	aGame shipNamed: ship1 useCard: aCard with: ship1.
+	aGame playTurn.
+	self assert: (aGame findShipBy: ship1) cards size equals: 1
 ]

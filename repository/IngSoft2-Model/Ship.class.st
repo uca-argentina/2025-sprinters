@@ -63,6 +63,11 @@ Ship >> choiceToNotPlay [
 	turnsToSkip := turnsToSkip + 1
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> giveBonusThrow [
+	^ bonusThrow.
+]
+
 { #category : 'testing' }
 Ship >> hasNotAsMercery: aShip [ 
 	self shouldBeImplemented.
@@ -77,6 +82,8 @@ Ship >> initializeWith: aName [
 	shields := 3.
 	turnsToSkip := 0.
 	optionalTurn := true.
+	bonusThrow := 0.
+	bonusBattle := OrderedCollection new
 ]
 
 { #category : 'initialization' }
@@ -106,6 +113,8 @@ Ship >> initializeWith: aName withADeck: aCardDeck [
 	optionalTurn := true.
 	giver := CardFactory new.
 	cards := giver generateInitialCards.
+	bonusThrow := 0.
+	bonusBattle := OrderedCollection new
 ]
 
 { #category : 'testing' }
@@ -275,7 +284,10 @@ Ship >> use: aTypeOfCard [
 { #category : 'as yet unclassified' }
 Ship >> use: aCard with: aShip [
 
-	aCard applyTo: self using: aShip
+	| index |
+	aCard applyTo: self using: aShip.
+	index := cards indexOf: (cards detect:[:card | card class = aCard class]).
+	cards removeAt: index.
 ]
 
 { #category : 'as yet unclassified' }
