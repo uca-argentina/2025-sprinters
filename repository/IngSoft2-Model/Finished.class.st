@@ -18,6 +18,12 @@ Finished >> isPlaying [
 ]
 
 { #category : 'as yet unclassified' }
+Finished >> markAsPlaying [
+
+	^ false
+]
+
+{ #category : 'as yet unclassified' }
 Finished >> play: aGame [
 
 	^ Error signal:

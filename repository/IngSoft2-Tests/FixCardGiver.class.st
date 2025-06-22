@@ -13,5 +13,5 @@ FixCardGiver >> generateInitialCards [
 { #category : 'initialization' }
 FixCardGiver >> initializeThis [
 
-	^ self
+	^ self new
 ]

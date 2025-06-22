@@ -481,9 +481,7 @@ CardTest >> test011WhenUseCancellationCardWithMercenaryThenRemoveMercenary [
 		         until: 1
 		         having: (FixedCardFactory with: typesOfCards).
 		
-	aMercenaryCard := MercenaryCard new.
-	aFixedCardFactory := FixedCardFactory withTypes: typesOfCards.
-	
+	aMercenaryCard := MercenaryCard new.	
 	aGame shipNamed: ship1 useCard: aMercenaryCard with: ship2.
 	aCancellationCard := CancellationCard newWithCard: aMercenaryCard.
 	aGame shipNamed: ship1 useCard: aCancellationCard with: ship1 .
@@ -691,4 +689,41 @@ CardTest >> test016WhenUseRepeatCardButThereIsNoEffectThenItDoesNotApplyTheLastE
 	aGame playTurn.
 	aGame shipNamed: ship1 useCard: repeatcard with: ship2.
 	self assert: (aGame findShipBy: ship2) position equals: 8
+]
+
+{ #category : 'tests' }
+CardTest >> test017WhenTheShipMovesThrowTheBoardAndITACrdGiverCellThenShipRecieveOneCard [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards ship2 acceleration redocard repeatcard |
+	aDice := LoadedDice withSequence: #( 3 7 1 6 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: CardGiver with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: RepeatCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
+	repeatcard := RepeatCard new.
+	aGame playTurn.
+	self assert: (aGame findShipBy: ship1) cards size equals: 3
 ]

@@ -14,12 +14,6 @@ FixedCardFactory class >> with: typesOfCards [
 	^ self new initializeWithTypes: typesOfCards
 ]
 
-{ #category : 'accessing' }
-FixedCardFactory class >> withTypes: cardsTypes [
-
-	^ self new initializeWithTypesOfCards: cardsTypes
-]
-
 { #category : 'as yet unclassified' }
 FixedCardFactory >> generateInitialCards [
 
