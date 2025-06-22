@@ -20,6 +20,12 @@ PermanentCard >> isPermanent [
 	^ true
 ]
 
+{ #category : 'testing' }
+PermanentCard >> isRedo [
+
+	^ false
+]
+
 { #category : 'removing' }
 PermanentCard >> removePermanentEffect [
 	self subclassResponsibility .

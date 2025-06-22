@@ -18,3 +18,9 @@ InstantCard >> isPermanent [
 
 	^ false
 ]
+
+{ #category : 'testing' }
+InstantCard >> isRedo [
+
+	^ false
+]

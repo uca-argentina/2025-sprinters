@@ -14,9 +14,9 @@ AccelerationCard >> applyTo: aShip using: aShip2 [
 ]
 
 { #category : 'as yet unclassified' }
-AccelerationCard >> applyTo: aShip using: aShip2 in:aGame [
-	linkedShips := aGame ships.
-	aGame applyAccelerationCardEffect.
+AccelerationCard >> applyTo: aShip using: aShip2 in: aGame [
+
+	aGame applyAccelerationCardEffect
 ]
 
 { #category : 'removing' }

@@ -27,6 +27,7 @@ CardTest >> test000WhenCreateSpeedCardThenShipSumOneInItThrow [
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: InstantCard new.
 	typesOfCards add: PermanentCard new.
+	typesOfCards add: RedoCard new.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -530,4 +531,45 @@ CardTest >> test012WhenUseCancellationCardAndNoActiveCardsThenRaiseError [
 			self
 				assert: error messageText
 				equals: 'This card must be played when there is at least one active card' ]
+]
+
+{ #category : 'tests' }
+CardTest >> test013WhenUseREDOCardThenItTakesTheEffectOfTheLastCardUsed [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards ship2 acceleration redocard cardGiver |
+	aDice := LoadedDice withSequence: #( 3 2 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	cardGiver := FixCardGiver with: RedoCard new.
+	distributions add: (Distribution at: cardGiver with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: typesOfCards.
+	acceleration := AccelerationCard new.
+	redocard := RedoCard new.
+	aGame shipNamed: ship1 useCard: acceleration with: ship1.
+	aGame playTurn.
+	aGame shipNamed: ship1 useCard: redocard with: ship1.
+	aGame playTurn.
+	self assert: (aGame findShipBy: ship2) position equals: 5
 ]

@@ -10,7 +10,8 @@ Class {
 		'turnManager',
 		'battleManager',
 		'cards',
-		'activeCards'
+		'activeCards',
+		'historicalCards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -116,6 +117,20 @@ Game >> applyMoonWalkEffectOn: aShip moving: numberOfCells [
 			otherShip move: numberOfCells * -1 in: board ] ]
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> applyRedoCardEffectOn: aShip [
+
+	| realCard  |
+	historicalCards isEmpty ifTrue: [
+		^ Error signal: 'There are no cards played before.' ].
+
+	realCard := historicalCards reversed
+		            detect: [ :each | each isRedo not ]
+		            ifNone: [ ^ Error signal: 'No real card to redo.' ].
+
+	realCard applyTo: aShip using:aShip in: self
+]
+
 { #category : 'accessing' }
 Game >> board [
 
@@ -167,6 +182,7 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 	turnManager := TurnManager with: ships.
 	battleManager := BattleManager with: aDiceBucket.
 	activeCards := OrderedCollection new.
+	historicalCards:=OrderedCollection new.
 ]
 
 { #category : 'testing' }
@@ -215,6 +231,7 @@ Game >> shipNamed: aShip1 useCard: aCard with: aShip2 [
 	ship1 := self findShipBy: aShip1.
 	ship2 := self findShipBy: aShip2.
 	ship1 use: aCard with: ship2 in: self.
+	historicalCards add: aCard
 ]
 
 { #category : 'accessing' }

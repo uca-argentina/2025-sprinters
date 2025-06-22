@@ -228,6 +228,11 @@ Ship >> receiveBlackHoleEffectFrom: aBoard [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> receiveCard: aClass [ 
+	self shouldBeImplemented.
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> receiveHyperJumpIn: aBoard moving: numberOfCells [
 	self move: numberOfCells in: aBoard
 ]
@@ -242,6 +247,12 @@ Ship >> receiveMercenaryCardEffectWith: aShip [
 { #category : 'as yet unclassified' }
 Ship >> receiveSpeedCardEffect [
 	self increaseBonusThrow .
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> receiveThis: aCard [
+
+	cards add: aCard
 ]
 
 { #category : 'as yet unclassified' }

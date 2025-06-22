@@ -22,13 +22,25 @@ CardFactory class >> withTypes: cardsTypes [
 { #category : 'as yet unclassified' }
 CardFactory >> generateInitialCards [
 
-	| initialCards |
+	| initialCards random |
 	initialCards := OrderedCollection new.
 	initialCards add: (self randomCard:
 			 (Random new nextIntegerBetween: 1 and: typesOfCards size)).
 	initialCards add: (self randomCard:
 			 (Random new nextIntegerBetween: 1 and: typesOfCards size)).
 	^ initialCards
+]
+
+{ #category : 'as yet unclassified' }
+CardFactory >> generateRandomCardOn: aShip [
+
+	| card |
+	typesOfCards := Card subclasses.
+	cards := typesOfCards do: [ :type | type new generateRandomCard ].
+
+	card := (cards at: (Random new nextIntegerBetween: 1 and: cards size))
+		        new.
+	aShip receiveThis: card generateRandomCard
 ]
 
 { #category : 'initialization' }
