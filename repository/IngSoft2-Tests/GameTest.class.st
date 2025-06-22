@@ -37,7 +37,7 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: typesOfCards.
+		         having: (FixedCardFactory with: typesOfCards).
 	aGame play.
 	self assert: aGame showWinner isNotNil
 ]
@@ -72,7 +72,7 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: typesOfCards.
+		         having: (FixedCardFactory with: typesOfCards).
 
 	self assert: aGame play equals: 'Game over'
 ]
@@ -103,7 +103,7 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: typesOfCards.
+		         having: (FixedCardFactory with: typesOfCards).
 	aGame play.
 	self assert: aGame showWinner name equals: 'shipOne'
 ]
@@ -134,7 +134,7 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: typesOfCards.
+		         having: (FixedCardFactory with: typesOfCards).
 	aGame play.
 	assertedResult := Dictionary new.
 	assertedResult at: 'ship 1' put: 10.
@@ -168,7 +168,7 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: typesOfCards.
+		         having: (FixedCardFactory with: typesOfCards).
 	(aGame ships at: 1) move: 10 in: aBoard.
 	(aGame ships at: 2) move: 5 in: aBoard.
 	aGame play.
@@ -277,7 +277,7 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: typesOfCards.
+		         having: (FixedCardFactory with: typesOfCards).
 
 	self assert: (aGame ships at: 1) position equals: 1
 ]
@@ -310,7 +310,7 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: typesOfCards.
+		         having: (FixedCardFactory with: typesOfCards).
 
 	(aGame ships at: 2) move: 10 in: aBoard.
 	aGame play.

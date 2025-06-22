@@ -341,7 +341,7 @@ Ship >> use: aCard with: aShip [
 Ship >> use: aCard with: aShip in:aGame [
 
 	| index |
-	index := cards indexOf: (cards
+	index := cards indexOf: (cards value
 			          detect: [ :card | card class = aCard class ]
 			          ifNone: [
 			          Error signal:

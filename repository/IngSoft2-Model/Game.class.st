@@ -172,11 +172,11 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps having: cardTypes [
 
 	| cardFactory |
-	cardFactory := CardFactory withTypes: cardTypes.
-	board := aCircularBoard with: numberOfLaps.
+	
+	board  := aCircularBoard with: numberOfLaps.
 	ships := shipsNames collect: [ :aName |
 		         Ship create: aName].
-	ships do: [ :ship | ship recieveCardsFrom: cardFactory].
+	ships do: [ :ship | ship recieveCardsFrom: cardTypes].
 	bucketOfDices := aDiceBucket.
 	status := Started new.
 	turnManager := TurnManager with: ships.
