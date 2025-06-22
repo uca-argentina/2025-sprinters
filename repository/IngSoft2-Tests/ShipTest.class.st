@@ -131,7 +131,7 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		         having: typesOfCards.
+		        having: (CardFactory with: typesOfCards).
 	aGame play.
 
 	self assert: aGame showWinner name equals: 'Ship1'
@@ -265,7 +265,7 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: typesOfCards.
+		         having: (CardFactory with: typesOfCards).
 
 	aGame playTurn.
 	self assert: (aGame ships at:1) position equals: 3
@@ -301,7 +301,7 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-		         having: typesOfCards.
+		         having: (CardFactory with: typesOfCards).
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
