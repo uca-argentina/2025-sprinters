@@ -19,3 +19,8 @@ PermanentCard >> isPermanent [
 
 	^ true
 ]
+
+{ #category : 'removing' }
+PermanentCard >> removePermanentEffect [
+	self subclassResponsibility .
+]

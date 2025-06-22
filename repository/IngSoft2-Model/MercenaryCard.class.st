@@ -34,3 +34,9 @@ MercenaryCard >> applyTo: aShip using: aMercenary [
 
 	aShip receiveMercenaryCardEffectWith: aMercenary
 ]
+
+{ #category : 'as yet unclassified' }
+MercenaryCard >> applyTo: aShip using: aMercenary in:aGame [
+
+	aShip receiveMercenaryCardEffectWith: aMercenary
+]

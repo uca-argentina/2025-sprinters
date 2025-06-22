@@ -12,7 +12,8 @@ Class {
 		'cards',
 		'bonusThrow',
 		'bonusBattle',
-		'shipsIAmMercenaryTo'
+		'shipsIAmMercenaryTo',
+		'amIMercenary'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -72,6 +73,11 @@ Ship >> helpToFightWith: aDiceBucket [
 	^ aDiceBucket throw
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> increaseBonusThrow [
+	bonusThrow := bonusThrow +1.
+]
+
 { #category : 'initialization' }
 Ship >> initializeWith: aName [
 
@@ -83,7 +89,8 @@ Ship >> initializeWith: aName [
 	optionalTurn := true.
 	bonusThrow := 0.
 	bonusBattle := OrderedCollection new.
-	shipsIAmMercenaryTo := OrderedCollection new
+	shipsIAmMercenaryTo := OrderedCollection new.
+	amIMercenary:=false.
 ]
 
 { #category : 'initialization' }
@@ -125,6 +132,11 @@ Ship >> isAheadOf: anotherShip [
 			  self position > anotherShip position ] ]
 ]
 
+{ #category : 'testing' }
+Ship >> isSomeoneMercenary [
+	^ amIMercenary.
+]
+
 { #category : 'accessing' }
 Ship >> laps [
 
@@ -134,7 +146,9 @@ Ship >> laps [
 { #category : 'as yet unclassified' }
 Ship >> loseFight [
 
+	bonusBattle do:[:mercenaryShip|mercenaryShip loseShield ].
 	self loseShield.
+	
 	position := 1
 ]
 
@@ -146,6 +160,11 @@ Ship >> loseShield [
 
 	self recoverShields.
 	turnsToSkip := 2
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> markedAsMercenary [
+	amIMercenary := true.
 ]
 
 { #category : 'as yet unclassified' }
@@ -201,13 +220,13 @@ Ship >> receiveHyperJumpIn: aBoard moving: numberOfCells [
 { #category : 'as yet unclassified' }
 Ship >> receiveMercenaryCardEffectWith: aShip [
 
-	bonusBattle add: aShip
+	aShip isSomeoneMercenary ifTrue: [ Error signal:'You can not use this ship as a mercenary' ] ifFalse: [ bonusBattle add: aShip. aShip markedAsMercenary].
+	
 ]
 
 { #category : 'as yet unclassified' }
 Ship >> receiveSpeedCardEffect [
-
-	bonusThrow := bonusThrow + 1
+	self increaseBonusThrow .
 ]
 
 { #category : 'as yet unclassified' }
@@ -233,6 +252,11 @@ Ship >> recoverShields [
 	shields := 3.
 	turnsToSkip :=0.
 	optionalTurn :=true.
+]
+
+{ #category : 'removing' }
+Ship >> removeSpeedCardEffect [
+	bonusThrow := bonusThrow -1.
 ]
 
 { #category : 'accessing' }
@@ -280,6 +304,20 @@ Ship >> use: aCard with: aShip [
 				          'You can not use a card that you do not have' ]).
 	aCard applyTo: self using: aShip.
 	cards removeAt: index
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> use: aCard with: aShip in:aGame [
+
+	| index |
+	index := cards indexOf: (cards
+			          detect: [ :card | card class = aCard class ]
+			          ifNone: [
+			          Error signal:
+				          'You can not use a card that you do not have' ]).
+	aCard applyTo: self using: aShip in: aGame.
+	aGame addToActiveCardsThisCard: aCard .
+	cards removeAt: index.
 ]
 
 { #category : 'as yet unclassified' }

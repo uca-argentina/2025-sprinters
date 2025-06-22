@@ -9,7 +9,8 @@ Class {
 		'status',
 		'turnManager',
 		'battleManager',
-		'cards'
+		'cards',
+		'activeCards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -61,6 +62,16 @@ Game class >> with: aBoard using: aLoadedDice andShipsNamed: shipsName until: la
 		  having: aCardDeck.
 ]
 
+{ #category : 'adding' }
+Game >> addToActiveCardsThisCard: aCard [ 
+	activeCards add: aCard .
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyAccelerationCardEffect [
+	ships do: [:ship | ship increaseBonusThrow  ].
+]
+
 { #category : 'as yet unclassified' }
 Game >> applyAtomicEffectOn: aShip [ 
 	ships do:[ :ship | ship receiveAtomicBombEffect]
@@ -70,6 +81,20 @@ Game >> applyAtomicEffectOn: aShip [
 Game >> applyBlackHoleEffectOn: aShip [
 
 	aShip receiveBlackHoleEffectFrom: board 
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyCancellationCardEffect [
+	self shouldBeImplemented.
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyCancellationCardEffectOn: aPermanentCard [ 
+	| aCard chosenCard|
+	aCard :=activeCards detect: [:card | card = aPermanentCard ] .
+	aCard ifNil: [ Error signal: 'active cards does not have that Permanent Card' ].
+	aCard removePermanentEffect.
+	activeCards remove: aCard .
 ]
 
 { #category : 'as yet unclassified' }
@@ -140,7 +165,8 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 	bucketOfDices := aDiceBucket.
 	status := Started new.
 	turnManager := TurnManager with: ships.
-	battleManager := BattleManager with: aDiceBucket
+	battleManager := BattleManager with: aDiceBucket.
+	activeCards := OrderedCollection new.
 ]
 
 { #category : 'testing' }
@@ -183,7 +209,7 @@ Game >> shipNamed: aShip1 useCard: aCard with: aShip2 [
 	| ship1 ship2 |
 	ship1 := self findShipBy: aShip1.
 	ship2 := self findShipBy: aShip2.
-	ship1 use: aCard with: ship2
+	ship1 use: aCard with: ship2 in: self.
 ]
 
 { #category : 'accessing' }

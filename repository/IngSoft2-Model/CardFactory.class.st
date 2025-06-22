@@ -22,7 +22,7 @@ CardFactory class >> withTypes: cardsTypes [
 { #category : 'as yet unclassified' }
 CardFactory >> generateInitialCards [
 
-	| initialCards random |
+	| initialCards |
 	initialCards := OrderedCollection new.
 	initialCards add: (self randomCard:
 			 (Random new nextIntegerBetween: 1 and: typesOfCards size)).
