@@ -13,6 +13,12 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'instance creation' }
+CardFactory class >> with: typesOfCard [
+
+	^ self new initializeWithTypesOfCards: typesOfCard
+]
+
 { #category : 'accessing' }
 CardFactory class >> withTypes: cardsTypes [
 
