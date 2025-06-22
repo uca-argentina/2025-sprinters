@@ -1,14 +1,41 @@
 Class {
 	#name : 'Started',
 	#superclass : 'Object',
+	#instVars : [
+		'playing'
+	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
+
+{ #category : 'accessing' }
+Started class >> creation [
+
+	^ self new initialization
+]
+
+{ #category : 'as yet unclassified' }
+Started >> initialization [
+
+	playing := false
+]
 
 { #category : 'testing' }
 Started >> isFinished [
 
 	^ false
+]
+
+{ #category : 'testing' }
+Started >> isPlaying [
+
+	^ playing
+]
+
+{ #category : 'as yet unclassified' }
+Started >> markAsPlaying [
+
+	playing := true
 ]
 
 { #category : 'as yet unclassified' }

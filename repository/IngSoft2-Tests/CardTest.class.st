@@ -575,3 +575,120 @@ CardTest >> test013WhenUseREDOCardThenItTakesTheEffectOfTheLastCardUsed [
 	aGame playTurn.
 	self assert: (aGame findShipBy: ship1) position equals: 9
 ]
+
+{ #category : 'tests' }
+CardTest >> test014WhenUseRepeatCardBeforePlayingThenItDoesNotApplyTheLastEffectOnGame [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards ship2 acceleration redocard repeatcard |
+	aDice := LoadedDice withSequence: #( 3 5 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: RepeatCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
+	repeatcard := RepeatCard new.
+	aGame shipNamed: ship1 useCard: repeatcard with: ship2.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (aGame findShipBy: ship2) position equals: 2
+]
+
+{ #category : 'tests' }
+CardTest >> test015WhenUseRepeatCardThenItApplyTheLastEffectOnGame [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards ship2 acceleration redocard repeatcard |
+	aDice := LoadedDice withSequence: #( 3 7 1 6).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: RepeatCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
+	repeatcard := RepeatCard new.
+	aGame playTurn.
+	aGame playTurn.
+	aGame shipNamed: ship1 useCard: repeatcard with: ship2.  
+	self assert: (aGame findShipBy: ship2) position equals: 1.
+]
+
+{ #category : 'tests' }
+CardTest >> test016WhenUseRepeatCardButThereIsNoEffectThenItDoesNotApplyTheLastEffectOnGame [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards ship2 acceleration redocard repeatcard |
+	aDice := LoadedDice withSequence: #( 3 7 1 6 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: RepeatCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
+	repeatcard := RepeatCard new.
+	aGame playTurn.
+	aGame playTurn.
+	aGame shipNamed: ship1 useCard: repeatcard with: ship2.
+	self assert: (aGame findShipBy: ship2) position equals: 8
+]

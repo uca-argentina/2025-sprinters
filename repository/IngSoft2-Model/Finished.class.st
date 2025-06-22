@@ -11,6 +11,12 @@ Finished >> isFinished [
 	^ true
 ]
 
+{ #category : 'testing' }
+Finished >> isPlaying [
+
+	^ false
+]
+
 { #category : 'as yet unclassified' }
 Finished >> play: aGame [
 

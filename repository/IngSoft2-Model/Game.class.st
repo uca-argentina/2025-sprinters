@@ -11,7 +11,8 @@ Class {
 		'battleManager',
 		'cards',
 		'activeCards',
-		'historicalCards'
+		'historicalCards',
+		'historicalEffects'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -114,7 +115,7 @@ Game >> applyHyperSpaceJumpEffectOn: aShip [
 Game >> applyMoonWalkEffectOn: aShip moving: numberOfCells [
 	 ships do: [ :otherShip |
 		otherShip ~~ aShip ifTrue: [
-			otherShip move: numberOfCells * -1 in: board ] ]
+			otherShip move: numberOfCells * -1 in: board ] ].
 ]
 
 { #category : 'as yet unclassified' }
@@ -129,6 +130,15 @@ Game >> applyRedoCardEffectOn: aShip [
 		            ifNone: [ ^ Error signal: 'No real card to redo.' ].
 
 	realCard applyTo: aShip using:aShip in: self
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyRepeatCardEffectOn: aShip [
+
+	| effect |
+	status isPlaying ifTrue: [
+		effect := historicalEffects last.
+		effect ifNotNil: [ effect applyTo: aShip in: self ] ]
 ]
 
 { #category : 'accessing' }
@@ -172,17 +182,16 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps having: cardTypes [
 
 	| cardFactory |
-	
-	board  := aCircularBoard with: numberOfLaps.
-	ships := shipsNames collect: [ :aName |
-		         Ship create: aName].
-	ships do: [ :ship | ship recieveCardsFrom: cardTypes].
+	board := aCircularBoard with: numberOfLaps.
+	ships := shipsNames collect: [ :aName | Ship create: aName ].
+	ships do: [ :ship | ship recieveCardsFrom: cardTypes ].
 	bucketOfDices := aDiceBucket.
-	status := Started new.
+	status := Started creation.
 	turnManager := TurnManager with: ships.
 	battleManager := BattleManager with: aDiceBucket.
 	activeCards := OrderedCollection new.
-	historicalCards:=OrderedCollection new.
+	historicalCards := OrderedCollection new.
+	historicalEffects := OrderedCollection new
 ]
 
 { #category : 'testing' }
@@ -208,10 +217,12 @@ Game >> play [
 Game >> playTurn [
 
 	| actualShip effect positionToMove shipsInSamePosition |
+	status markAsPlaying.
 	actualShip := turnManager nextShip.
 	positionToMove := bucketOfDices throw + actualShip giveBonusThrow.
 	actualShip move: positionToMove in: board.
 	effect := board effectOnPosition: actualShip position.
+	historicalEffects add: effect.
 	effect applyTo: actualShip in: self.
 	shipsInSamePosition := ships select: [ :ship |
 		                       ship ~~ actualShip and: [
