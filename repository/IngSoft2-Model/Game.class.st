@@ -136,9 +136,8 @@ Game >> applyRedoCardEffectOn: aShip [
 Game >> applyRepeatCardEffectOn: aShip [
 
 	| effect |
-	status isPlaying ifTrue: [
-		effect := historicalEffects last.
-		effect ifNotNil: [ effect applyTo: aShip in: self ] ]
+	effect := historicalEffects.
+	effect applyTo: aShip in: self
 ]
 
 { #category : 'accessing' }
@@ -191,7 +190,7 @@ Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNa
 	battleManager := BattleManager with: aDiceBucket.
 	activeCards := OrderedCollection new.
 	historicalCards := OrderedCollection new.
-	historicalEffects := OrderedCollection new
+	historicalEffects := NoEffect new.
 ]
 
 { #category : 'testing' }
@@ -216,13 +215,14 @@ Game >> play [
 { #category : 'as yet unclassified' }
 Game >> playTurn [
 
-	| actualShip effect positionToMove shipsInSamePosition |
+	| actualShip effect positionToMove shipsInSamePosition name |
 	status markAsPlaying.
 	actualShip := turnManager nextShip.
 	positionToMove := bucketOfDices throw + actualShip giveBonusThrow.
 	actualShip move: positionToMove in: board.
 	effect := board effectOnPosition: actualShip position.
-	historicalEffects add: effect.
+	name := effect className.
+	name = 'CardGiver' ifFalse: [ historicalEffects := effect ].
 	effect applyTo: actualShip in: self.
 	shipsInSamePosition := ships select: [ :ship |
 		                       ship ~~ actualShip and: [

@@ -727,3 +727,41 @@ CardTest >> test017WhenTheShipMovesThrowTheBoardAndITACrdGiverCellThenShipReciev
 	aGame playTurn.
 	self assert: (aGame findShipBy: ship1) cards size equals: 3
 ]
+
+{ #category : 'tests' }
+CardTest >> test018WhenShipUseRepeatCardAndLastEffectWasaCardGiverThenItDoesNotReceiveTheCard [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards ship2 acceleration redocard repeatcard |
+	aDice := LoadedDice withSequence: #( 3 7 1 6 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: CardGiver with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: RedoCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: RepeatCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
+	repeatcard := RepeatCard new.
+	aGame playTurn.
+	aGame shipNamed: ship1 useCard: repeatcard with: ship2.
+	self assert: (aGame findShipBy: ship2) cards size equals: 2
+]
