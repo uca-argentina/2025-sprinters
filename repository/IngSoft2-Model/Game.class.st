@@ -176,6 +176,11 @@ Game >> isBefore: shipA than: shipB [
 ]
 
 { #category : 'as yet unclassified' }
+Game >> permanentCardsPlayed [
+	^ activeCards .
+]
+
+{ #category : 'as yet unclassified' }
 Game >> play [
 
 	status play:self.

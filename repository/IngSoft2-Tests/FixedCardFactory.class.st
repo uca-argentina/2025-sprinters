@@ -16,8 +16,8 @@ FixedCardFactory >> generateInitialCards [
 
 	| initialCards |
 	initialCards := OrderedCollection new.
-	initialCards add: (typesOfCards at: 1).
-	initialCards add: (typesOfCards at: 2).
+	initialCards add: (typesOfCards at: 1) generateRandomCard.
+	initialCards add: (typesOfCards at: 2) generateRandomCard.
 	^ initialCards
 ]
 

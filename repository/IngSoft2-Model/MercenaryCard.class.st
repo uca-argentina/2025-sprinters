@@ -2,7 +2,9 @@ Class {
 	#name : 'MercenaryCard',
 	#superclass : 'PermanentCard',
 	#instVars : [
-		'mercenary'
+		'mercenary',
+		'shipWithMercenary',
+		'shipBeingMercenary'
 	],
 	#classInstVars : [
 		'mercenary'
@@ -37,6 +39,13 @@ MercenaryCard >> applyTo: aShip using: aMercenary [
 
 { #category : 'as yet unclassified' }
 MercenaryCard >> applyTo: aShip using: aMercenary in:aGame [
-
+	shipWithMercenary := aShip.
+	shipBeingMercenary := aMercenary .
 	aShip receiveMercenaryCardEffectWith: aMercenary
+]
+
+{ #category : 'removing' }
+MercenaryCard >> removePermanentEffect [
+	shipBeingMercenary isNotMercenaryAnymore.
+	shipWithMercenary popThisMercenary: shipBeingMercenary .
 ]

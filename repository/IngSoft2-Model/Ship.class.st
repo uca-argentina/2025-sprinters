@@ -57,6 +57,11 @@ Ship >> choiceToNotPlay [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> decreaseBonusThrow [
+	bonusThrow := bonusThrow -1.
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> giveBonusThrow [
 	^ bonusThrow.
 ]
@@ -133,6 +138,11 @@ Ship >> isAheadOf: anotherShip [
 ]
 
 { #category : 'testing' }
+Ship >> isNotMercenaryAnymore [
+	amIMercenary := false.
+]
+
+{ #category : 'testing' }
 Ship >> isSomeoneMercenary [
 	^ amIMercenary.
 ]
@@ -188,6 +198,11 @@ Ship >> moveToFirstPosition [
 Ship >> name [
 
 	^ name
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> popThisMercenary: shipBeingMercenary [ 
+	bonusBattle remove: shipBeingMercenary .
 ]
 
 { #category : 'accessing' }
@@ -255,8 +270,13 @@ Ship >> recoverShields [
 ]
 
 { #category : 'removing' }
+Ship >> removeAccelerationCardEffect [
+	self decreaseBonusThrow.
+]
+
+{ #category : 'removing' }
 Ship >> removeSpeedCardEffect [
-	bonusThrow := bonusThrow -1.
+	self decreaseBonusThrow .
 ]
 
 { #category : 'accessing' }

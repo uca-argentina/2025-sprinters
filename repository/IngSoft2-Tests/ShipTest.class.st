@@ -103,7 +103,7 @@ ShipTest >> test005WhenShip1Moves12CellsInABoardWith5CellsThenShip1Has2Laps [
 { #category : 'tests' }
 ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 
-	| ship1 ships laps aGame aDice dices aDiceBucket amountOfCells aWorm distributions aBoard |
+	| ship1 ships laps aGame aDice dices aDiceBucket amountOfCells aWorm distributions aBoard typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	ship1 := 'Ship1'.
@@ -122,11 +122,16 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 		          has: distributions
 		          andTotalParsec: 20.
 	laps := 3.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps.
+		         until: 1
+		         having: typesOfCards.
 	aGame play.
 
 	self assert: aGame showWinner name equals: 'Ship1'
@@ -234,7 +239,7 @@ ShipTest >> test014WhenShipHas2TurnToSkipAndHAsSkipped1TurnThenItHas1TurnToSkip 
 { #category : 'tests' }
 ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1 [
 
-	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame |
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice withSequence: #(6).
@@ -251,11 +256,16 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 		          andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps.
+		         until: laps
+		         having: typesOfCards.
 
 	aGame playTurn.
 	self assert: (aGame ships at:1) position equals: 3
@@ -264,7 +274,7 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 { #category : 'tests' }
 ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 
-	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame |
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice withSequence: #( 5 3 ).
@@ -282,11 +292,16 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps.
+		         until: laps
+		         having: typesOfCards.
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.

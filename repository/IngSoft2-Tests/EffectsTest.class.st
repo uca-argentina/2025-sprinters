@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions amountOfCells effect |
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions amountOfCells effect typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice with: 9.
@@ -24,11 +24,15 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 		          has: distributions
 		          andTotalParsec: 20.
 	ships add: 'ship 1'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1.
+		         until: 1
+		         having: typesOfCards.
 	ship1 := aGame ships at: 1.
 	ship1 move: 6 in: aBoard.
 	effect := (distributions at: 1) cellClass.
@@ -39,7 +43,7 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 { #category : 'tests' }
 EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositionNeverBeNegative [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 effect distributions |
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 effect distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice with: 10.
@@ -54,11 +58,15 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 		          has: distributions
 		          andTotalParsec: 20.
 	ships add: 'ship 1'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1.
+		         until: 1
+		         having: typesOfCards.
 	ship1 := aGame ships at: 1.
 	ship1 move: 2 in: aBoard.
 	effect := (distributions at: 1) cellClass.
@@ -69,7 +77,7 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 { #category : 'tests' }
 EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions |
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice with: 10.
@@ -84,11 +92,15 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 		          has: distributions
 		          andTotalParsec: 20.
 	ships add: 'ship 1'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1.
+		         until: 1
+		         having: typesOfCards.
 	ship1 := aGame ships at: 1.
 	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
@@ -98,7 +110,7 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 { #category : 'tests' }
 EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions |
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions typesOfCards |
 	effect := HyperSpaceJump new.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
@@ -114,11 +126,15 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 		          has: distributions
 		          andTotalParsec: 20.
 	ships add: 'ship 1'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 1.
+		         until: 1
+		         having: typesOfCards.
 	ship1 := aGame ships at: 1.
 	effect := (distributions at: 1) cellClass.
 	effect applyTo: ship1 in: aGame.
@@ -128,7 +144,7 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 { #category : 'tests' }
 EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackward [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 n ship2 distributions |
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 n ship2 distributions typesOfCards |
 	n := 2.
 	"effect := MoonWalk move:n."
 	ships := OrderedCollection new.
@@ -146,11 +162,15 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 		          andTotalParsec: 20.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 2.
+		         until: 2
+		         having: typesOfCards.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
 	ship2 move: 13 in: aBoard.
@@ -163,7 +183,7 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 { #category : 'tests' }
 EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 ship2 distributions |
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 ship2 distributions typesOfCards |
 	effect := AtomicBomb.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
@@ -181,11 +201,15 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4.
+		         until: 4
+		         having: typesOfCards.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
 	ship2 move: 23 in: aBoard.
@@ -197,7 +221,7 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 { #category : 'tests' }
 EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroButLapsNotChange [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 distributions |
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 distributions typesOfCards |
 	effect := AtomicBomb.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
@@ -215,11 +239,15 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4.
+		         until: 4
+		         having: typesOfCards.
 	aGame playTurn.
 	aGame playTurn.
 	self assert: (aGame ships at: 2) laps equals: 2
@@ -228,7 +256,7 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 { #category : 'tests' }
 EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions |
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions typesOfCards |
 	effect := AtomicBomb.
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
@@ -245,11 +273,15 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 		          has: distributions
 		          andTotalParsec: 20.
 	ships add: 'ship 1'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4.
+		         until: 4
+		         having: typesOfCards.
 	ship1 := aGame ships at: 1.
 	aGame playTurn.
 	self assert: ship1 shields equals: 2
@@ -258,7 +290,7 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 { #category : 'tests' }
 EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions |
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions typesOfCards |
 	parsecsToMove := OrderedCollection new.
 	parsecsToMove add: 8.
 	parsecsToMove add: 6.
@@ -285,11 +317,15 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4.
+		         until: 4
+		         having: typesOfCards.
 	ship1 := aGame ships at: 1.
 	aGame playTurn .
 	self assert: ship1 position equals: 8.
@@ -298,7 +334,7 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 { #category : 'tests' }
 EffectsTest >> test010WhenCreatHuperJumpEffectToShip1andShip2ThenShipsPositionAreDifferent [
 
-		| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions ship2 |
+		| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions ship2 typesOfCards |
 	parsecsToMove := OrderedCollection new.
 	parsecsToMove add: 8.
 	parsecsToMove add: 6.
@@ -325,11 +361,15 @@ EffectsTest >> test010WhenCreatHuperJumpEffectToShip1andShip2ThenShipsPositionAr
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: 4.
+		         until: 4
+		         having: typesOfCards.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.
 	effect := (distributions at:1) cellClass.

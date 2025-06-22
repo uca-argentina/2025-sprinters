@@ -356,10 +356,10 @@ CardTest >> test008WhenUseAccelerationCardThenAllThrowsIncrementsBy1 [
 ]
 
 { #category : 'tests' }
-CardTest >> test009WhenUseCancellationCardThenRemoveOneActivePermanentCard [
+CardTest >> test009WhenUseCancellationCardThenRemoveSpeedCard [
 
 	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards aSpeedCard aCancellationCard aFixedCardFactory |
-	aDice := LoadedDice withSequence: #( 2 ).
+	aDice := LoadedDice withSequence: #( 3 ).
 	dices := OrderedCollection new.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
@@ -394,5 +394,140 @@ CardTest >> test009WhenUseCancellationCardThenRemoveOneActivePermanentCard [
 	aGame shipNamed: ship1 useCard: aCancellationCard with: ship1 .
 	aGame playTurn.
 
+	self assert: (aGame findShipBy: ship1) position equals: 4.
+]
+
+{ #category : 'tests' }
+CardTest >> test010WhenUseCancellationCardWithAccelerationThenRemoveAcceleration [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards aAccelerationCard aCancellationCard aFixedCardFactory ship2 |
+	aDice := LoadedDice withSequence: #( 1 3 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: typesOfCards.
+	aAccelerationCard := AccelerationCard new.
+	aFixedCardFactory := FixedCardFactory withTypes: typesOfCards.
+	(aGame findShipBy: ship1) recieveCardsFrom: aFixedCardFactory.
+	aGame shipNamed: ship1 useCard: aAccelerationCard with: ship1.
+	aCancellationCard := CancellationCard newWithCard: aAccelerationCard.
+	
+	aGame playTurn.
+	aGame shipNamed: ship1 useCard: aCancellationCard with: ship1 .
+	aGame playTurn .
 	self assert: (aGame findShipBy: ship1) position equals: 3.
+	self assert: (aGame findShipBy: ship2) position equals: 4.
+]
+
+{ #category : 'tests' }
+CardTest >> test011WhenUseCancellationCardWithMercenaryThenRemoveMercenary [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards aMercenaryCard aCancellationCard aFixedCardFactory ship2 ship3|
+	aDice := LoadedDice withSequence: #( 1 3 1 5 2 4 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ship3 := 'ship 3'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	ships add: ship2.
+	ships add: ship3.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: typesOfCards.
+	aMercenaryCard := MercenaryCard new.
+	aFixedCardFactory := FixedCardFactory withTypes: typesOfCards.
+	(aGame findShipBy: ship1) recieveCardsFrom: aFixedCardFactory.
+	aGame shipNamed: ship1 useCard: aMercenaryCard with: ship2.
+	aCancellationCard := CancellationCard newWithCard: aMercenaryCard.
+	aGame shipNamed: ship1 useCard: aCancellationCard with: ship1 .
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	self assert: (aGame findShipBy: ship1) shields equals: 2.
+	self assert: (aGame findShipBy: ship2) isSomeoneMercenary equals: false.
+]
+
+{ #category : 'tests' }
+CardTest >> test012WhenUseCancellationCardAndNoActiveCardsThenRaiseError [
+
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards aSpeedCard aCancellationCard aFixedCardFactory |
+	aDice := LoadedDice withSequence: #( 3 ).
+	dices := OrderedCollection new.
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	amountOfCells := 10.
+	aWorm := Worm with: 9 and: 10.
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ships := OrderedCollection new.
+	ships add: ship1.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: typesOfCards.
+	aSpeedCard := SpeedCard new.
+	aCancellationCard := CancellationCard newWithCard: aSpeedCard.
+	self
+		should: [aGame shipNamed: ship1 useCard: aCancellationCard with: ship1 . ]
+		raise: Error
+		withExceptionDo: [ :error |
+			self
+				assert: error messageText
+				equals: 'This card must be played when there is at least one active card' ]
 ]
