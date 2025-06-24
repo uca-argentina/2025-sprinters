@@ -20,11 +20,11 @@ Worm class >> with: aX and: aY [
 		^ Error signal:
 			  'Worm holes positions must be different' ].
 	
-	^ self new initializeWith: aX and: aY
+	^ self new initializeWith: aX positionsOn: aY
 ]
 
 { #category : 'initialization' }
-Worm >> initializeWith: aX and: aY [
+Worm >> initializeWith: aX positionsOn: aY [
 
 	positionX := aX.
 	positionY := aY
@@ -46,7 +46,7 @@ Worm >> positionY [
 ]
 
 { #category : 'as yet unclassified' }
-Worm >> showPositions: aBoard [ 
+Worm >> positions: aBoard [ 
 	^ { positionX. positionY. } .
 ]
 

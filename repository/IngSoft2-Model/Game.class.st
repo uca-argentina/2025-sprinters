@@ -8,36 +8,70 @@ Class {
 		'ships',
 		'status',
 		'turnManager',
-		'battleManager'
+		'battleManager',
+		'cards',
+		'activeCards',
+		'historicalCards',
+		'historicalEffects'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'as yet unclassified' }
-Game class >> with: aBoard using: aDiceBucket andShipsNamed: shipsNames [
+Game class >> validateUniqueNames: ships [
 
-	| listOfShips |
-	shipsNames size = 0 ifTrue: [
-		^ Error signal: 'List of ships must not be empty.' ].
-	listOfShips := Set new.
-	shipsNames do: [ :ship | listOfShips add: ship ].
-	listOfShips size = shipsNames size ifFalse: [
+	| uniqueNames duplicatedNames |
+	uniqueNames := Set new.
+	duplicatedNames := OrderedCollection new.
+
+	ships do: [ :shipName |
+		(uniqueNames includes: shipName)
+			ifTrue: [ duplicatedNames add: shipName ]
+			ifFalse: [ uniqueNames add: shipName ] ].
+
+	duplicatedNames isEmpty ifFalse: [
 		^ Error signal: 'Ship´s name must not be reapeated.' ].
-	^ self new
-		  initializeWith: aBoard
-		  using: aDiceBucket
-		  andShipsNamed: shipsNames
+
+	^ ships
 ]
 
 { #category : 'as yet unclassified' }
-Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: aCollection until: anInteger [
+Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: shipsName until: anInteger [
 
-	^ self new 
+	shipsName ifEmpty: [
+		^ Error signal: 'List of ships must not be empty.' ].
+	self validateUniqueNames: shipsName.
+
+	^ self new
 		  initializeWith: aCircularBoard
 		  using: aLoadedDice
-		  andShipsNamed: aCollection
+		  andShipsNamed: shipsName
 		  until: anInteger
+]
+
+{ #category : 'as yet unclassified' }
+Game class >> with: aBoard using: aLoadedDice andShipsNamed: shipsName until: laps having: aCardDeck [ 
+	shipsName ifEmpty: [
+		^ Error signal: 'List of ships must not be empty.' ].
+	self validateUniqueNames: shipsName.
+
+	^ self new
+		  initializeWith: aBoard
+		  using: aLoadedDice
+		  andShipsNamed: shipsName
+		  until: laps
+		  having: aCardDeck.
+]
+
+{ #category : 'adding' }
+Game >> addToActiveCardsThisCard: aCard [ 
+	activeCards add: aCard .
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyAccelerationCardEffect [
+	ships do: [:ship | ship increaseBonusThrow  ].
 ]
 
 { #category : 'as yet unclassified' }
@@ -46,15 +80,64 @@ Game >> applyAtomicEffectOn: aShip [
 ]
 
 { #category : 'as yet unclassified' }
-Game >> applyMoonWalkEffectOn: aShip [ 
+Game >> applyBlackHoleEffectOn: aShip [
+
+	aShip receiveBlackHoleEffectFrom: board 
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyCancellationCardEffect [
 	self shouldBeImplemented.
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyCancellationCardEffectOn: aPermanentCard [ 
+	| aCard chosenCard|
+	aCard :=activeCards detect: [:card | card = aPermanentCard ] .
+	aCard ifNil: [ Error signal: 'active cards does not have that Permanent Card' ].
+	aCard removePermanentEffect.
+	activeCards remove: aCard .
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyHyperJumEffectOn: aShip moving: cellsToJump [
+
+	aShip receiveHyperJumpIn: board moving: cellsToJump
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyHyperSpaceJumpEffectOn: aShip [
+
+	aShip recieveHyperSpaceJumpIn: board
 ]
 
 { #category : 'as yet unclassified' }
 Game >> applyMoonWalkEffectOn: aShip moving: numberOfCells [
 	 ships do: [ :otherShip |
 		otherShip ~~ aShip ifTrue: [
-			otherShip move: numberOfCells * -1 in: board ] ]
+			otherShip move: numberOfCells * -1 in: board ] ].
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyRedoCardEffectOn: aShip [
+
+	| realCard  |
+	historicalCards isEmpty ifTrue: [
+		^ Error signal: 'There are no cards played before.' ].
+
+	realCard := historicalCards reversed
+		            detect: [ :each | each isRedo not ]
+		            ifNone: [ ^ Error signal: 'No real card to redo.' ].
+
+	realCard applyTo: aShip using:aShip in: self
+]
+
+{ #category : 'as yet unclassified' }
+Game >> applyRepeatCardEffectOn: aShip [
+
+	| effect |
+	effect := historicalEffects.
+	effect applyTo: aShip in: self
 ]
 
 { #category : 'accessing' }
@@ -75,26 +158,39 @@ Game >> currentTopPlayer [
 	^ self shipsSortedByPosition at: 1.
 ]
 
-{ #category : 'initialization' }
-Game >> initializeWith: aBoard  using: aDiceBucket andShipsNamed: shipsNames [
+{ #category : 'as yet unclassified' }
+Game >> findShipBy: aName [
 
-	board := aBoard.
-	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket].
-	status := NotPlayed new.
-	turnManager:= TurnManager with:ships.
-	battleManager :=BattleManager new.
+	^ ships detect: [ :ship | ship name = aName ]
 ]
 
 { #category : 'initialization' }
 Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
 
-	board := aCircularBoard with:numberOfLaps .
-	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket ].
-	status := NotPlayed new.
-	turnManager:= TurnManager with:ships.
-	battleManager :=BattleManager .
-	
-	
+	| cardFactory |
+	cardFactory:=CardFactory new.
+	board := aCircularBoard with: numberOfLaps.
+	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket  andReceiveCardsFrom: cardFactory ].
+	bucketOfDices := aDiceBucket.
+	status := Started new.
+	turnManager := TurnManager with: ships.
+	battleManager := BattleManager with: aDiceBucket
+]
+
+{ #category : 'initialization' }
+Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps having: cardTypes [
+
+	| cardFactory |
+	board := aCircularBoard with: numberOfLaps.
+	ships := shipsNames collect: [ :aName | Ship create: aName ].
+	ships do: [ :ship | ship recieveCardsFrom: cardTypes ].
+	bucketOfDices := aDiceBucket.
+	status := Started creation.
+	turnManager := TurnManager with: ships.
+	battleManager := BattleManager with: aDiceBucket.
+	activeCards := OrderedCollection new.
+	historicalCards := OrderedCollection new.
+	historicalEffects := NoEffect new.
 ]
 
 { #category : 'testing' }
@@ -104,12 +200,14 @@ Game >> isBefore: shipA than: shipB [
 ]
 
 { #category : 'as yet unclassified' }
+Game >> permanentCardsPlayed [
+	^ activeCards .
+]
+
+{ #category : 'as yet unclassified' }
 Game >> play [
 
-	| actualShip cellsToMove |
-	status := Started new.
-	[ self someShipWon = false ] whileTrue: [ self playTurn ].
-	status := Finished new.
+	status play:self.
 
 	^ 'Game over'
 ]
@@ -117,15 +215,34 @@ Game >> play [
 { #category : 'as yet unclassified' }
 Game >> playTurn [
 
-	| actualShip effect |
+	| actualShip effect positionToMove shipsInSamePosition name |
+	status markAsPlaying.
 	actualShip := turnManager nextShip.
-	actualShip moveIn: board.
-	effect := board effectOnPosition: actualShip showPosition.
+	positionToMove := bucketOfDices throw + actualShip giveBonusThrow.
+	actualShip move: positionToMove in: board.
+	effect := board effectOnPosition: actualShip position.
+	name := effect className.
+	name = 'CardGiver' ifFalse: [ historicalEffects := effect ].
 	effect applyTo: actualShip in: self.
-	(ships select: [ :ship |
-		 ship ~~ actualShip and: [
-			 ship showPosition = actualShip showPosition ] ]) do: [ :enemy |
-		battleManager fightBetween: actualShip and: enemy ]
+	shipsInSamePosition := ships select: [ :ship |
+		                       ship ~~ actualShip and: [
+			                       ship position = actualShip position and:
+				                       ship laps = actualShip laps ] ].
+	shipsInSamePosition do: [ :enemy |
+		((actualShip hasAsMercery: enemy name) or: [
+			 enemy hasAsMercery: actualShip name ]) ifFalse: [
+			battleManager fightBetween: actualShip and: enemy ] ].
+	self someShipWon
+]
+
+{ #category : 'as yet unclassified' }
+Game >> shipNamed: aShip1 useCard: aCard with: aShip2 [
+
+	| ship1 ship2 |
+	ship1 := self findShipBy: aShip1.
+	ship2 := self findShipBy: aShip2.
+	ship1 use: aCard with: ship2 in: self.
+	historicalCards add: aCard
 ]
 
 { #category : 'accessing' }
@@ -136,12 +253,7 @@ Game >> ships [
 { #category : 'as yet unclassified' }
 Game >> shipsSortedByPosition [
 
-	^ ships copy sort: [ :a :b |
-		  a showLaps > b showLaps or: [
-			  a showLaps = b showLaps and: [
-				  a showPosition > b showPosition or: [
-					  a showPosition = b showPosition and: [
-						  self isBefore: a than: b ] ] ] ] ]
+	^ ships copy sort: [ :a :b | a isAheadOf: b ]
 ]
 
 { #category : 'as yet unclassified' }
@@ -155,7 +267,7 @@ Game >> showRanking [
 			sorted := self shipsSortedByPosition.
 
 			[ top <= 3 and: [ top <= sorted size ] ] whileTrue: [
-				ranking add: (sorted at: top) showName.
+				ranking add: (sorted at: top) name.
 				top := top + 1 ].
 			^ ranking ]
 		ifFalse: [
@@ -168,26 +280,26 @@ Game >> showShipsPositions [
 
 	| result |
 	result := Dictionary new.
-	ships do: [ :ship | result at: ship showName put: ship showPosition ].
+	ships do: [ :ship | result at: ship name put: ship position ].
 	^ result
 ]
 
 { #category : 'as yet unclassified' }
 Game >> showWinner [
-	^ winner.
+
+	^ status showWinner: self
+]
+
+{ #category : 'as yet unclassified' }
+Game >> skipTurnForShipNamed: shipName [ 
+	turnManager skipTurnForShipNamed: shipName.
 ]
 
 { #category : 'as yet unclassified' }
 Game >> someShipWon [
 
 	| laps |
-	laps := board showLaps.
-	winner := ships
-		          detect: [ :ship |
-			          laps isNil
-				          ifTrue: [ ship winAt: board ]
-				          ifFalse: [ ship winAt: board until: laps ] ]
-		          ifNone: [ nil ].
-
-	^ winner isNotNil
+	laps := board laps.
+	winner := ships detect: [ :ship | ship winAt: board ] ifNone: [ nil ].
+	winner ifNotNil: [ status := Finished new ]
 ]

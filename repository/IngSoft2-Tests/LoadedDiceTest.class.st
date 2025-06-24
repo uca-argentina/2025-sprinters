@@ -10,6 +10,6 @@ LoadedDiceTest >> test000WhenThrowALoadedDiceThenReturnMaximunFaces [
 
 	| amountOfFaces aLoadedDice |
 	amountOfFaces := 5.
-	aLoadedDice := LoadedDice with: amountOfFaces.
+	aLoadedDice := LoadedDice withSequence: #(5).
 	self assert: (aLoadedDice throw) equals: amountOfFaces
 ]

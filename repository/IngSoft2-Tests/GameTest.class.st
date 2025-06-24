@@ -1,6 +1,9 @@
 Class {
 	#name : 'GameTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'typesOfCards'
+	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
@@ -8,7 +11,7 @@ Class {
 { #category : 'tests' }
 GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships distributions |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -18,15 +21,23 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: ships.
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
 	aGame play.
 	self assert: aGame showWinner isNotNil
 ]
@@ -34,7 +45,7 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 { #category : 'tests' }
 GameTest >> test001WhenPlayGameThenReturnGameOver [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships distributions |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -44,16 +55,24 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: ships.
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
 
 	self assert: aGame play equals: 'Game over'
 ]
@@ -61,7 +80,7 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 { #category : 'tests' }
 GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 
-	| listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships distributions |
+	| listOfDices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships distributions typesOfCards |
 	ships := OrderedCollection new.
 	listOfDices := OrderedCollection new.
 	ships add: 'shipOne'.
@@ -72,31 +91,50 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
-	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
 	aGame play.
-	self assert: ((aGame currentStatus) showWinner:aGame) showName equals: 'shipOne'
+	self assert: aGame showWinner name equals: 'shipOne'
 ]
 
 { #category : 'tests' }
 GameTest >> test003WhenSomeShipWinThenShowPositions [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships assertedResult distributions |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships assertedResult distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := Dice with: 5.
+	aDice := LoadedDice withSequence: #( 5 8 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 	ships add: 'ship 1'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: ships.
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
 	aGame play.
 	assertedResult := Dictionary new.
 	assertedResult at: 'ship 1' put: 10.
@@ -106,22 +144,33 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 { #category : 'tests' }
 GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships assertedResult distributions |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships assertedResult distributions typesOfCards |
 	ships := OrderedCollection new.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 5.
+	aDice := LoadedDice withSequence: #( 5 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
-	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
-	(aGame ships at: 1) move: 10.
-	(aGame ships at: 2) move: 5.
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
+	(aGame ships at: 1) move: 10 in: aBoard.
+	(aGame ships at: 2) move: 5 in: aBoard.
 	aGame play.
 	assertedResult := Dictionary new.
 	assertedResult at: 'ship 1' put: 10.
@@ -132,7 +181,7 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 { #category : 'tests' }
 GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -140,7 +189,13 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -148,7 +203,11 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 
 	self
 		should: [
-		Game with: aBoard using: aDiceBucket andShipsNamed: ships ]
+			Game
+				with: aBoard
+				using: aDiceBucket
+				andShipsNamed: ships
+				until: 1 ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -159,7 +218,7 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 { #category : 'tests' }
 GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -167,12 +226,21 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
-
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 
 	self
 		should: [
-		Game with: aBoard using: aDiceBucket andShipsNamed: ships ]
+			Game
+				with: aBoard
+				using: aDiceBucket
+				andShipsNamed: ships
+				until: 0 ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -183,7 +251,7 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 { #category : 'tests' }
 GameTest >> test007WhenCreateGameThenGameCreateShips [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -191,51 +259,109 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells and: aWorm.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
-	aGame := Game with: aBoard using: aDiceBucket andShipsNamed: ships.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
 
-	self assert: (aGame ships at: 1) showPosition equals: 1
+	self assert: (aGame ships at: 1) position equals: 1
 ]
 
 { #category : 'tests' }
 GameTest >> test008WhenGameHasPlayedThenShowRanking [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult distributions |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 9.
+	aDice := LoadedDice withSequence: #( 6 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 	laps := 1.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps.
+		         until: laps
+		         having: (FixedCardFactory with: typesOfCards).
 
-	(aGame ships at:2) move: 10 in: aBoard. 
+	(aGame ships at: 2) move: 10 in: aBoard.
 	aGame play.
 	assertedResult := OrderedCollection new.
 	assertedResult add: 'ship 2'.
 	assertedResult add: 'ship 1'.
-	self assert: aGame showRanking equals: assertedResult 
+	self assert: aGame showRanking equals: assertedResult
 ]
 
 { #category : 'tests' }
 GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionReturnShip1AtFirst [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult result ship1 ship2 ship3 |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps result distributions typesOfCards |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 10 7 20 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
+	laps := 3.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
+
+	aGame playTurn.
+	aGame playTurn.
+	aGame playTurn.
+	result := aGame shipsSortedByPosition.
+	self assert: (result at: 1) name equals: 'ship 3'
+]
+
+{ #category : 'tests' }
+GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
+
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice with: 10.
@@ -243,147 +369,139 @@ GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionRe
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps.
-	ship1 := aGame ships at: 1.
-	ship2 := aGame ships at: 2.
-	ship3 := aGame ships at: 3.
-	ship2 move: 10.
-	ship1 move: 7.
-	ship3 move: 20.
-	result := aGame shipsSortedByPosition.
-	self assert: (result at: 1) showName equals: 'ship 3'
-]
-
-{ #category : 'tests' }
-GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
-
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps assertedResult |
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice with:10.
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	amountOfCells := 10.
-	aWorm := Worm with: 2 and: 4.
-	aBoard := Board with: amountOfCells.
-	laps := 3.
-	ships add: 'ship 1'.
-	ships add: 'ship 2'.
-	ships add: 'ship 3'.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: laps.
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
 	self
-		should: [
-		 aGame showRanking ]
+		should: [ aGame showRanking ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
 				assert: error messageText
-				equals: 'The Game has not been played yet so it doesn`t have a ranking' ]
+				equals:
+				'The Game has not been played yet so it doesn`t have a ranking' ]
 ]
 
 { #category : 'tests' }
 GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 6.
+	aDice := LoadedDice withSequence: #( 6 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps.
+		         until: laps
+					having: (CardFactory with: typesOfCards).
 	aGame playTurn.
-	self assert: (aGame ships at: 1) showPosition equals: 3
+	self assert: (aGame ships at: 1) position equals: 3
 ]
 
 { #category : 'tests' }
 GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 5.
+	aDice := LoadedDice withSequence: #( 5 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps.
+		         until: laps
+		         having: (CardFactory with: typesOfCards).
 	aGame playTurn.
-	self assert: (aGame ships at: 1) showPosition equals: 6
+	self assert: (aGame ships at: 1) position equals: 6
 ]
 
 { #category : 'tests' }
 GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions dices1 aDiceBucket1 dices2 aDiceBucket2 ship1 ship2 |
+	| aDice aBoard amountOfCells aWorm aGame ships laps distributions dices1 typesOfCards aDiceBucket1 dices2 aDiceBucket2 ship1 ship2 ship aDiceBucket |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
-	aDice := LoadedDice with: 6.
+	aDice := LoadedDice withSequence: #( 6 3 3 5 ).
 	dices1 add: aDice.
 	aDiceBucket1 := DiceBucket with: dices1.
 	aDice := LoadedDice with: 4.
-	dices2 := OrderedCollection new.
-	dices2 add: aDice.
-	aDiceBucket2 := DiceBucket with: dices2.
 	amountOfCells := 10.
-	aWorm := Worm with: 2 and: 4.
+	aWorm := Worm with: 9 and: 10.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 	laps := 3.
-	ship1 := Ship create: 'ship 1' with: aDiceBucket1.
-	ship2 := Ship create: 'ship 2' with: aDiceBucket2.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
 	ships add: ship1.
-	ships add:ship2.
-	aGame := FixGame
+	ships add: ship2.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
+	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket1
 		         andShipsNamed: ships
-		         until: laps.
-	ship2 move: 6 in: aBoard.
+		         until: laps
+		         having: (CardFactory with: typesOfCards).
 	aGame playTurn.
-	self
-		assert: ship1 showShields + ship1 showPosition
-		equals: 6
+	aGame playTurn.
+	ship := aGame ships at: 1.
+	self assert: ship shields + ship position equals: 6
 ]
 
 { #category : 'tests' }
@@ -392,56 +510,99 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 6.
+	aDice := LoadedDice withSequence: #( 6 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 	laps := 3.
 	ships add: 'ship 1'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
-		         until: laps.
+		         until: laps
+		         having: (CardFactory with: typesOfCards).
 	ship1 := aGame ships at: 1.
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
-	self assert: ship1 showPosition equals: 3
+	self assert: ship1 position equals: 3
 ]
 
 { #category : 'tests' }
 GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShipThenFight [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 dices2 aDiceBucket2 ship2 |
+	| aDice aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 ship2 |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
-	aDice := LoadedDice with: 4.
+	aDice := LoadedDice withSequence: #( 14 3 ).
 	dices1 add: aDice.
 	aDiceBucket1 := DiceBucket with: dices1.
-	aDice := LoadedDice with: 3.
-	dices2 := OrderedCollection new.
-	dices2 add: aDice.
-	aDiceBucket2 := DiceBucket with: dices2.
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
-
-	aBoard := Board with: amountOfCells and: aWorm has: distributions.
+	aBoard := aBoard := Board
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    andTotalParsec: 20.
 	laps := 3.
-	ship1 :=  Ship create:'ship 1' with: aDiceBucket1.
-	ship2:= Ship create:'ship 2' with: aDiceBucket2.
-	ships add: ship1 .
-	ships add:  ship2.
-	aGame := FixGame
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships add: ship1.
+	ships add: ship2.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
+	aGame := Game
 		         with: aBoard
-		         using: aDiceBucket
+		         using: aDiceBucket1
 		         andShipsNamed: ships
-		         until: laps.
+		         until: laps
+		         having: (CardFactory with: typesOfCards).
 	aGame playTurn. " la nave se mueve 5  y cae en una celda 14 con efecto, efecto lo mueve a la posiion 10 , en la posicion hay un Blackhol e pero no debe moverse mas "
-	self assert: ship2 showShields equals: 2
+	self assert: (aGame ships at: 1) position equals: 1
+]
+
+{ #category : 'tests' }
+GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNotTransferThrowTheWormHole [
+
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 dices2 aDiceBucket2 ship2 |
+	ships := OrderedCollection new.
+	dices1 := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 7 5 ).
+	dices1 add: aDice.
+	aDiceBucket1 := DiceBucket with: dices1.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships add: ship1.
+	ships add: ship2.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket1
+		         andShipsNamed: ships
+		         until: laps
+		         having: (CardFactory with: typesOfCards).
+	aGame playTurn.
+	self assert: (aGame ships at: 1) position equals: 4
 ]

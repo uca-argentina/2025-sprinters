@@ -8,7 +8,12 @@ Class {
 		'shields',
 		'turnsToSkip',
 		'diceBucket',
-		'optionalTurn'
+		'optionalTurn',
+		'cards',
+		'bonusThrow',
+		'bonusBattle',
+		'shipsIAmMercenaryTo',
+		'amIMercenary'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -24,14 +29,12 @@ Ship class >> create: aName [
 ]
 
 { #category : 'as yet unclassified' }
-Ship class >> create: aName with: aDiceBucket [
+Ship class >> create: aName with: aDiceBucket andReceiveCardsFrom: aCardFactory [
 
-	^ self new initializeWith: aName and: aDiceBucket
-]
+	aName isString ifFalse: [
+		^ Error signal: 'Ship´s name must be a string.' ].
 
-{ #category : 'instance creation' }
-Ship class >> newShip [
-	^ self new initializePosition.
+	^ self new initializeWith: aName and: aDiceBucket using: aCardFactory
 ]
 
 { #category : 'testing' }
@@ -41,16 +44,43 @@ Ship >> canPlay [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> choiceToNotPlay [
-	optionalTurn:=false. 
-	self recoverShields.
-	
-	
+Ship >> cards [
+
+	^ cards
 ]
 
-{ #category : 'initialization' }
-Ship >> initializePosition [
-	position := 1.
+{ #category : 'as yet unclassified' }
+Ship >> choiceToNotPlay [
+
+	self recoverShields.
+	turnsToSkip := turnsToSkip + 1
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> decreaseBonusThrow [
+	bonusThrow := bonusThrow -1.
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> giveBonusThrow [
+	^ bonusThrow.
+]
+
+{ #category : 'testing' }
+Ship >> hasAsMercery: aShip [
+
+	^ bonusBattle anySatisfy: [ :ship | aShip = ship name ]
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> helpToFightWith: aDiceBucket [
+
+	^ aDiceBucket throw
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> increaseBonusThrow [
+	bonusThrow := bonusThrow +1.
 ]
 
 { #category : 'initialization' }
@@ -60,26 +90,75 @@ Ship >> initializeWith: aName [
 	position := 1.
 	name := aName.
 	shields := 3.
-	turnsToSkip:=0.
-	optionalTurn:=true
+	turnsToSkip := 0.
+	optionalTurn := true.
+	bonusThrow := 0.
+	bonusBattle := OrderedCollection new.
+	shipsIAmMercenaryTo := OrderedCollection new.
+	amIMercenary:=false.
 ]
 
 { #category : 'initialization' }
-Ship >> initializeWith: aName and: aDiceBucket [
+Ship >> initializeWith: aName and: aDiceBucket using: aCardFactory [
 
-	name := aName.
-	diceBucket := aDiceBucket.
+	currentLap := 1.
 	position := 1.
-	currentLap := 0.
-	turnsToSkip := 0.
+	name := aName.
 	shields := 3.
-	optionalTurn:=true
+	turnsToSkip := 0.
+	optionalTurn := true.
+	cards := aCardFactory generateInitialCards.
+	diceBucket := aDiceBucket.
+	bonusThrow := 0.
+	bonusBattle := OrderedCollection new
+]
+
+{ #category : 'initialization' }
+Ship >> initializeWith: aName withADeck: aCardDeck [
+
+	| giver |
+	currentLap := 1.
+	position := 1.
+	name := aName.
+	shields := 3.
+	turnsToSkip := 0.
+	optionalTurn := true.
+	giver := CardFactory new.
+	cards := giver generateInitialCards.
+	bonusThrow := 0.
+	bonusBattle := OrderedCollection new
+]
+
+{ #category : 'testing' }
+Ship >> isAheadOf: anotherShip [
+
+	^ self laps > anotherShip laps or: [
+		  self laps = anotherShip laps and: [
+			  self position > anotherShip position ] ]
+]
+
+{ #category : 'testing' }
+Ship >> isNotMercenaryAnymore [
+	amIMercenary := false.
+]
+
+{ #category : 'testing' }
+Ship >> isSomeoneMercenary [
+	^ amIMercenary.
+]
+
+{ #category : 'accessing' }
+Ship >> laps [
+
+	^ currentLap
 ]
 
 { #category : 'as yet unclassified' }
 Ship >> loseFight [
 
+	bonusBattle do:[:mercenaryShip|mercenaryShip loseShield ].
 	self loseShield.
+	
 	position := 1
 ]
 
@@ -87,67 +166,26 @@ Ship >> loseFight [
 Ship >> loseShield [
 
 	shields := shields - 1.
-	shields = 0 ifTrue: [ turnsToSkip := 2 ]
+	shields = 0 ifFalse: [ ^ self ].
+
+	self recoverShields.
+	turnsToSkip := 2
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> move: numberOfCells [ 
-	position := position + numberOfCells.
+Ship >> markedAsMercenary [
+	amIMercenary := true.
 ]
 
 { #category : 'as yet unclassified' }
 Ship >> move: numberOfCells in: aBoard [
 
-	| totalCells newPosition |
-	totalCells := aBoard showCells.
+	| newPosition result |
 	newPosition := position + numberOfCells.
-
-	currentLap := currentLap + (newPosition // totalCells).
-
-	position := newPosition <= 0
-		            ifTrue: [ 1 ]
-		            ifFalse: [
-			            aBoard showLaps > 1
-				            ifTrue: [ newPosition \\ totalCells ]
-				            ifFalse: [
-					            newPosition <= 0 ifTrue: [ 1 ].
-					            newPosition > totalCells
-						            ifTrue: [ totalCells ]
-						            ifFalse: [ newPosition ] ] ].
-	position := aBoard verifyPosition: self
-]
-
-{ #category : 'as yet unclassified' }
-Ship >> moveByParsecs: parsecs on: aBoard [
- "escenario  --> 7 parsecs y 5 celas --> 1.4 parsecs/celd"
-	| boardSize currentParsec newParsecPos newPosition |
-	boardSize := aBoard showCells. "5 casilleros"
-	currentParsec := position * aBoard parsecsPerCell. " 2 * 1.4 = 2.8 parsecs"
-	newParsecPos := currentParsec + parsecs. " 8 parsecs´+ 2.8 parsec = 10.8 parsecs"
-	newPosition := newParsecPos // aBoard parsecsPerCell. " (10.8 parsecs / (1.4 parsec/celda ) = 1 celdas "
-	currentLap := currentLap + (newPosition // boardSize).
-	position := newPosition > boardSize
-		            ifTrue: [
-			            aBoard showLaps > 1
-				            ifTrue: [ newPosition \\ boardSize ]
-				            ifFalse: [ boardSize ] ]
-		            ifFalse: [ newPosition ].
-	position <= 0 ifTrue: [ position := 1 ].
-	position := aBoard verifyPosition: self
-]
-
-{ #category : 'as yet unclassified' }
-Ship >> moveIn: aBoard [
-
-	| boardCells |
-	position := position + self throwDices.
-	boardCells := aBoard showCells.
-	currentLap := currentLap + (position // aBoard showCells).
-	position > boardCells ifTrue: [
-		position := aBoard showLaps > 1
-			            ifTrue: [ position \\ boardCells. ]
-			            ifFalse: [ aBoard showCells ] ].
-	position := aBoard verifyPosition: self
+	result := aBoard move: newPosition at: currentLap having: 0.
+	position := result at: 1.
+	position := aBoard verifyPosition: position.
+	currentLap := result at: 2
 ]
 
 { #category : 'as yet unclassified' }
@@ -156,32 +194,81 @@ Ship >> moveToFirstPosition [
 	position := 1
 ]
 
+{ #category : 'accessing' }
+Ship >> name [
+
+	^ name
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> popThisMercenary: shipBeingMercenary [ 
+	bonusBattle remove: shipBeingMercenary .
+]
+
+{ #category : 'accessing' }
+Ship >> position [
+
+	^ position
+]
+
 { #category : 'as yet unclassified' }
 Ship >> receiveAtomicBombEffect [
 	self moveToFirstPosition. 
-	self  loseShield.
+	self loseShield.
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> receiveBlackHoleEffect [
+Ship >> receiveBlackHoleEffectFrom: aBoard [
 
-	self move: -4
+	| newPosition result |
+	newPosition := position - 4.
+	result := aBoard move: newPosition at: currentLap having: 0.
+	position := result at: 1.
+	currentLap := result at: 2
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> receiveBlackHoleEffectFrom: aGame [ 
-	self move:-4 in:aGame board
+Ship >> receiveCard: aClass [ 
+	self shouldBeImplemented.
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> receiveHyperJumpIn: aBoard moving: numberOfCells [
+	self move: numberOfCells in: aBoard
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> receiveMercenaryCardEffectWith: aShip [
+
+	aShip isSomeoneMercenary ifTrue: [ Error signal:'You can not use this ship as a mercenary' ] ifFalse: [ bonusBattle add: aShip. aShip markedAsMercenary].
 	
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
-	self moveByParsecs: numberOfParsecs on: aBoard
+Ship >> receiveSpeedCardEffect [
+	self increaseBonusThrow .
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> recieveHyperSpaceJumpIn: aBoard [ 
-	self move: 4 in: aBoard.
+Ship >> receiveThis: aCard [
+
+	cards add: aCard
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> recieveCardsFrom: cardFactory [
+
+	cards := cardFactory generateInitialCards
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> recieveHyperSpaceJumpIn: aBoard [
+
+	| newPosition result |
+	newPosition := position + 4.
+	result := aBoard move: newPosition at: currentLap having: 0.
+	position := result at: 1.
+	currentLap := result at: 2.
 	self loseShield
 ]
 
@@ -193,26 +280,20 @@ Ship >> recoverShields [
 	optionalTurn :=true.
 ]
 
-{ #category : 'as yet unclassified' }
-Ship >> showLaps [
-
-	^ currentLap
+{ #category : 'removing' }
+Ship >> removeAccelerationCardEffect [
+	self decreaseBonusThrow.
 ]
 
-{ #category : 'as yet unclassified' }
-Ship >> showName [
-
-	^ name.
+{ #category : 'removing' }
+Ship >> removeSpeedCardEffect [
+	self decreaseBonusThrow .
 ]
 
-{ #category : 'as yet unclassified' }
-Ship >> showPosition [
-	^ position.
-]
+{ #category : 'accessing' }
+Ship >> shields [
 
-{ #category : 'as yet unclassified' }
-Ship >> showShields [
-	^shields
+	^ shields
 ]
 
 { #category : 'as yet unclassified' }
@@ -228,8 +309,56 @@ Ship >> throwDices [
 ]
 
 { #category : 'as yet unclassified' }
+Ship >> throwDicesWith: aDiceBucket [
+
+	| count |
+	count := 0.
+	bonusBattle do: [ :mercenaryShip |
+		count := count + (mercenaryShip helpToFightWith: aDiceBucket) ].
+	^ aDiceBucket throw + count
+]
+
+{ #category : 'as yet unclassified' }
 Ship >> turnsThatHasToSkip [
-	^turnsToSkip 
+
+	^ turnsToSkip
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> use: aCard with: aShip [
+
+	| index |
+	index := cards indexOf: (cards
+			          detect: [ :card | card class = aCard class ]
+			          ifNone: [
+			          Error signal:
+				          'You can not use a card that you do not have' ]).
+	aCard applyTo: self using: aShip.
+	cards removeAt: index
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> use: aCard with: aShip in:aGame [
+
+	| index |
+	index := cards indexOf: (cards value
+			          detect: [ :card | card class = aCard class ]
+			          ifNone: [
+			          Error signal:
+				          'You can not use a card that you do not have' ]).
+	aCard applyTo: self using: aShip in: aGame.
+	aGame addToActiveCardsThisCard: aCard .
+	cards removeAt: index.
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> useBonusThrow [
+
+	| increment |
+	increment := 0.
+	bonusThrow > 0 ifTrue: [ increment := 1 ].
+	bonusThrow := bonusThrow - 1.
+	^ increment
 ]
 
 { #category : 'as yet unclassified' }
@@ -241,11 +370,6 @@ Ship >> wantsToPlay [
 { #category : 'as yet unclassified' }
 Ship >> winAt: aBoard [
 
-	^ position >= aBoard showCells
-]
-
-{ #category : 'accessing' }
-Ship >> winAt: arg1 until: arg2 [
-
-	^ currentLap >= arg2
+	^ (currentLap = aBoard laps and: position >= aBoard amountOfCells)
+		  or: currentLap > aBoard laps
 ]

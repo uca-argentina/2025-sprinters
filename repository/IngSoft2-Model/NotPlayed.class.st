@@ -11,12 +11,6 @@ NotPlayed >> isFinished [
 	^ false
 ]
 
-{ #category : 'testing' }
-NotPlayed >> isPlaying [
-
-	^ false.
-]
-
 { #category : 'as yet unclassified' }
 NotPlayed >> showWinner: aGame [
 

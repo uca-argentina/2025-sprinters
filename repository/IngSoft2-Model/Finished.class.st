@@ -18,6 +18,19 @@ Finished >> isPlaying [
 ]
 
 { #category : 'as yet unclassified' }
+Finished >> markAsPlaying [
+
+	^ false
+]
+
+{ #category : 'as yet unclassified' }
+Finished >> play: aGame [
+
+	^ Error signal:
+		  'The game has already been played, you can not play any more.'
+]
+
+{ #category : 'as yet unclassified' }
 Finished >> showWinner: aGame [
 
 	^ aGame currentTopPlayer

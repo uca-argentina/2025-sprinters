@@ -24,7 +24,7 @@ EffectDistributor >> initializeWith: aDistribution on: amountOfCells [
 { #category : 'as yet unclassified' }
 EffectDistributor >> recieveAmountOfEffects [
 
-	| cumulativeProbabilities cum effectsOnCells randomItem effectSelected  effectOnCells random |
+	| cumulativeProbabilities cum effectsOnCells randomItem effectSelected effectOnCells random debug |
 	cumulativeProbabilities := OrderedCollection new.
 	random := Random new.
 	cum := 0.0.
@@ -37,9 +37,11 @@ EffectDistributor >> recieveAmountOfEffects [
 		randomItem := random next.
 		effectSelected := cumulativeProbabilities
 			                  detect: [ :effect |
-			                  effect key includes: randomItem ]
+				                  debug := effect key.
+				                  debug first <= randomItem and: [
+					                  randomItem < debug last ] ]
 			                  ifNone: [ NoEffect ].
-		effectOnCells add:effectSelected ].
+		effectOnCells add: effectSelected ].
 
 	^ effectOnCells
 ]
