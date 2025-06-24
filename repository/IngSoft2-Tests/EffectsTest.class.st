@@ -433,7 +433,7 @@ EffectsTest >> test013WhenHavingMoonwalkEffectThenHasNCells [
 ]
 
 { #category : 'tests' }
-EffectsTest >> test014WhenCreatHyperJumpLightYearEffectToShipThenItMovesPrrsecs [
+EffectsTest >> test014WhenCreatHyperJumpWithParsecsrEffectToShipThenItMovesParsecs [
 
 	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 amountOfCells aX aY distributions typesOfCards distanceToMove |
 	distanceToMove := OrderedCollection new.

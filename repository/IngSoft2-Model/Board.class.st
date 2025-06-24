@@ -60,6 +60,12 @@ Board >> amountOfNoEffectCells [
 	^ self amountOfCellsOf: 'NoEffect class'
 ]
 
+{ #category : 'accessing' }
+Board >> cells [
+
+	^ cells
+]
+
 { #category : 'as yet unclassified' }
 Board >> effectOnPosition: position [
 
