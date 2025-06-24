@@ -30,12 +30,6 @@ Board class >> with: aAmountOfCells and: aWormHole has: aDistribution basedOn: a
 		  basedOn: aDistance
 ]
 
-{ #category : 'as yet unclassified' }
-Board >> amountOfBlackHoleCells [
-
-	^ self amountOfCellsOf: 'BlackHole class'.
-]
-
 { #category : 'accessing' }
 Board >> amountOfCells [
 
@@ -45,19 +39,7 @@ Board >> amountOfCells [
 { #category : 'as yet unclassified' }
 Board >> amountOfCellsOf: anEffectOrClass [
 
-	| count effect classEffect |
-	count := 0.
-	cells do: [ :cell |
-		effect := cell effect.
-		classEffect := effect className.
-		classEffect = anEffectOrClass ifTrue: [ count := count + 1 ] ].
-	^ count
-]
-
-{ #category : 'as yet unclassified' }
-Board >> amountOfNoEffectCells [
-
-	^ self amountOfCellsOf: 'NoEffect class'
+	^ cells count: [ :cell | cell effect className = anEffectOrClass ]
 ]
 
 { #category : 'accessing' }

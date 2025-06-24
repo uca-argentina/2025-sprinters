@@ -172,7 +172,8 @@ BoardTest >> test007WhenGivenDistributionToABoardThenAllAddUpToTheExacAmountOfCe
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 100).
-	total := aBoard amountOfNoEffectCells + aBoard amountOfBlackHoleCells.
+	total := (aBoard amountOfCellsOf: 'NoEffect')
+	         + (aBoard amountOfCellsOf:'BlackHole').
 	self assert: total equals: amountOfCells
 ]
 
@@ -217,7 +218,8 @@ BoardTest >> test009WhenGivenDistributionToABoardThenAllAddUpToTheExactAmountOfC
 		          and: aWorm
 		          has: distributions
 		          basedOn: (Distance parsecs: 1).
-	total := aBoard amountOfNoEffectCells + aBoard amountOfBlackHoleCells.
+	total := (aBoard amountOfCellsOf: 'NoEffect')
+	         + (aBoard amountOfCellsOf: 'BlackHole').
 	self assert: total equals: amountOfCells
 ]
 
