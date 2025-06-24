@@ -6,7 +6,8 @@ Class {
 		'wormHole',
 		'laps',
 		'cells',
-		'totalParsecs'
+		'totalParsecs',
+		'distance'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -27,6 +28,23 @@ Board class >> with: aAmountOfCells and: aWormHole has: aDistribution andTotalPa
 		  and: aWormHole
 		  has: aDistribution
 		  andTotalParsec: parsecs
+]
+
+{ #category : 'as yet unclassified' }
+Board class >> with: aAmountOfCells and: aWormHole has: aDistribution basedOn: aDistance [
+
+	aAmountOfCells isInteger ifFalse: [
+		^ Error signal: 'Amount of cells must be an integer' ].
+	aAmountOfCells < 1 ifTrue: [
+		^ Error signal: 'Amount of cells must be greater than zero' ].
+	(aWormHole isInside: aAmountOfCells) ifFalse: [
+		^ Error signal:
+			  'Position of the worm hole exceed amount board`s cells' ].
+	^ self new
+		  initializeWith: aAmountOfCells
+		  and: aWormHole
+		  has: aDistribution
+		  basedOn: aDistance
 ]
 
 { #category : 'as yet unclassified' }
@@ -86,6 +104,27 @@ Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions andTot
 		cells add: cell ]
 ]
 
+{ #category : 'initialization' }
+Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions basedOn: aDistance [
+
+	| cell aDistributor effectsOnCells |
+	amountOfCells := aAmountOfCells.
+	wormHole := aWormHole.
+	laps := 1.
+	distance := aDistance.
+	aDistributor := EffectDistributor
+		                withDistribution: distributions
+		                on: aAmountOfCells.
+
+	effectsOnCells := aDistributor recieveAmountOfEffects.
+	cells := OrderedCollection new.
+	1 to: amountOfCells do: [ :i |
+		cell := Cell new.
+		cell position: i.
+		cell effect: (effectsOnCells at: i).
+		cells add: cell ]
+]
+
 { #category : 'accessing' }
 Board >> laps [
 
@@ -126,7 +165,7 @@ Board >> moveThrowTheLaps: currentLap this: position [
 { #category : 'as yet unclassified' }
 Board >> parsecsPerCell [
 
-	^ totalParsecs // amountOfCells
+	^ (distance parsecs) // amountOfCells
 ]
 
 { #category : 'as yet unclassified' }

@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Effect',
 	#instVars : [
 		'parsecsToMove',
-		'index'
+		'index',
+		'distancesToMove'
 	],
 	#classInstVars : [
 		'parsecsToMove',
@@ -13,22 +14,20 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'initialization' }
-HyperJump class >> initializeThis [
-	^ self new initializeWith: 10
-]
-
 { #category : 'instance creation' }
-HyperJump class >> with: parsecsToMove [
+HyperJump class >> with: distanceToMove [
 
 	| response |
-	response := parsecsToMove anySatisfy: [ :steps | steps <= 0 ].
+	response := distanceToMove anySatisfy: [ :steps |
+		            steps parsecs <= 0 or: [ steps lightYears <= 0 ] ].
 	response ifTrue: [
-		Error signal: 'Parsecs to move must to be positive' ].
-	(1 to: parsecsToMove size - 1) do: [ :i |
-		(parsecsToMove at: i) < (parsecsToMove at: i + 1) ifTrue: [
-			Error signal: 'Parsecs have to be less than the earlier one' ] ].
-	^ self new initializeWith: parsecsToMove
+		Error signal: 'Parsecs and lightYears to move must to be positive' ].
+	(1 to: distanceToMove size - 1) do: [ :i |
+		(distanceToMove at: i) parsecs < (distanceToMove at: i + 1) parsecs
+			ifTrue: [
+				Error signal:
+					'Parsecs and lightYears have to be less than the earlier one' ] ].
+	^ self new initializeWith: distanceToMove
 ]
 
 { #category : 'as yet unclassified' }
@@ -42,14 +41,15 @@ HyperJump >> applyTo: aShip in: aGame [
 ]
 
 { #category : 'initialization' }
-HyperJump >> initializeWith: collectionOfparsecs [
+HyperJump >> initializeThis [
 
-	| collectionOfparsecsList |
-	collectionOfparsecsList := OrderedCollection new.
-	collectionOfparsecs to: 1 by: -1 do: [ :each |
-	collectionOfparsecsList add: each ].
+	^ self
+]
 
-	parsecsToMove := collectionOfparsecsList.
+{ #category : 'initialization' }
+HyperJump >> initializeWith: aCollectionOfDistanceToMove [
+
+	distancesToMove := aCollectionOfDistanceToMove.
 	index := 1
 ]
 
@@ -57,7 +57,7 @@ HyperJump >> initializeWith: collectionOfparsecs [
 HyperJump >> nextParsecs [
 
 	| parsecsToJump |
-	parsecsToJump := parsecsToMove at: index.
-	index := index \\ parsecsToMove size + 1.
+	parsecsToJump := (distancesToMove at: index) parsecs.
+	index := index \\ distancesToMove size + 1.
 	^ parsecsToJump
 ]
