@@ -433,6 +433,53 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 ]
 
 { #category : 'tests' }
+GameTest >> test012WhenBoardIsCreatedThenEffectsAreDistributedAccordingToProbability [
+
+	| board amountOfCells worm distributions cardEffectCount blackHoleCount noEffectCount totalCells tolerance distanceToMove effect name hyperSpaceCount hyperJumpCount moonWalkCount atomicBombCount |
+	amountOfCells := 1000.
+	worm := Worm with: 2 and: 4.
+	distanceToMove := OrderedCollection new.
+	distanceToMove add: (Distance lightYear: 27).
+	distanceToMove add: (Distance lightYear: 18).
+	distanceToMove add: (Distance lightYear: 9).
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 0.38).
+	distributions add: (Distribution at: CardGiver with: 0.10).
+	distributions add: (Distribution at: BlackHole with: 0.20).
+	distributions add: (Distribution at: HyperSpaceJump with: 0.20).
+	distributions add: (Distribution at: MoonWalk with: 0.10).
+	distributions add:
+		(Distribution at: (HyperJump with: distanceToMove) with: 0.08).
+	distributions add: (Distribution at: AtomicBomb with: 0.02).
+
+	board := Board
+		         with: amountOfCells
+		         and: worm
+		         has: distributions
+		         basedOn: (Distance parsecs: 20).
+
+	cardEffectCount := board amountOfCellsOf: 'CardGiver' .
+	blackHoleCount := board  amountOfCellsOf: 'BlackHole' .
+	noEffectCount := board  amountOfCellsOf:  'NoEffect' .
+	hyperSpaceCount := board  amountOfCellsOf: 'HyperSpaceJump' .
+	hyperJumpCount := board  amountOfCellsOf: 'HyperJump' .
+	moonWalkCount := board  amountOfCellsOf:  'MoonWalk' .
+	atomicBombCount := board  amountOfCellsOf:  'AtomicBomb' .
+
+	totalCells := amountOfCells.
+	tolerance := 0.05. "5% de margen de error\"
+
+	self assert: cardEffectCount / totalCells >=( 0.10 - tolerance).
+	self assert: cardEffectCount / totalCells <= (0.10 + tolerance).
+
+	self assert: blackHoleCount / totalCells >= (0.20 - tolerance).
+	self assert: blackHoleCount / totalCells <= (0.20 + tolerance).
+
+	self assert: noEffectCount / totalCells >= (0.38 - tolerance).
+	self assert: noEffectCount / totalCells <= (0.38 + tolerance)
+]
+
+{ #category : 'tests' }
 GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 
 	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions typesOfCards |
@@ -608,9 +655,9 @@ GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNo
 ]
 
 { #category : 'tests' }
-GameTest >> test017WhenBoardIsCreatedThenEffectsAreDistributedAccordingToProbability [
+GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 
-	| board amountOfCells worm distributions cardEffectCount blackHoleCount noEffectCount totalCells tolerance distanceToMove effect name hyperSpaceCount hyperJumpCount moonWalkCount atomicBombCount |
+	| board amountOfCells worm distributions cardEffectCount blackHoleCount noEffectCount totalCells tolerance distanceToMove effect name hyperSpaceCount hyperJumpCount moonWalkCount atomicBombCount aDice dices1 aDiceBucket1 aWorm laps ship1 ship2 ships ship3 ship4 aGame aBoard winner |
 	amountOfCells := 1000.
 	worm := Worm with: 2 and: 4.
 	distanceToMove := OrderedCollection new.
@@ -627,38 +674,37 @@ GameTest >> test017WhenBoardIsCreatedThenEffectsAreDistributedAccordingToProbabi
 		(Distribution at: (HyperJump with: distanceToMove) with: 0.08).
 	distributions add: (Distribution at: AtomicBomb with: 0.02).
 
-	board := Board
-		         with: amountOfCells
-		         and: worm
-		         has: distributions
-		         basedOn: (Distance parsecs: 20).
-
-	cardEffectCount := board cells count: [ :cell |
-		                   effect := cell effect.
-		                   name := effect className.
-		                   name = 'CardGiver' ].
-	blackHoleCount := board cells count: [ :cell |
-		                  cell effect className = 'BlackHole' ].
-	noEffectCount := board cells count: [ :cell |
-		                 cell effect className = 'NoEffect' ].
-	hyperSpaceCount := board cells count: [ :cell |
-		                 cell effect className = 'HyperSpaceJump' ].
-	hyperJumpCount := board cells count: [ :cell |
-		                 cell effect className = 'HyperJump' ].
-	moonWalkCount := board cells count: [ :cell |
-		                 cell effect className = 'MoonWalk' ].
-	atomicBombCount := board cells count: [ :cell |
-		                 cell effect className = 'AtomicBomb' ].
-
-	totalCells := amountOfCells.
-	tolerance := 0.05. "5% de margen de error\"
-
-	self assert: cardEffectCount / totalCells >=( 0.10 - tolerance).
-	self assert: cardEffectCount / totalCells <= (0.10 + tolerance).
-
-	self assert: blackHoleCount / totalCells >= (0.20 - tolerance).
-	self assert: blackHoleCount / totalCells <= (0.20 + tolerance).
-
-	self assert: noEffectCount / totalCells >= (0.38 - tolerance).
-	self assert: noEffectCount / totalCells <= (0.38 + tolerance)
+	aBoard := Board
+		          with: amountOfCells
+		          and: worm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+	aDice := Dice with: 6.
+	dices1 := OrderedCollection new.
+	dices1 add: aDice.
+	aDiceBucket1 := DiceBucket with: dices1.
+	amountOfCells := 10.
+	aWorm := Worm with: 2 and: 4.
+	ships := OrderedCollection new.
+	laps := 1.
+	ship1 := 'ship 1'.
+	ship2 := 'ship 2'.
+	ships add: ship1.
+	ships add: ship2.
+	ship3 := 'ship 3'.
+	ship4 := 'ship 4'.
+	ships add: ship3.
+	ships add: ship4.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket1
+		         andShipsNamed: ships
+		         until: laps
+		         having: (CardFactory with: typesOfCards).
+	aGame play.
+	ships := #( 'ship 1' 'ship 2' 'ship 3' 'ship 4' ).
+	winner := aGame showWinner.
+	self assert: (ships includes: winner name)
 ]

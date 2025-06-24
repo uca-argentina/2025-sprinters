@@ -42,12 +42,6 @@ Board >> amountOfCellsOf: anEffectOrClass [
 	^ cells count: [ :cell | cell effect className = anEffectOrClass ]
 ]
 
-{ #category : 'accessing' }
-Board >> cells [
-
-	^ cells
-]
-
 { #category : 'as yet unclassified' }
 Board >> effectOnPosition: position [
 
@@ -89,11 +83,12 @@ Board >> lightYearsPerCell [
 { #category : 'as yet unclassified' }
 Board >> move: distance at: lap having: parsecs [
 
-	| position currentParsec newParsecPos newPosition currentLap |
+	| position currentParsec newParsecPos newPosition currentLap parsecsInCell |
 	"escenario  --> 7 parsecs y 5 celas --> 1.4 parsecs/celd"
-	currentParsec := distance * self parsecsPerCell. " 2 * 1.4 = 2.8 parsecs"
+	parsecsInCell := self parsecsPerCell.
+	currentParsec := distance * parsecsInCell. " 2 * 1.4 = 2.8 parsecs"
 	newParsecPos := currentParsec + parsecs. " 8 parsecs´+ 2.8 parsec = 10.8 parsecs"
-	newPosition := newParsecPos // self parsecsPerCell. " (10.8 parsecs / (1.4 parsec/celda ) = 1 celdas "
+	newPosition := newParsecPos // parsecsInCell. " (10.8 parsecs / (1.4 parsec/celda ) = 1 celdas "
 	currentLap := self moveThrowTheLaps: lap this: newPosition.
 	position := newPosition <= 0
 		            ifTrue: [ 1 ]
@@ -103,7 +98,9 @@ Board >> move: distance at: lap having: parsecs [
 				            ifFalse: [
 					            newPosition <= 0 ifTrue: [ 1 ].
 					            newPosition min: amountOfCells ] ].
-	^ {position. currentLap.}.
+	^ {
+		  position.
+		  currentLap }
 ]
 
 { #category : 'as yet unclassified' }
@@ -115,7 +112,7 @@ Board >> moveThrowTheLaps: currentLap this: position [
 { #category : 'as yet unclassified' }
 Board >> parsecsPerCell [
 
-	^ (distance parsecs) // amountOfCells
+	^ distance parsecs / amountOfCells
 ]
 
 { #category : 'as yet unclassified' }

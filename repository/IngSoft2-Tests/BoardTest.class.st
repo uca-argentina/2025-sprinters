@@ -266,3 +266,50 @@ BoardTest >> test011WhenBoardCreateWithParsecThenGetLightYears [
 		          basedOn: (Distance parsecs: 20).
 	self assert: aBoard lightYearsPerCell equals: 3
 ]
+
+{ #category : 'tests' }
+BoardTest >> test012WhenBoardIsCreatedThenEffectsAreDistributedAccordingToProbability [
+
+	| board amountOfCells worm distributions cardEffectCount blackHoleCount noEffectCount totalCells tolerance distanceToMove effect name hyperSpaceCount hyperJumpCount moonWalkCount atomicBombCount |
+	amountOfCells := 1000.
+	worm := Worm with: 2 and: 4.
+	distanceToMove := OrderedCollection new.
+	distanceToMove add: (Distance lightYear: 27).
+	distanceToMove add: (Distance lightYear: 18).
+	distanceToMove add: (Distance lightYear: 9).
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 0.38).
+	distributions add: (Distribution at: CardGiver with: 0.10).
+	distributions add: (Distribution at: BlackHole with: 0.20).
+	distributions add: (Distribution at: HyperSpaceJump with: 0.20).
+	distributions add: (Distribution at: MoonWalk with: 0.10).
+	distributions add:
+		(Distribution at: (HyperJump with: distanceToMove) with: 0.08).
+	distributions add: (Distribution at: AtomicBomb with: 0.02).
+
+	board := Board
+		         with: amountOfCells
+		         and: worm
+		         has: distributions
+		         basedOn: (Distance parsecs: 20).
+
+	cardEffectCount := board amountOfCellsOf: 'CardGiver' .
+	blackHoleCount := board  amountOfCellsOf: 'BlackHole' .
+	noEffectCount := board  amountOfCellsOf:  'NoEffect' .
+	hyperSpaceCount := board  amountOfCellsOf: 'HyperSpaceJump' .
+	hyperJumpCount := board  amountOfCellsOf: 'HyperJump' .
+	moonWalkCount := board  amountOfCellsOf:  'MoonWalk' .
+	atomicBombCount := board  amountOfCellsOf:  'AtomicBomb' .
+
+	totalCells := amountOfCells.
+	tolerance := 0.05. "5% de margen de error\"
+
+	self assert: cardEffectCount / totalCells >=( 0.10 - tolerance).
+	self assert: cardEffectCount / totalCells <= (0.10 + tolerance).
+
+	self assert: blackHoleCount / totalCells >= (0.20 - tolerance).
+	self assert: blackHoleCount / totalCells <= (0.20 + tolerance).
+
+	self assert: noEffectCount / totalCells >= (0.38 - tolerance).
+	self assert: noEffectCount / totalCells <= (0.38 + tolerance)
+]
