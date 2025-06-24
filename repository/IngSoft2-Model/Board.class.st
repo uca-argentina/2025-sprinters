@@ -93,6 +93,11 @@ Board >> laps [
 ]
 
 { #category : 'as yet unclassified' }
+Board >> lightYearsPerCell [
+	^ (self parsecsPerCell) * 3.
+]
+
+{ #category : 'as yet unclassified' }
 Board >> move: distance at: lap having: parsecs [
 
 	| position currentParsec newParsecPos newPosition currentLap |

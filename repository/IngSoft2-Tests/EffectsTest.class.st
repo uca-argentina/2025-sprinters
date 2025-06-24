@@ -430,3 +430,47 @@ EffectsTest >> test013WhenHavingMoonwalkEffectThenHasNCells [
 
 	self assert: (distributions at: 1) cellClass numberOfCells equals: 10
 ]
+
+{ #category : 'tests' }
+EffectsTest >> test014WhenCreatHyperJumpLightYearEffectToShipThenItMoveaParsec [
+
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions typesOfCards |
+	parsecsToMove := OrderedCollection new.
+	parsecsToMove add: 8.
+	parsecsToMove add: 6.
+	parsecsToMove add: 3.
+
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #(2 5 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 20.
+	aX := 2.
+	aY := 9.
+	aWorm := Worm with: aX and: aY.
+
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: HyperJumpLightYear with: 1).
+	
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 4
+		         having: (FixedCardFactory with: typesOfCards).
+	ship1 := aGame ships at: 1.
+	aGame playTurn .
+	self assert: ship1 position equals: 6.
+]

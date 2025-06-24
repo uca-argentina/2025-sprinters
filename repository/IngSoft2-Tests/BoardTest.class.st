@@ -241,3 +241,31 @@ BoardTest >> test010WhenCreateBoardWithDistributionsThenEffectsOFCellsISNoEFfect
 		          andTotalParsec: 20.
 	self assert: (aBoard effectOnPosition: 3) className equals: 'NoEffect'
 ]
+
+{ #category : 'tests' }
+BoardTest >> test011WhenBoardCreateWithParsecThenGetLightYears [
+
+	| amountOfCells aX aY aWorm aBoard distributions |
+	amountOfCells := 20.
+	"El numero de celdas por ahora esta logicamente implementado para que sea siempre un entero, un par"
+	aX := 1.
+	aY := 2.
+	aWorm := Worm with: aX and: aY.
+
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          andTotalParsec: 20.
+	self assert: aBoard lightYearsPerCell equals: 3.
+	
+	
+	
+	
+	
+	
+
+]

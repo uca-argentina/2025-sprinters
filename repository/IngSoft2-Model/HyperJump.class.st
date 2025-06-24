@@ -61,8 +61,3 @@ HyperJump >> nextParsecs [
 	index := index \\ parsecsToMove size + 1.
 	^ parsecsToJump
 ]
-
-{ #category : 'accessing' }
-HyperJump >> numberOfCells [
-	self shouldBeImplemented.
-]
