@@ -19,7 +19,7 @@ BoardTest >> test000WhenCreateBoardWithAmountOfCellsThenShowAmountOfCells [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 200).
 	self assert: aBoard amountOfCells equals: amountOfCells
 ]
 
@@ -39,7 +39,7 @@ BoardTest >> test001WhenPlayGameThenReturnGameOver [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	self assert: aBoard specialCells equals: {
 			aX.
 			aY }
@@ -59,7 +59,7 @@ BoardTest >> test002WhenCreateBoardWithWrongWormHolePostionThenReturnsError [
 				with: amountOfCells
 				and: aWorm
 				has: distributions
-				andTotalParsec: 20 ]
+				basedOn: (Distance parsecs: 20) ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -81,7 +81,7 @@ BoardTest >> test003WhenCreateBoardWithCellsLessThan1ThenReturnsError [
 				with: amountOfCells
 				and: aWorm
 				has: distributions
-				andTotalParsec: 20 ]
+				basedOn: (Distance parsecs: 20) ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -101,9 +101,9 @@ BoardTest >> test004WhenCreateBoardWithCellsNotIntegerThenReturnsError [
 		should: [
 			Board
 				with: amountOfCells
-				and: aWorm
-				has: distributions
-				andTotalParsec: 20 ]
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20). ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -125,7 +125,7 @@ BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	aLoadedDice := LoadedDice withSequence: #( 6 ).
 	aShip := Ship create: 'ship 1'.
 	aShip move: 6 in: aBoard.
@@ -146,7 +146,7 @@ BoardTest >> test006WhenShipMoveMoreThanCellsInTheBoardThenPositionIsAmountOfCel
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	loadedDice := LoadedDice withSequence: #( 6 ).
 	aShip := Ship create: 'ship1'.
 	aShip move: loadedDice throw in: aBoard.
@@ -171,7 +171,7 @@ BoardTest >> test007WhenGivenDistributionToABoardThenAllAddUpToTheExacAmountOfCe
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 100.
+		          basedOn: (Distance parsecs: 100).
 	total := aBoard amountOfNoEffectCells + aBoard amountOfBlackHoleCells.
 	self assert: total equals: amountOfCells
 ]
@@ -193,7 +193,7 @@ BoardTest >> test008WhenAskForEffectOnPositionThenBoardReturnItEffect [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 100.
+		          basedOn: (Distance parsecs: 100).
 	effect := aBoard effectOnPosition: 3.
 	self assert: effect className equals: 'BlackHole'
 ]
@@ -216,7 +216,7 @@ BoardTest >> test009WhenGivenDistributionToABoardThenAllAddUpToTheExactAmountOfC
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 1.
+		          basedOn: (Distance parsecs: 1).
 	total := aBoard amountOfNoEffectCells + aBoard amountOfBlackHoleCells.
 	self assert: total equals: amountOfCells
 ]
@@ -238,8 +238,10 @@ BoardTest >> test010WhenCreateBoardWithDistributionsThenEffectsOFCellsISNoEFfect
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
-	self assert: (aBoard effectOnPosition: 3) className equals: 'NoEffect'
+		          basedOn: (Distance parsecs: 20).
+	self
+		assert: (aBoard effectOnPosition: 3) className
+		equals: 'NoEffect'
 ]
 
 { #category : 'tests' }
@@ -259,13 +261,6 @@ BoardTest >> test011WhenBoardCreateWithParsecThenGetLightYears [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
-	self assert: aBoard lightYearsPerCell equals: 3.
-	
-	
-	
-	
-	
-	
-
+		          basedOn: (Distance parsecs: 20).
+	self assert: aBoard lightYearsPerCell equals: 3
 ]

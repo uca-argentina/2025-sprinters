@@ -25,7 +25,7 @@ GameTest >> test000WhenPlayGameThenWinnerShowWinnerIsNotNill [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -57,9 +57,9 @@ GameTest >> test001WhenPlayGameThenReturnGameOver [
 	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := aBoard := Board
 		                    with: amountOfCells
-		                    and: aWorm
-		                    has: distributions
-		                    andTotalParsec: 20.
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
 
 
 	ships add: 'ship 1'.
@@ -95,7 +95,7 @@ GameTest >> test002WhenPlayGameWithOneShipThenReturnWinner [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	aGame := Game
@@ -125,7 +125,7 @@ GameTest >> test003WhenSomeShipWinThenShowPositions [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
@@ -160,7 +160,7 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	aGame := Game
@@ -195,7 +195,7 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -232,7 +232,7 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 
 	self
 		should: [
@@ -265,7 +265,7 @@ GameTest >> test007WhenCreateGameThenGameCreateShips [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -299,7 +299,7 @@ GameTest >> test008WhenGameHasPlayedThenShowRanking [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -337,7 +337,7 @@ GameTest >> test009WhenGameHasPlayedWithLoadedDiceThenShowShipSortedByPositionRe
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -375,7 +375,7 @@ GameTest >> test010WhenGameHasNotPlayedThenShowRankingRaiseError [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -415,7 +415,7 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -427,7 +427,7 @@ GameTest >> test011WhenShipIsOnCellWithEffectThenReceiveEffect [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: laps
-					having: (CardFactory with: typesOfCards).
+		         having: (CardFactory with: typesOfCards).
 	aGame playTurn.
 	self assert: (aGame ships at: 1) position equals: 3
 ]
@@ -449,7 +449,7 @@ GameTest >> test012WhenShipIsOnCellWithNoEffectThenDoNotReceiveEffect [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
@@ -484,7 +484,7 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -521,7 +521,7 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ships add: 'ship 1'.
 	typesOfCards := OrderedCollection new.
@@ -554,7 +554,7 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 		                    with: amountOfCells
 		                    and: aWorm
 		                    has: distributions
-		                    andTotalParsec: 20.
+		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -589,7 +589,7 @@ GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNo
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.

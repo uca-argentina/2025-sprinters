@@ -72,10 +72,10 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
-	ships:=OrderedCollection new.
+	ships := OrderedCollection new.
 	ships add: 'ship 1'.
 	aGame := Game
 		         with: aBoard
@@ -113,7 +113,7 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
 	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
@@ -147,7 +147,7 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
 	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
@@ -188,7 +188,7 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
 	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).

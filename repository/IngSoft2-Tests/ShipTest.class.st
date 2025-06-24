@@ -25,13 +25,13 @@ ShipTest >> test001WhenShipReceiveANumberThenMovesThatAmount [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := Board
-		                  with: 5
-		                  and: aWorm
-		                  has: distributions
-		                  andTotalParsec: 20.
+		          with: 5
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
 	ship1 move: 3 in: aBoard.
 
-	self assert: ship1 position equals: 4.
+	self assert: ship1 position equals: 4
 ]
 
 { #category : 'tests' }
@@ -74,9 +74,9 @@ ShipTest >> test004WhenShip1PositionIsLastOneAndThrow1ThenShip1StartFromTheBegin
 		                  with: amountOfCells
 		                  and: aWorm
 		                  has: distributions
-		                  andTotalParsec: 20.
+		                  basedOn: (Distance parsecs: 20).
 	aCircularBoard with: 2.
-	ship1 move: (dice throw) in: aCircularBoard.
+	ship1 move: dice throw in: aCircularBoard.
 	self assert: ship1 position equals: 2
 ]
 
@@ -94,9 +94,9 @@ ShipTest >> test005WhenShip1Moves12CellsInABoardWith5CellsThenShip1Has2Laps [
 		                  with: 5
 		                  and: aWorm
 		                  has: distributions
-		                  andTotalParsec: 20.
+		                  basedOn: (Distance parsecs: 20).
 	aCircularBoard with: 3.
-	ship1 move: (dice throw) in: aCircularBoard.
+	ship1 move: dice throw in: aCircularBoard.
 	self assert: ship1 laps equals: 4
 ]
 
@@ -117,10 +117,10 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 	distributions add: (Distribution at: BlackHole with: 1).
 
 	aBoard := aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          andTotalParsec: 20.
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
@@ -131,7 +131,7 @@ ShipTest >> test006WhenShip1IsInFinalLapThenWinnerIsShip1 [
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-		        having: (CardFactory with: typesOfCards).
+		         having: (CardFactory with: typesOfCards).
 	aGame play.
 
 	self assert: aGame showWinner name equals: 'Ship1'
@@ -151,7 +151,7 @@ ShipTest >> test007WhenShipThrow11AndBoardHas5CellsThenShipWinAt2LapsReturnsTrue
 		                  with: 5
 		                  and: aWorm
 		                  has: distributions
-		                  andTotalParsec: 20.
+		                  basedOn: (Distance parsecs: 20).
 	aCircularBoard with: 2.
 	ship1 move: aLoadedDice throw in: aCircularBoard.
 	laps := 2.
@@ -242,7 +242,7 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame typesOfCards |
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #(6).
+	aDice := LoadedDice withSequence: #( 6 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -250,10 +250,10 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: BlackHole with: 1).
 	aBoard := aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          andTotalParsec: 20.
+		                    with: amountOfCells
+		                    and: aWorm
+		                    has: distributions
+		                    basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ships add: 'ship 1'.
 	typesOfCards := OrderedCollection new.
@@ -268,7 +268,7 @@ ShipTest >> test015WhenShipIsInPosition5AndReceiveBlackHoleEffectThenPositionIs1
 		         having: (CardFactory with: typesOfCards).
 
 	aGame playTurn.
-	self assert: (aGame ships at:1) position equals: 3
+	self assert: (aGame ships at: 1) position equals: 3
 ]
 
 { #category : 'tests' }
@@ -288,7 +288,7 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 3.
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
