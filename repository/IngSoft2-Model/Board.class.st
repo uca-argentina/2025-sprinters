@@ -110,7 +110,11 @@ Board >> move: distance at: lap having: parsecs [
 { #category : 'as yet unclassified' }
 Board >> moveThrowTheLaps: currentLap this: position [
 
-	^ currentLap + (position // amountOfCells)
+	| lapValue |
+	lapValue := currentLap + (position // amountOfCells).
+	lapValue <= 0 ifTrue: [
+		^ Error signal: 'Current lap cannot be negative' ].
+	^ lapValue
 ]
 
 { #category : 'as yet unclassified' }
