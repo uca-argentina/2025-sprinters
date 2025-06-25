@@ -18,7 +18,7 @@ DiceBucket >> initializeWith: aSetOfDices [
 	bucketOfDices := aSetOfDices.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 DiceBucket >> throw [
 
 	| totalSum |

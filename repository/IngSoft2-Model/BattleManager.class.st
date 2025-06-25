@@ -28,7 +28,7 @@ BattleManager class >> with: aDiceBucket [
 	^ self new initializeWith: aDiceBucket
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 BattleManager >> fightBetween: shipA and: shipB [
 
 	| resultA resultB |

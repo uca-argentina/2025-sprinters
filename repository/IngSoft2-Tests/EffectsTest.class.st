@@ -22,7 +22,7 @@ EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
@@ -56,7 +56,7 @@ EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositi
 		          with: 10
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
@@ -90,7 +90,7 @@ EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
 		          with: 10
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
@@ -124,7 +124,7 @@ EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
 		          with: 10
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
@@ -159,7 +159,7 @@ EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackwa
 		          with: 10
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	typesOfCards := OrderedCollection new.
@@ -197,7 +197,7 @@ EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
 		          with: 10
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
@@ -235,7 +235,7 @@ EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreZeroB
 		          with: 10
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
@@ -271,7 +271,7 @@ EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 		          with: 10
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
@@ -292,13 +292,13 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 
 	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions typesOfCards |
 	parsecsToMove := OrderedCollection new.
-	parsecsToMove add: 8.
-	parsecsToMove add: 6.
-	parsecsToMove add: 3.
+	parsecsToMove add: (Distance parsecs: 8).
+	parsecsToMove add: (Distance parsecs: 6).
+	parsecsToMove add: (Distance parsecs: 3).
 
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #(2 5 ).
+	aDice := LoadedDice withSequence: #( 2 5 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -307,13 +307,14 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 	aWorm := Worm with: aX and: aY.
 
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: HyperJump with: 1).
-	
+	distributions add:
+		(Distribution at: (HyperJump with: parsecsToMove) with: 1).
+
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
@@ -327,22 +328,22 @@ EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 		         until: 4
 		         having: (FixedCardFactory with: typesOfCards).
 	ship1 := aGame ships at: 1.
-	aGame playTurn .
-	self assert: ship1 position equals: 8.
+	aGame playTurn.
+	self assert: ship1 position equals: 7
 ]
 
 { #category : 'tests' }
-EffectsTest >> test010WhenCreatHuperJumpEffectToShip1andShip2ThenShipsPositionAreDifferent [
+EffectsTest >> test010WhenCreatHyperJumpEffectToShip1andShip2ThenShipsPositionAreDifferent [
 
-		| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions ship2 typesOfCards |
+	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions ship2 typesOfCards |
 	parsecsToMove := OrderedCollection new.
-	parsecsToMove add: 8.
-	parsecsToMove add: 6.
-	parsecsToMove add: 3.
+	parsecsToMove add: (Distance parsecs: 8).
+	parsecsToMove add: (Distance parsecs: 6).
+	parsecsToMove add: (Distance parsecs: 3).
 
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
+	aDice := LoadedDice withSequence: #( 3 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 10.
@@ -351,31 +352,31 @@ EffectsTest >> test010WhenCreatHuperJumpEffectToShip1andShip2ThenShipsPositionAr
 	aWorm := Worm with: aX and: aY.
 
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: HyperJump with: 1).
-	
+	distributions add:
+		(Distribution at: (HyperJump with: parsecsToMove) with: 1).
+
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
-
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 4
 		         having: (FixedCardFactory with: typesOfCards).
-	ship1 := aGame ships at: 1.
-	ship2 := aGame ships at: 2.
-	effect := (distributions at:1) cellClass.
-	effect applyTo: ship1 in: aGame.
-	effect applyTo: ship2 in: aGame.
-	self assert: (ship1 position + ship2 position) equals: 11.
+	aGame playTurn.
+	aGame playTurn.
+	self
+		assert: (aGame findShipBy: 'ship 1') position
+			+ (aGame findShipBy: 'ship 2') position
+		equals: 15
 ]
 
 { #category : 'tests' }
@@ -383,9 +384,9 @@ EffectsTest >> test011WhenCreatHuperJumpEffectWithCellsLessThanZeroThenRaiseErro
 
 	| parsecsToMove |
 	parsecsToMove := OrderedCollection new.
-	parsecsToMove add: 8.
-	parsecsToMove add: -6.
-	parsecsToMove add: 3.
+	parsecsToMove add: (Distance parsecs: 8).
+	parsecsToMove add: (Distance parsecs: -6).
+	parsecsToMove add: (Distance parsecs: 3).
 
 	self
 		should: [ HyperJump with: parsecsToMove ]
@@ -393,25 +394,25 @@ EffectsTest >> test011WhenCreatHuperJumpEffectWithCellsLessThanZeroThenRaiseErro
 		withExceptionDo: [ :error |
 			self
 				assert: error messageText
-				equals: 'Parsecs to move must to be positive' ]
+				equals: 'Parsecs and lightYears to move must to be positive' ]
 ]
 
 { #category : 'tests' }
 EffectsTest >> test012WhenCreatHuperJumpEffectWithCellsHaveToBeLessThanThePreviusThenRaiseError [
 
-	| parsecsToMove |
-	parsecsToMove := OrderedCollection new.
-	parsecsToMove add: 8.
-	parsecsToMove add: 10.
-	parsecsToMove add: 3.
+	| lightYearToMove |
+	lightYearToMove := OrderedCollection new.
+	lightYearToMove add: (Distance lightYear: 8).
+	lightYearToMove add: (Distance lightYear: 10).
+	lightYearToMove add: (Distance lightYear: 3).
 
 	self
-		should: [ HyperJump with: parsecsToMove ]
+		should: [ HyperJump with: lightYearToMove ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
 				assert: error messageText
-				equals: 'Parsecs have to be less than the earlier one' ]
+				equals: 'Parsecs and lightYears have to be less than the earlier one' ]
 ]
 
 { #category : 'tests' }
@@ -432,17 +433,17 @@ EffectsTest >> test013WhenHavingMoonwalkEffectThenHasNCells [
 ]
 
 { #category : 'tests' }
-EffectsTest >> test014WhenCreatHyperJumpLightYearEffectToShipThenItMoveaParsec [
+EffectsTest >> test014WhenCreatHyperJumpWithParsecsrEffectToShipThenItMovesParsecs [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions typesOfCards |
-	parsecsToMove := OrderedCollection new.
-	parsecsToMove add: 8.
-	parsecsToMove add: 6.
-	parsecsToMove add: 3.
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 amountOfCells aX aY distributions typesOfCards distanceToMove |
+	distanceToMove := OrderedCollection new.
+	distanceToMove add: (Distance parsecs: 9).
+	distanceToMove add: (Distance parsecs: 6).
+	distanceToMove add: (Distance parsecs: 3).
 
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #(2 5 ).
+	aDice := LoadedDice withSequence: #( 2 5 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
 	amountOfCells := 20.
@@ -451,19 +452,18 @@ EffectsTest >> test014WhenCreatHyperJumpLightYearEffectToShipThenItMoveaParsec [
 	aWorm := Worm with: aX and: aY.
 
 	distributions := OrderedCollection new.
-	distributions add: (Distribution at: HyperJumpLightYear with: 1).
-	
-	aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          andTotalParsec: 20.
+	distributions add:
+		(Distribution at: (HyperJump with: distanceToMove) with: 1).
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 3'.
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
-
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 60).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
@@ -471,6 +471,49 @@ EffectsTest >> test014WhenCreatHyperJumpLightYearEffectToShipThenItMoveaParsec [
 		         until: 4
 		         having: (FixedCardFactory with: typesOfCards).
 	ship1 := aGame ships at: 1.
-	aGame playTurn .
-	self assert: ship1 position equals: 6.
+	aGame playTurn.
+	self assert: ship1 position equals: 6
+]
+
+{ #category : 'tests' }
+EffectsTest >> test015WhenCreatHyperJumpLightYearEffectToShipThenItMovesPrrsecs [
+
+	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 amountOfCells aX aY distributions typesOfCards distanceToMove |
+	distanceToMove := OrderedCollection new.
+	distanceToMove add: (Distance lightYear: 27).
+	distanceToMove add: (Distance lightYear: 18).
+	distanceToMove add: (Distance lightYear: 9).
+
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 2 5 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 20.
+	aX := 2.
+	aY := 9.
+	aWorm := Worm with: aX and: aY.
+
+	distributions := OrderedCollection new.
+	distributions add:
+		(Distribution at: (HyperJump with: distanceToMove) with: 1).
+	ships add: 'ship 1'.
+	ships add: 'ship 2'.
+	ships add: 'ship 3'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance lightYear: 180).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: 4
+		         having: (FixedCardFactory with: typesOfCards).
+	ship1 := aGame ships at: 1.
+	aGame playTurn.
+	self assert: ship1 position equals: 6
 ]

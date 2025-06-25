@@ -19,10 +19,10 @@ CardTest >> test000WhenCreateSpeedCardThenShipSumOneInItThrow [
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
 	aBoard := aBoard := Board
-		                    with: amountOfCells
-		                    and: aWorm
-		                    has: distributions
-		                    andTotalParsec: 20.
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
 	ships add: 'ship 1'.
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: InstantCard new.
@@ -47,25 +47,25 @@ CardTest >> test001WhenUseSpeedCardFromDeckThenApplyItEffect [
 	aDiceBucket := DiceBucket with: dices.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	amountOfCells := 10. 
+	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ships := OrderedCollection new.
 	ships add: ship1.
 	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: (SpeedCard new)).
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-					having: (FixedCardFactory with: typesOfCards) .
+		         having: (FixedCardFactory with: typesOfCards).
 	aCard := SpeedCard new.
 	aGame shipNamed: ship1 useCard: aCard with: ship1.
 	aGame playTurn.
@@ -88,7 +88,7 @@ CardTest >> test002WhenShipWantsToPlayThatItDoesNotHaveThenRaiseError [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ships := OrderedCollection new.
@@ -128,7 +128,7 @@ CardTest >> test003WhenShipUseMercenaryCardWithShip2ThenTheyDoNotBattle [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	mercenary := 'mercenary'.
@@ -162,25 +162,25 @@ CardTest >> test004WhenAShipUseSpeedCardThenIsRemovedFromDeckOfShip [
 	aDiceBucket := DiceBucket with: dices.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
-	amountOfCells := 10. 
+	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	aBoard := Board
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ships := OrderedCollection new.
 	ships add: ship1.
 	typesOfCards := OrderedCollection new.
-	typesOfCards add: (FixedCard withTypeOfCard: (SpeedCard new)).
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: ships
 		         until: 1
-					having: (FixedCardFactory with: typesOfCards) .
+		         having: (FixedCardFactory with: typesOfCards).
 	aCard := SpeedCard new.
 	aGame shipNamed: ship1 useCard: aCard with: ship1.
 	aGame playTurn.
@@ -203,7 +203,7 @@ CardTest >> test005WhenShip1FightToShip3UsingShip2AsMErcenaryThenShip1WinTheBatt
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -244,7 +244,7 @@ CardTest >> test006WhenShip1FightToShip3UsingShip2AsMErcenaryAndShip3WonThenShip
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -266,7 +266,11 @@ CardTest >> test006WhenShip1FightToShip3UsingShip2AsMErcenaryAndShip3WonThenShip
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	self assert: ((aGame findShipBy: ship2) shields) + ((aGame findShipBy: ship1) shields) equals: 4.
+	self
+		assert:
+		(aGame findShipBy: ship2) shields
+		+ (aGame findShipBy: ship1) shields
+		equals: 4
 ]
 
 { #category : 'tests' }
@@ -285,7 +289,7 @@ CardTest >> test007WhenShip3AndShip1WanttheSameShipAsMercenaryThenRaiseError [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -329,7 +333,7 @@ CardTest >> test008WhenUseAccelerationCardThenAllThrowsIncrementsBy1 [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -351,9 +355,9 @@ CardTest >> test008WhenUseAccelerationCardThenAllThrowsIncrementsBy1 [
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
-	self assert: (aGame findShipBy: ship1) position  equals: 3.
-	self assert: (aGame findShipBy: ship2) position  equals: 4.
-	self assert: (aGame findShipBy: ship3) position  equals: 5.
+	self assert: (aGame findShipBy: ship1) position equals: 3.
+	self assert: (aGame findShipBy: ship2) position equals: 4.
+	self assert: (aGame findShipBy: ship3) position equals: 5
 ]
 
 { #category : 'tests' }
@@ -372,7 +376,7 @@ CardTest >> test009WhenUseCancellationCardThenRemoveSpeedCard [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ships := OrderedCollection new.
@@ -414,7 +418,7 @@ CardTest >> test010WhenUseCancellationCardWithAccelerationThenRemoveAcceleration
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -434,7 +438,7 @@ CardTest >> test010WhenUseCancellationCardWithAccelerationThenRemoveAcceleration
 
 	aAccelerationCard := AccelerationCard new.
 	aFixedCardFactory := FixedCard withTypeOfCard: CancellationCard new.
-	
+
 	aGame shipNamed: ship1 useCard: aAccelerationCard with: ship1.
 	aCancellationCard := CancellationCard newWithCard: aAccelerationCard.
 
@@ -448,7 +452,7 @@ CardTest >> test010WhenUseCancellationCardWithAccelerationThenRemoveAcceleration
 { #category : 'tests' }
 CardTest >> test011WhenUseCancellationCardWithMercenaryThenRemoveMercenary [
 
-	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards aMercenaryCard aCancellationCard aFixedCardFactory ship2 ship3|
+	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards aMercenaryCard aCancellationCard aFixedCardFactory ship2 ship3 |
 	aDice := LoadedDice withSequence: #( 1 3 1 5 2 4 ).
 	dices := OrderedCollection new.
 	dices add: aDice.
@@ -461,7 +465,7 @@ CardTest >> test011WhenUseCancellationCardWithMercenaryThenRemoveMercenary [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -480,16 +484,18 @@ CardTest >> test011WhenUseCancellationCardWithMercenaryThenRemoveMercenary [
 		         andShipsNamed: ships
 		         until: 1
 		         having: (FixedCardFactory with: typesOfCards).
-		
-	aMercenaryCard := MercenaryCard new.	
+
+	aMercenaryCard := MercenaryCard new.
 	aGame shipNamed: ship1 useCard: aMercenaryCard with: ship2.
 	aCancellationCard := CancellationCard newWithCard: aMercenaryCard.
-	aGame shipNamed: ship1 useCard: aCancellationCard with: ship1 .
+	aGame shipNamed: ship1 useCard: aCancellationCard with: ship1.
 	aGame playTurn.
 	aGame playTurn.
 	aGame playTurn.
 	self assert: (aGame findShipBy: ship1) shields equals: 2.
-	self assert: (aGame findShipBy: ship2) isSomeoneMercenary equals: false.
+	self
+		assert: (aGame findShipBy: ship2) isSomeoneMercenary
+		equals: false
 ]
 
 { #category : 'tests' }
@@ -508,7 +514,7 @@ CardTest >> test012WhenUseCancellationCardAndNoActiveCardsThenRaiseError [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ships := OrderedCollection new.
@@ -525,12 +531,14 @@ CardTest >> test012WhenUseCancellationCardAndNoActiveCardsThenRaiseError [
 	aSpeedCard := SpeedCard new.
 	aCancellationCard := CancellationCard newWithCard: aSpeedCard.
 	self
-		should: [aGame shipNamed: ship1 useCard: aCancellationCard with: ship1 . ]
+		should: [
+		aGame shipNamed: ship1 useCard: aCancellationCard with: ship1 ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
 				assert: error messageText
-				equals: 'This card must be played when there is at least one active card' ]
+				equals:
+				'This card must be played when there is at least one active card' ]
 ]
 
 { #category : 'tests' }
@@ -549,7 +557,7 @@ CardTest >> test013WhenUseREDOCardThenItTakesTheEffectOfTheLastCardUsed [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -590,7 +598,7 @@ CardTest >> test014WhenUseRepeatCardBeforePlayingThenItDoesNotApplyTheLastEffect
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -617,7 +625,7 @@ CardTest >> test014WhenUseRepeatCardBeforePlayingThenItDoesNotApplyTheLastEffect
 CardTest >> test015WhenUseRepeatCardThenItApplyTheLastEffectOnGame [
 
 	| aDice dices aDiceBucket distributions aBoard amountOfCells aWorm laps ship1 ships aGame typesOfCards ship2 acceleration redocard repeatcard |
-	aDice := LoadedDice withSequence: #( 3 7 1 6).
+	aDice := LoadedDice withSequence: #( 3 7 1 6 ).
 	dices := OrderedCollection new.
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
@@ -629,7 +637,7 @@ CardTest >> test015WhenUseRepeatCardThenItApplyTheLastEffectOnGame [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -648,8 +656,8 @@ CardTest >> test015WhenUseRepeatCardThenItApplyTheLastEffectOnGame [
 	repeatcard := RepeatCard new.
 	aGame playTurn.
 	aGame playTurn.
-	aGame shipNamed: ship1 useCard: repeatcard with: ship2.  
-	self assert: (aGame findShipBy: ship2) position equals: 1.
+	aGame shipNamed: ship1 useCard: repeatcard with: ship2.
+	self assert: (aGame findShipBy: ship2) position equals: 1
 ]
 
 { #category : 'tests' }
@@ -668,7 +676,7 @@ CardTest >> test016WhenUseRepeatCardButThereIsNoEffectThenItDoesNotApplyTheLastE
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -707,7 +715,7 @@ CardTest >> test017WhenTheShipMovesThrowTheBoardAndITACrdGiverCellThenShipReciev
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
@@ -744,7 +752,7 @@ CardTest >> test018WhenShipUseRepeatCardAndLastEffectWasaCardGiverThenItDoesNotR
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	laps := 1.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.

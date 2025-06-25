@@ -31,13 +31,7 @@ MercenaryCard class >> with: aShip [
 	mercenary := aShip
 ]
 
-{ #category : 'as yet unclassified' }
-MercenaryCard >> applyTo: aShip using: aMercenary [
-
-	aShip receiveMercenaryCardEffectWith: aMercenary
-]
-
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 MercenaryCard >> applyTo: aShip using: aMercenary in:aGame [
 	shipWithMercenary := aShip.
 	shipBeingMercenary := aMercenary .

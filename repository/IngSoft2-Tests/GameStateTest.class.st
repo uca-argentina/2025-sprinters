@@ -17,7 +17,7 @@ GameStateTest >> test000WhenGameIsNotPlayedThenPlayingStateIsFalse [
 GameStateTest >> test001WhenGameIsNotPlayedThenFinishedStateIsFalse [
 
 	| gameState |
-	gameState := NotPlayed new.
+	gameState := Started new.
 	 self assert: gameState isFinished equals: false
 ]
 
@@ -72,10 +72,10 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
-	ships:=OrderedCollection new.
+	ships := OrderedCollection new.
 	ships add: 'ship 1'.
 	aGame := Game
 		         with: aBoard
@@ -113,7 +113,7 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
 	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
@@ -131,7 +131,7 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 { #category : 'tests' }
 GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 
-	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions typesOfCards |
+	| listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions typesOfCards |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
@@ -147,7 +147,7 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
 	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
@@ -158,15 +158,14 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 		         andShipsNamed: listOfShips
 		         until: 1
 		         having: (FixedCardFactory with: typesOfCards).
-	gameState := NotPlayed new.
 
 	self
-		should: [ gameState showWinner: aGame ]
+		should: [ aGame currentStatus showWinner: aGame ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
 				assert: error messageText
-				equals: 'The game has not started, it does not have a winner yet' ]
+				equals: 'The game is not finished, so it hasn´t a winner yet' ]
 ]
 
 { #category : 'tests' }
@@ -188,7 +187,7 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	typesOfCards := OrderedCollection new.
 	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
 	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).

@@ -37,20 +37,6 @@ Game class >> validateUniqueNames: ships [
 ]
 
 { #category : 'as yet unclassified' }
-Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: shipsName until: anInteger [
-
-	shipsName ifEmpty: [
-		^ Error signal: 'List of ships must not be empty.' ].
-	self validateUniqueNames: shipsName.
-
-	^ self new
-		  initializeWith: aCircularBoard
-		  using: aLoadedDice
-		  andShipsNamed: shipsName
-		  until: anInteger
-]
-
-{ #category : 'as yet unclassified' }
 Game class >> with: aBoard using: aLoadedDice andShipsNamed: shipsName until: laps having: aCardDeck [ 
 	shipsName ifEmpty: [
 		^ Error signal: 'List of ships must not be empty.' ].
@@ -69,56 +55,58 @@ Game >> addToActiveCardsThisCard: aCard [
 	activeCards add: aCard .
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> applyAccelerationCardEffect [
 	ships do: [:ship | ship increaseBonusThrow  ].
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> applyAtomicEffectOn: aShip [ 
 	ships do:[ :ship | ship receiveAtomicBombEffect]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> applyBlackHoleEffectOn: aShip [
 
 	aShip receiveBlackHoleEffectFrom: board 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> applyCancellationCardEffect [
 	self shouldBeImplemented.
 ]
 
-{ #category : 'as yet unclassified' }
-Game >> applyCancellationCardEffectOn: aPermanentCard [ 
-	| aCard chosenCard|
-	aCard :=activeCards detect: [:card | card = aPermanentCard ] .
-	aCard ifNil: [ Error signal: 'active cards does not have that Permanent Card' ].
+{ #category : 'playing' }
+Game >> applyCancellationCardEffectOn: aPermanentCard [
+
+	| aCard |
+	aCard := activeCards detect: [ :card | card = aPermanentCard ].
+	aCard ifNil: [
+		Error signal: 'active cards does not have that Permanent Card' ].
 	aCard removePermanentEffect.
-	activeCards remove: aCard .
+	activeCards remove: aCard
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> applyHyperJumEffectOn: aShip moving: cellsToJump [
 
 	aShip receiveHyperJumpIn: board moving: cellsToJump
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> applyHyperSpaceJumpEffectOn: aShip [
 
 	aShip recieveHyperSpaceJumpIn: board
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> applyMoonWalkEffectOn: aShip moving: numberOfCells [
 	 ships do: [ :otherShip |
 		otherShip ~~ aShip ifTrue: [
 			otherShip move: numberOfCells * -1 in: board ] ].
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> applyRedoCardEffectOn: aShip [
 
 	| realCard  |
@@ -132,7 +120,7 @@ Game >> applyRedoCardEffectOn: aShip [
 	realCard applyTo: aShip using:aShip in: self
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> applyRepeatCardEffectOn: aShip [
 
 	| effect |
@@ -146,35 +134,22 @@ Game >> board [
 	^ board
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Game >> currentStatus [
 
 	^ status
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Game >> currentTopPlayer [
 
 	^ self shipsSortedByPosition at: 1.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Game >> findShipBy: aName [
 
 	^ ships detect: [ :ship | ship name = aName ]
-]
-
-{ #category : 'initialization' }
-Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
-
-	| cardFactory |
-	cardFactory:=CardFactory new.
-	board := aCircularBoard with: numberOfLaps.
-	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket  andReceiveCardsFrom: cardFactory ].
-	bucketOfDices := aDiceBucket.
-	status := Started new.
-	turnManager := TurnManager with: ships.
-	battleManager := BattleManager with: aDiceBucket
 ]
 
 { #category : 'initialization' }
@@ -199,12 +174,12 @@ Game >> isBefore: shipA than: shipB [
 	^ (ships indexOf: shipA) < (ships indexOf: shipB)
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Game >> permanentCardsPlayed [
 	^ activeCards .
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> play [
 
 	status play:self.
@@ -212,7 +187,7 @@ Game >> play [
 	^ 'Game over'
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> playTurn [
 
 	| actualShip effect positionToMove shipsInSamePosition name |
@@ -235,7 +210,7 @@ Game >> playTurn [
 	self someShipWon
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> shipNamed: aShip1 useCard: aCard with: aShip2 [
 
 	| ship1 ship2 |
@@ -250,13 +225,13 @@ Game >> ships [
 	^ ships
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Game >> shipsSortedByPosition [
 
 	^ ships copy sort: [ :a :b | a isAheadOf: b ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Game >> showRanking [
 
 	| top ranking sorted |
@@ -275,7 +250,7 @@ Game >> showRanking [
 				'The Game has not been played yet so it doesn`t have a ranking' ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> showShipsPositions [
 
 	| result |
@@ -284,18 +259,18 @@ Game >> showShipsPositions [
 	^ result
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Game >> showWinner [
 
 	^ status showWinner: self
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> skipTurnForShipNamed: shipName [ 
 	turnManager skipTurnForShipNamed: shipName.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> someShipWon [
 
 	| laps |

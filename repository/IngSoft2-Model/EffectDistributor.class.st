@@ -21,27 +21,26 @@ EffectDistributor >> initializeWith: aDistribution on: amountOfCells [
 	cells := amountOfCells
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 EffectDistributor >> recieveAmountOfEffects [
 
-	| cumulativeProbabilities cum effectsOnCells randomItem effectSelected effectOnCells random debug |
+	| cumulativeProbabilities cum effectsOnCells randomItem effectSelected random |
 	cumulativeProbabilities := OrderedCollection new.
 	random := Random new.
 	cum := 0.0.
-	distribution do: [ :dist |
-		cumulativeProbabilities add:
-			(cum to: cum + dist probability) -> dist cellClass.
-		cum := cum + dist probability ].
-	effectOnCells := OrderedCollection new.
-	cells timesRepeat: [
-		randomItem := random next.
-		effectSelected := cumulativeProbabilities
-			                  detect: [ :effect |
-				                  debug := effect key.
-				                  debug first <= randomItem and: [
-					                  randomItem < debug last ] ]
-			                  ifNone: [ NoEffect ].
-		effectOnCells add: effectSelected ].
 
-	^ effectOnCells
+	distribution do: [ :dist |
+		cum := cum + dist probability.
+		cumulativeProbabilities add: cum -> dist cellClass ].
+
+	effectsOnCells := OrderedCollection new.
+
+	cells timesRepeat: [
+		randomItem := random next. "Entre 0 y 1"
+		effectSelected := cumulativeProbabilities
+			                  detect: [ :assoc | randomItem <= assoc key ]
+			                  ifNone: [ NoEffect ].
+		effectsOnCells add: effectSelected value ].
+
+	^ effectsOnCells
 ]

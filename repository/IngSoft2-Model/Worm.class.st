@@ -30,27 +30,27 @@ Worm >> initializeWith: aX positionsOn: aY [
 	positionY := aY
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Worm >> isInside: aAmountOfCells [ 
 	^ ((positionX between: 0 and: aAmountOfCells) and: [positionY between: 0 and: aAmountOfCells]) . 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Worm >> positionX [
 	^ positionX.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Worm >> positionY [
 	^ positionY.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Worm >> positions: aBoard [ 
 	^ { positionX. positionY. } .
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Worm >> transportIfConnectedTo: aPosition [
 
 	aPosition = positionX ifTrue: [ ^ positionY ].

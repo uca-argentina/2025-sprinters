@@ -25,10 +25,10 @@ CardFactory class >> withTypes: cardsTypes [
 	^ self new initializeWithTypesOfCards: cardsTypes
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'generators' }
 CardFactory >> generateInitialCards [
 
-	| initialCards random |
+	| initialCards |
 	initialCards := OrderedCollection new.
 	initialCards add: (self randomCard:
 			 (Random new nextIntegerBetween: 1 and: typesOfCards size)).
@@ -37,7 +37,7 @@ CardFactory >> generateInitialCards [
 	^ initialCards
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'generators' }
 CardFactory >> generateRandomCardOn: aShip [
 
 	| card |
@@ -55,7 +55,7 @@ CardFactory >> initializeWithTypesOfCards: cardsTypes [
 	typesOfCards := cardsTypes.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'generators' }
 CardFactory >> randomCard: index [
 
 	^ (typesOfCards at: index) generateRandomCard.

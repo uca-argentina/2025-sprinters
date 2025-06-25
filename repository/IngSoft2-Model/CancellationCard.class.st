@@ -14,13 +14,13 @@ CancellationCard class >> newWithCard: aChosenCard [
 	^ self new initializeWith:aChosenCard.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 CancellationCard >> applyTo: aShip using: aShip2 in: aGame [ 
 	aGame permanentCardsPlayed ifEmpty: [Error signal: 'This card must be played when there is at least one active card']. 
 	aGame applyCancellationCardEffectOn: chosenCard.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 CancellationCard >> getChosenCard [
 	^chosenCard .
 ]
