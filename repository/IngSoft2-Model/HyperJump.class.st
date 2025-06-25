@@ -36,8 +36,7 @@ HyperJump >> applyTo: aShip in: aGame [
 	| board parsecsToJump cellsToJump |
 	board := aGame board.
 	parsecsToJump := self nextParsecs.
-	cellsToJump := (parsecsToJump / board parsecsPerCell) floor.
-	aGame applyHyperJumEffectOn: aShip moving: cellsToJump 
+	aGame applyHyperJumEffectOn: aShip moving: parsecsToJump 
 ]
 
 { #category : 'initialization' }

@@ -683,7 +683,7 @@ GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 	dices1 := OrderedCollection new.
 	dices1 add: aDice.
 	aDiceBucket1 := DiceBucket with: dices1.
-	amountOfCells := 10.
+	amountOfCells := 5.
 	aWorm := Worm with: 2 and: 4.
 	ships := OrderedCollection new.
 	laps := 3.

@@ -376,3 +376,36 @@ ShipTest >> test018WhenShipMovesToLastCellInLapThanCellsInBoardThenItIsInLastCel
 	aGame playTurn.
 	self assert: (aGame findShipBy: 'ship 1') position equals: 10
 ]
+
+{ #category : 'tests' }
+ShipTest >> test019WhenShipMovesByEffectAndItIsInEarlyCellsThenLapsStayZeroAndNoNegative [
+
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame typesOfCards |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 1 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 10.
+	aWorm := Worm with: 4 and: 5.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: BlackHole with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+	laps := 3.
+	ships add: 'ship 1'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps
+		         having: (CardFactory with: typesOfCards).
+	aGame playTurn.
+	self assert: (aGame findShipBy: 'ship 1') laps equals: 1
+]

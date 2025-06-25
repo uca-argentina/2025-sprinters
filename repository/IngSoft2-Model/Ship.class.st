@@ -217,8 +217,12 @@ Ship >> receiveCard: aClass [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> receiveHyperJumpIn: aBoard moving: numberOfCells [
-	self move: numberOfCells in: aBoard
+Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
+
+	| result |
+	result := aBoard move: position at: currentLap having: numberOfParsecs.
+	position := result at: 1.
+	currentLap := result at: 2
 ]
 
 { #category : 'as yet unclassified' }
