@@ -1,9 +1,6 @@
 Class {
 	#name : 'GameTest',
 	#superclass : 'TestCase',
-	#instVars : [
-		'typesOfCards'
-	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
@@ -220,7 +217,7 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 { #category : 'tests' }
 GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions typesOfCards|
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -558,7 +555,7 @@ GameTest >> test013WhenTwoShipsAreInTheSameCellWithEffectThenTheyDoNotBattle [
 { #category : 'tests' }
 GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotReceiveTheSecondEffect [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 typesOfCards|
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := LoadedDice withSequence: #( 6 ).
@@ -591,7 +588,7 @@ GameTest >> test014WhenShipIsMovedBecauseAnEffectToACallWithEffectThenShipSoNotR
 { #category : 'tests' }
 GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShipThenFight [
 
-	| aDice aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 ship2 |
+	| aDice aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 ship2 typesOfCards|
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
 	aDice := LoadedDice withSequence: #( 14 3 ).
@@ -626,7 +623,7 @@ GameTest >> test015WhenShipIsMovedBecauseAnEffectAndItdNewPositionHasAnotherShip
 { #category : 'tests' }
 GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNotTransferThrowTheWormHole [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 dices2 aDiceBucket2 ship2 |
+	| aDice aBoard amountOfCells aWorm aGame ships laps distributions ship1 dices1 aDiceBucket1 typesOfCards ship2 |
 	ships := OrderedCollection new.
 	dices1 := OrderedCollection new.
 	aDice := LoadedDice withSequence: #( 7 5 ).
@@ -661,7 +658,7 @@ GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNo
 { #category : 'tests' }
 GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 
-	| amountOfCells worm distributions distanceToMove  aDice dices1 aDiceBucket1 aWorm laps ship1 ship2 ships ship3 ship4 aGame aBoard winner |
+	| amountOfCells worm distributions distanceToMove  aDice dices1 aDiceBucket1 aWorm laps ship1 ship2 ships ship3 ship4 aGame aBoard winner typesOfCards|
 	amountOfCells := 5.
 	worm := Worm with: 2 and: 4.
 	distanceToMove := OrderedCollection new.
