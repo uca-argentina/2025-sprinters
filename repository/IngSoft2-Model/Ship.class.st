@@ -113,22 +113,6 @@ Ship >> initializeWith: aName and: aDiceBucket using: aCardFactory [
 	bonusBattle := OrderedCollection new
 ]
 
-{ #category : 'initialization' }
-Ship >> initializeWith: aName withADeck: aCardDeck [
-
-	| giver |
-	currentLap := 1.
-	position := 1.
-	name := aName.
-	shields := 3.
-	turnsToSkip := 0.
-	optionalTurn := true.
-	giver := CardFactory new.
-	cards := giver generateInitialCards.
-	bonusThrow := 0.
-	bonusBattle := OrderedCollection new
-]
-
 { #category : 'testing' }
 Ship >> isAheadOf: anotherShip [
 

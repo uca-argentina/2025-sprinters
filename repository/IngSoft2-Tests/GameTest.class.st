@@ -658,7 +658,7 @@ GameTest >> test016WhenShipIsMovedBecauseAnEffectAndItAppearOnWormHoleThenITDoNo
 GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 
 	| board amountOfCells worm distributions cardEffectCount blackHoleCount noEffectCount totalCells tolerance distanceToMove effect name hyperSpaceCount hyperJumpCount moonWalkCount atomicBombCount aDice dices1 aDiceBucket1 aWorm laps ship1 ship2 ships ship3 ship4 aGame aBoard winner |
-	amountOfCells := 1000.
+	amountOfCells := 5.
 	worm := Worm with: 2 and: 4.
 	distanceToMove := OrderedCollection new.
 	distanceToMove add: (Distance lightYear: 27).
@@ -686,7 +686,7 @@ GameTest >> test017WhenGameIsCreatedThenAShipFromCollectionWins [
 	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	ships := OrderedCollection new.
-	laps := 1.
+	laps := 3.
 	ship1 := 'ship 1'.
 	ship2 := 'ship 2'.
 	ships add: ship1.

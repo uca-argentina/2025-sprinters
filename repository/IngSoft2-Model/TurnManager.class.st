@@ -44,7 +44,7 @@ TurnManager >> nextPlayableShip [
 			ifFalse: [
 				ship skipTurn.
 				turnsSkipped := turnsSkipped + 1 ] ].
-	Error signal: 'There is no ship witch can play'
+	Error signal: 'There is no ship witch can play' " --> esto lo podemos hacer pero para que el juego siga jugando si ninguna de las naves puede jugar entonces que la nabe juegue"
 ]
 
 { #category : 'as yet unclassified' }

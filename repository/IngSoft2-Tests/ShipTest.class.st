@@ -310,3 +310,69 @@ ShipTest >> test016WhenShipChoiceToNotPlayThenShipRecoverShield [
 	aGame playTurn.
 	self assert: (aGame ships at: 1) shields equals: 3
 ]
+
+{ #category : 'tests' }
+ShipTest >> test017WhenShipMovesMoreCellsThanCellsInBoardThenItActualPositionIs1 [
+
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame typesOfCards |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 10 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 9.
+	aWorm := Worm with: 3 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+	laps := 3.
+	ships add: 'ship 1'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps
+		         having: (CardFactory with: typesOfCards).
+	aGame playTurn.
+	self assert: (aGame findShipBy: 'ship 1') position equals: 1
+]
+
+{ #category : 'tests' }
+ShipTest >> test018WhenShipMovesToLastCellInLapThanCellsInBoardThenItIsInLastCell [
+
+	| ships dices aDice aDiceBucket amountOfCells aWorm distributions aBoard laps aGame typesOfCards |
+	ships := OrderedCollection new.
+	dices := OrderedCollection new.
+	aDice := LoadedDice withSequence: #( 9 ).
+	dices add: aDice.
+	aDiceBucket := DiceBucket with: dices.
+	amountOfCells := 9.
+	aWorm := Worm with: 2 and: 4.
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+	laps := 3.
+	ships add: 'ship 1'.
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+	aGame := Game
+		         with: aBoard
+		         using: aDiceBucket
+		         andShipsNamed: ships
+		         until: laps
+		         having: (CardFactory with: typesOfCards).
+	aGame playTurn.
+	self assert: (aGame findShipBy: 'ship 1') position equals: 10
+]
