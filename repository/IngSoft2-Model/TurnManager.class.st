@@ -17,7 +17,7 @@ TurnManager class >> with: ships [
 	^ self new initializeWith: ships
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 TurnManager >> findShipBy: shipName [
 
 	^ ships detect: [ :ship | ship name = shipName ]
@@ -29,7 +29,7 @@ TurnManager >> initializeWith: shipCollection [
 	ships := shipCollection.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 TurnManager >> nextPlayableShip [
 
 	| totalShips turnsSkipped ship |
@@ -47,13 +47,13 @@ TurnManager >> nextPlayableShip [
 	Error signal: 'There is no ship witch can play' " --> esto lo podemos hacer pero para que el juego siga jugando si ninguna de las naves puede jugar entonces que la nabe juegue"
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 TurnManager >> nextShip [
 
 	^ self nextShipThatWantToPlay: self nextPlayableShip
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 TurnManager >> nextShipThatWantToPlay: actualShip [
 
 	actualShip wantsToPlay
@@ -63,7 +63,7 @@ TurnManager >> nextShipThatWantToPlay: actualShip [
 			^ self nextShip ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 TurnManager >> skipTurnForShipNamed: shipName [	
 	| shipFound |
 	shipFound := self findShipBy: shipName.

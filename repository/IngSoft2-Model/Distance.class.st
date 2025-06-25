@@ -28,14 +28,14 @@ Distance >> initializeWithParsecs: anAmount [
 	lightYear := anAmount * 3
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 Distance >> intializeWithLightYear: anAmount [
 
 	lightYear := anAmount.
 	parsecs := anAmount // 3
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Distance >> lightYears [
 
 	^ lightYear

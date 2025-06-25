@@ -52,7 +52,7 @@ HyperJump >> initializeWith: aCollectionOfDistanceToMove [
 	index := 1
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 HyperJump >> nextParsecs [
 
 	| parsecsToJump |

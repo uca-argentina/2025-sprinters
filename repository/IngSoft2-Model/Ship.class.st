@@ -34,25 +34,25 @@ Ship >> canPlay [
 	^ turnsToSkip = 0
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> cards [
 
 	^ cards
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> choiceToNotPlay [
 
 	self recoverShields.
 	turnsToSkip := turnsToSkip + 1
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> decreaseBonusThrow [
 	bonusThrow := bonusThrow -1.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> giveBonusThrow [
 	^ bonusThrow.
 ]
@@ -63,13 +63,13 @@ Ship >> hasAsMercery: aShip [
 	^ bonusBattle anySatisfy: [ :ship | aShip = ship name ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> helpToFightWith: aDiceBucket [
 
 	^ aDiceBucket throw
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> increaseBonusThrow [
 	bonusThrow := bonusThrow +1.
 ]
@@ -113,7 +113,7 @@ Ship >> laps [
 	^ currentLap
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> loseFight [
 
 	bonusBattle do:[:mercenaryShip|mercenaryShip loseShield ].
@@ -122,7 +122,7 @@ Ship >> loseFight [
 	position := 1
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> loseShield [
 
 	shields := shields - 1.
@@ -137,7 +137,7 @@ Ship >> markedAsMercenary [
 	amIMercenary := true.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> move: numberOfCells in: aBoard [
 
 	| newPosition result |
@@ -148,7 +148,7 @@ Ship >> move: numberOfCells in: aBoard [
 	currentLap := result at: 2
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> moveToFirstPosition [
 
 	position := 1
@@ -160,7 +160,7 @@ Ship >> name [
 	^ name
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> popThisMercenary: shipBeingMercenary [ 
 	bonusBattle remove: shipBeingMercenary .
 ]
@@ -171,13 +171,13 @@ Ship >> position [
 	^ position
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> receiveAtomicBombEffect [
 	self moveToFirstPosition. 
 	self loseShield.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> receiveBlackHoleEffectFrom: aBoard [
 
 	| newPosition result |
@@ -187,12 +187,12 @@ Ship >> receiveBlackHoleEffectFrom: aBoard [
 	currentLap := result at: 2
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> receiveCard: aClass [ 
 	self shouldBeImplemented.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
 
 	| result |
@@ -201,31 +201,31 @@ Ship >> receiveHyperJumpIn: aBoard moving: numberOfParsecs [
 	currentLap := result at: 2
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> receiveMercenaryCardEffectWith: aShip [
 
 	aShip isSomeoneMercenary ifTrue: [ Error signal:'You can not use this ship as a mercenary' ] ifFalse: [ bonusBattle add: aShip. aShip markedAsMercenary].
 	
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> receiveSpeedCardEffect [
 	self increaseBonusThrow .
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> receiveThis: aCard [
 
 	cards add: aCard
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> recieveCardsFrom: cardFactory [
 
 	cards := cardFactory generateInitialCards
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> recieveHyperSpaceJumpIn: aBoard [
 
 	| newPosition result |
@@ -236,7 +236,7 @@ Ship >> recieveHyperSpaceJumpIn: aBoard [
 	self loseShield
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> recoverShields [
 
 	shields := 3.
@@ -260,19 +260,19 @@ Ship >> shields [
 	^ shields
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> skipTurn [
 
 	turnsToSkip := turnsToSkip - 1
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> throwDices [
 
 	^ diceBucket throw
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> throwDicesWith: aDiceBucket [
 
 	| count |
@@ -282,26 +282,13 @@ Ship >> throwDicesWith: aDiceBucket [
 	^ aDiceBucket throw + count
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Ship >> turnsThatHasToSkip [
 
 	^ turnsToSkip
 ]
 
-{ #category : 'as yet unclassified' }
-Ship >> use: aCard with: aShip [
-
-	| index |
-	index := cards indexOf: (cards
-			          detect: [ :card | card class = aCard class ]
-			          ifNone: [
-			          Error signal:
-				          'You can not use a card that you do not have' ]).
-	aCard applyTo: self using: aShip.
-	cards removeAt: index
-]
-
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> use: aCard with: aShip in:aGame [
 
 	| index |
@@ -315,7 +302,7 @@ Ship >> use: aCard with: aShip in:aGame [
 	cards removeAt: index.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> useBonusThrow [
 
 	| increment |
@@ -325,13 +312,13 @@ Ship >> useBonusThrow [
 	^ increment
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Ship >> wantsToPlay [
 
 	^ optionalTurn 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> winAt: aBoard [
 
 	^ (currentLap = aBoard laps and: position >= aBoard amountOfCells)

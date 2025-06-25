@@ -14,7 +14,7 @@ CardGiver class >> initializeThis [
 	^ self new
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 CardGiver >> applyTo: aShip in: aGame [
 
 	| cardFactory |

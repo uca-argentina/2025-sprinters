@@ -14,13 +14,7 @@ SpeedCard class >> applyTo: aShip [
 	aShip receiveSpeedCardEffect
 ]
 
-{ #category : 'as yet unclassified' }
-SpeedCard >> applyTo: aShip using: aShip2 [
-
-	aShip receiveSpeedCardEffect
-]
-
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 SpeedCard >> applyTo: aShip using: aShip2 in:aGame [
 	linkedShip := aShip. 
 	aShip receiveSpeedCardEffect.

@@ -5,7 +5,7 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Effect >> applyTo: aShip in: aGame [
 	self subclassResponsibility .
 ]

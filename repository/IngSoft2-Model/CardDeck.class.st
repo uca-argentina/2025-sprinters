@@ -20,7 +20,7 @@ CardDeck >> cards [
 	^ cards
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 CardDeck >> dealCard [
 
 	| card |

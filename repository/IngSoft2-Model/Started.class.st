@@ -14,7 +14,7 @@ Started class >> creation [
 	^ self new initialization
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 Started >> initialization [
 
 	playing := false
@@ -32,18 +32,18 @@ Started >> isPlaying [
 	^ playing
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Started >> markAsPlaying [
 
 	playing := true
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Started >> play:aGame [
 	 [aGame currentStatus isFinished ] whileFalse: [ aGame playTurn ].
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Started >> showWinner: aGame [
 
 	^ Error signal: 'The game is not finished, so it hasn´t a winner yet'

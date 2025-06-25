@@ -21,7 +21,7 @@ EffectDistributor >> initializeWith: aDistribution on: amountOfCells [
 	cells := amountOfCells
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 EffectDistributor >> recieveAmountOfEffects [
 
 	| cumulativeProbabilities cum effectsOnCells randomItem effectSelected random |

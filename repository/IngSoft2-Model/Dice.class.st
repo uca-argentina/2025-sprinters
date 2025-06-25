@@ -16,7 +16,7 @@ Dice class >> with: amountOfFaces [
 	^ self new initializeWith: amountOfFaces.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Dice >> faces [
 	^ amountFaces.
 ]
@@ -26,7 +26,7 @@ Dice >> initializeWith: amountOfFaces [
 	amountFaces := amountOfFaces. 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 Dice >> throw [
 	| randomNumber |
 	randomNumber := (Random new nextIntegerBetween: 1 and: amountFaces ).

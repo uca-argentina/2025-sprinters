@@ -36,13 +36,13 @@ Board >> amountOfCells [
 	^ amountOfCells
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'convertion' }
 Board >> amountOfCellsOf: anEffectOrClass [
 
 	^ cells count: [ :cell | cell effect className = anEffectOrClass ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Board >> effectOnPosition: position [
 
 	^ (cells at: position) effect value
@@ -75,7 +75,7 @@ Board >> laps [
 	^ laps
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'convertion' }
 Board >> lightYearsPerCell [
 	^ (self parsecsPerCell) * 3.
 ]
@@ -107,7 +107,7 @@ Board >> move: distance at: lap having: parsecs [
 		  currentLap }
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Board >> moveThrowTheLaps: currentLap this: position [
 
 	| lapValue |
@@ -117,19 +117,19 @@ Board >> moveThrowTheLaps: currentLap this: position [
 	^ lapValue
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'convertion' }
 Board >> parsecsPerCell [
 
 	^ distance parsecs / amountOfCells
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'verification' }
 Board >> specialCells [
 
 	^ wormHole positions: self
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'verification' }
 Board >> verifyPosition: position [
 
 	| newPosition |

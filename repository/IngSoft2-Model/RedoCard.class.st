@@ -5,13 +5,13 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 RedoCard >> applyTo: aShip using: aShip2 in: aGame [
 
 	aGame applyRedoCardEffectOn: aShip
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'generators' }
 RedoCard >> generateRandomCard [
 
 	^ self

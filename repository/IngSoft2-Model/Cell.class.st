@@ -15,17 +15,17 @@ Cell class >> with: anEffect [
 	^ self new initializeWith: anEffect
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Cell >> effect [
 	^ cellClass.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Cell >> effect: aCellClass [ 
 	cellClass := aCellClass.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Cell >> effectOnMovement [
 	^ cellClass effectOnMovement
 ]
