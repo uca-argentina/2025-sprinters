@@ -30,13 +30,13 @@ HyperJump class >> with: distanceToMove [
 	^ self new initializeWith: distanceToMove
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 HyperJump >> applyTo: aShip in: aGame [
 
-	| board parsecsToJump cellsToJump |
+	| board parsecsToJump |
 	board := aGame board.
 	parsecsToJump := self nextParsecs.
-	aGame applyHyperJumEffectOn: aShip moving: parsecsToJump 
+	aGame applyHyperJumEffectOn: aShip moving: parsecsToJump
 ]
 
 { #category : 'initialization' }

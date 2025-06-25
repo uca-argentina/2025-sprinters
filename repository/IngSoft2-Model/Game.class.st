@@ -76,13 +76,15 @@ Game >> applyCancellationCardEffect [
 	self shouldBeImplemented.
 ]
 
-{ #category : 'as yet unclassified' }
-Game >> applyCancellationCardEffectOn: aPermanentCard [ 
-	| aCard chosenCard|
-	aCard :=activeCards detect: [:card | card = aPermanentCard ] .
-	aCard ifNil: [ Error signal: 'active cards does not have that Permanent Card' ].
+{ #category : 'playing' }
+Game >> applyCancellationCardEffectOn: aPermanentCard [
+
+	| aCard |
+	aCard := activeCards detect: [ :card | card = aPermanentCard ].
+	aCard ifNil: [
+		Error signal: 'active cards does not have that Permanent Card' ].
 	aCard removePermanentEffect.
-	activeCards remove: aCard .
+	activeCards remove: aCard
 ]
 
 { #category : 'playing' }
@@ -268,7 +270,7 @@ Game >> skipTurnForShipNamed: shipName [
 	turnManager skipTurnForShipNamed: shipName.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Game >> someShipWon [
 
 	| laps |

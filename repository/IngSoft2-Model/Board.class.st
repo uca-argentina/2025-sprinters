@@ -80,10 +80,10 @@ Board >> lightYearsPerCell [
 	^ (self parsecsPerCell) * 3.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Board >> move: distance at: lap having: parsecs [
 
-	| position currentParsec newParsecPos newPosition currentLap parsecsInCell modPosition pos |
+	| position currentParsec newParsecPos newPosition currentLap parsecsInCell modPosition |
 	"escenario  --> 7 parsecs y 5 celas --> 1.4 parsecs/celd"
 	parsecsInCell := self parsecsPerCell.
 	currentParsec := distance * parsecsInCell. " 2 * 1.4 = 2.8 parsecs"

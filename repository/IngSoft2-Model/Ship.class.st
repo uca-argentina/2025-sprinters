@@ -132,7 +132,7 @@ Ship >> loseShield [
 	turnsToSkip := 2
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Ship >> markedAsMercenary [
 	amIMercenary := true.
 ]
