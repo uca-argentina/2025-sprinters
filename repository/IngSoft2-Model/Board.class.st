@@ -97,9 +97,11 @@ Board >> move: distance at: lap having: parsecs [
 		            ifTrue: [
 			            modPosition := newPosition \\ amountOfCells.
 			            modPosition = 0
-				            ifTrue: [ newPosition ]
+				            ifTrue: [ "← devuelve posición máxima en lugar de un número fuera de rango"
+					            amountOfCells ]
 				            ifFalse: [ modPosition ] ]
-		            ifFalse: [ newPosition min: amountOfCells ].
+		            ifFalse: [
+			            (newPosition max: 1) min: amountOfCells "← asegura que esté en [1..amountOfCells]" ].
 	^ {
 		  position.
 		  currentLap }
