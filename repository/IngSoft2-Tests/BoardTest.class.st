@@ -19,7 +19,7 @@ BoardTest >> test000WhenCreateBoardWithAmountOfCellsThenShowAmountOfCells [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 200).
 	self assert: aBoard amountOfCells equals: amountOfCells
 ]
 
@@ -39,7 +39,7 @@ BoardTest >> test001WhenPlayGameThenReturnGameOver [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	self assert: aBoard specialCells equals: {
 			aX.
 			aY }
@@ -59,7 +59,7 @@ BoardTest >> test002WhenCreateBoardWithWrongWormHolePostionThenReturnsError [
 				with: amountOfCells
 				and: aWorm
 				has: distributions
-				andTotalParsec: 20 ]
+				basedOn: (Distance parsecs: 20) ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -81,7 +81,7 @@ BoardTest >> test003WhenCreateBoardWithCellsLessThan1ThenReturnsError [
 				with: amountOfCells
 				and: aWorm
 				has: distributions
-				andTotalParsec: 20 ]
+				basedOn: (Distance parsecs: 20) ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -101,9 +101,9 @@ BoardTest >> test004WhenCreateBoardWithCellsNotIntegerThenReturnsError [
 		should: [
 			Board
 				with: amountOfCells
-				and: aWorm
-				has: distributions
-				andTotalParsec: 20 ]
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20). ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -125,7 +125,7 @@ BoardTest >> test005WhenShipMovesToWormholeThenBoardKnowsThePositionOfShip [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	aLoadedDice := LoadedDice withSequence: #( 6 ).
 	aShip := Ship create: 'ship 1'.
 	aShip move: 6 in: aBoard.
@@ -146,7 +146,7 @@ BoardTest >> test006WhenShipMoveMoreThanCellsInTheBoardThenPositionIsAmountOfCel
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
 	loadedDice := LoadedDice withSequence: #( 6 ).
 	aShip := Ship create: 'ship1'.
 	aShip move: loadedDice throw in: aBoard.
@@ -171,8 +171,9 @@ BoardTest >> test007WhenGivenDistributionToABoardThenAllAddUpToTheExacAmountOfCe
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 100.
-	total := aBoard amountOfNoEffectCells + aBoard amountOfBlackHoleCells.
+		          basedOn: (Distance parsecs: 100).
+	total := (aBoard amountOfCellsOf: 'NoEffect')
+	         + (aBoard amountOfCellsOf:'BlackHole').
 	self assert: total equals: amountOfCells
 ]
 
@@ -193,7 +194,7 @@ BoardTest >> test008WhenAskForEffectOnPositionThenBoardReturnItEffect [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 100.
+		          basedOn: (Distance parsecs: 100).
 	effect := aBoard effectOnPosition: 3.
 	self assert: effect className equals: 'BlackHole'
 ]
@@ -216,8 +217,9 @@ BoardTest >> test009WhenGivenDistributionToABoardThenAllAddUpToTheExactAmountOfC
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 1.
-	total := aBoard amountOfNoEffectCells + aBoard amountOfBlackHoleCells.
+		          basedOn: (Distance parsecs: 1).
+	total := (aBoard amountOfCellsOf: 'NoEffect')
+	         + (aBoard amountOfCellsOf: 'BlackHole').
 	self assert: total equals: amountOfCells
 ]
 
@@ -238,6 +240,76 @@ BoardTest >> test010WhenCreateBoardWithDistributionsThenEffectsOFCellsISNoEFfect
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
-	self assert: (aBoard effectOnPosition: 3) className equals: 'NoEffect'
+		          basedOn: (Distance parsecs: 20).
+	self
+		assert: (aBoard effectOnPosition: 3) className
+		equals: 'NoEffect'
+]
+
+{ #category : 'tests' }
+BoardTest >> test011WhenBoardCreateWithParsecThenGetLightYears [
+
+	| amountOfCells aX aY aWorm aBoard distributions |
+	amountOfCells := 20.
+	"El numero de celdas por ahora esta logicamente implementado para que sea siempre un entero, un par"
+	aX := 1.
+	aY := 2.
+	aWorm := Worm with: aX and: aY.
+
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 1).
+
+	aBoard := Board
+		          with: amountOfCells
+		          and: aWorm
+		          has: distributions
+		          basedOn: (Distance parsecs: 20).
+	self assert: aBoard lightYearsPerCell equals: 3
+]
+
+{ #category : 'tests' }
+BoardTest >> test012WhenBoardIsCreatedThenEffectsAreDistributedAccordingToProbability [
+
+	| board amountOfCells worm distributions cardEffectCount blackHoleCount noEffectCount totalCells tolerance distanceToMove effect name hyperSpaceCount hyperJumpCount moonWalkCount atomicBombCount |
+	amountOfCells := 1000.
+	worm := Worm with: 2 and: 4.
+	distanceToMove := OrderedCollection new.
+	distanceToMove add: (Distance lightYear: 27).
+	distanceToMove add: (Distance lightYear: 18).
+	distanceToMove add: (Distance lightYear: 9).
+	distributions := OrderedCollection new.
+	distributions add: (Distribution at: NoEffect with: 0.38).
+	distributions add: (Distribution at: CardGiver with: 0.10).
+	distributions add: (Distribution at: BlackHole with: 0.20).
+	distributions add: (Distribution at: HyperSpaceJump with: 0.20).
+	distributions add: (Distribution at: MoonWalk with: 0.10).
+	distributions add:
+		(Distribution at: (HyperJump with: distanceToMove) with: 0.08).
+	distributions add: (Distribution at: AtomicBomb with: 0.02).
+
+	board := Board
+		         with: amountOfCells
+		         and: worm
+		         has: distributions
+		         basedOn: (Distance parsecs: 20).
+
+	cardEffectCount := board amountOfCellsOf: 'CardGiver' .
+	blackHoleCount := board  amountOfCellsOf: 'BlackHole' .
+	noEffectCount := board  amountOfCellsOf:  'NoEffect' .
+	hyperSpaceCount := board  amountOfCellsOf: 'HyperSpaceJump' .
+	hyperJumpCount := board  amountOfCellsOf: 'HyperJump' .
+	moonWalkCount := board  amountOfCellsOf:  'MoonWalk' .
+	atomicBombCount := board  amountOfCellsOf:  'AtomicBomb' .
+
+	totalCells := amountOfCells.
+	tolerance := 0.05. "5% de margen de error\"
+
+	self assert: cardEffectCount / totalCells >=( 0.10 - tolerance).
+	self assert: cardEffectCount / totalCells <= (0.10 + tolerance).
+
+	self assert: blackHoleCount / totalCells >= (0.20 - tolerance).
+	self assert: blackHoleCount / totalCells <= (0.20 + tolerance).
+
+	self assert: noEffectCount / totalCells >= (0.38 - tolerance).
+	self assert: noEffectCount / totalCells <= (0.38 + tolerance)
 ]

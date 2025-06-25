@@ -11,14 +11,26 @@ Finished >> isFinished [
 	^ true
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'testing' }
+Finished >> isPlaying [
+
+	^ false
+]
+
+{ #category : 'playing' }
+Finished >> markAsPlaying [
+
+	^ false
+]
+
+{ #category : 'playing' }
 Finished >> play: aGame [
 
 	^ Error signal:
 		  'The game has already been played, you can not play any more.'
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Finished >> showWinner: aGame [
 
 	^ aGame currentTopPlayer

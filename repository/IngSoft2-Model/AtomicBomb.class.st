@@ -10,7 +10,7 @@ AtomicBomb class >> initializeThis [
 	^ self new.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 AtomicBomb >> applyTo: aShip in: aGame [
 
 	aGame applyAtomicEffectOn: aShip

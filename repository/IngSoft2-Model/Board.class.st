@@ -6,14 +6,15 @@ Class {
 		'wormHole',
 		'laps',
 		'cells',
-		'totalParsecs'
+		'totalParsecs',
+		'distance'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'as yet unclassified' }
-Board class >> with: aAmountOfCells and: aWormHole has: aDistribution andTotalParsec: parsecs [
+Board class >> with: aAmountOfCells and: aWormHole has: aDistribution basedOn: aDistance [
 
 	aAmountOfCells isInteger ifFalse: [
 		^ Error signal: 'Amount of cells must be an integer' ].
@@ -26,13 +27,7 @@ Board class >> with: aAmountOfCells and: aWormHole has: aDistribution andTotalPa
 		  initializeWith: aAmountOfCells
 		  and: aWormHole
 		  has: aDistribution
-		  andTotalParsec: parsecs
-]
-
-{ #category : 'as yet unclassified' }
-Board >> amountOfBlackHoleCells [
-
-	^ self amountOfCellsOf: 'BlackHole class'.
+		  basedOn: aDistance
 ]
 
 { #category : 'accessing' }
@@ -41,38 +36,26 @@ Board >> amountOfCells [
 	^ amountOfCells
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'convertion' }
 Board >> amountOfCellsOf: anEffectOrClass [
 
-	| count effect classEffect |
-	count := 0.
-	cells do: [ :cell |
-		effect := cell effect.
-		classEffect := effect className.
-		classEffect = anEffectOrClass ifTrue: [ count := count + 1 ] ].
-	^ count
+	^ cells count: [ :cell | cell effect className = anEffectOrClass ]
 ]
 
-{ #category : 'as yet unclassified' }
-Board >> amountOfNoEffectCells [
-
-	^ self amountOfCellsOf: 'NoEffect class'
-]
-
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Board >> effectOnPosition: position [
 
 	^ (cells at: position) effect value
 ]
 
 { #category : 'initialization' }
-Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions andTotalParsec: parsecs [
+Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions basedOn: aDistance [
 
 	| cell aDistributor effectsOnCells |
 	amountOfCells := aAmountOfCells.
 	wormHole := aWormHole.
 	laps := 1.
-	totalParsecs := parsecs.
+	distance := aDistance.
 	aDistributor := EffectDistributor
 		                withDistribution: distributions
 		                on: aAmountOfCells.
@@ -92,45 +75,61 @@ Board >> laps [
 	^ laps
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'convertion' }
+Board >> lightYearsPerCell [
+	^ (self parsecsPerCell) * 3.
+]
+
+{ #category : 'playing' }
 Board >> move: distance at: lap having: parsecs [
 
-	| position currentParsec newParsecPos newPosition currentLap |
+	| position currentParsec newParsecPos newPosition currentLap parsecsInCell modPosition |
 	"escenario  --> 7 parsecs y 5 celas --> 1.4 parsecs/celd"
-	currentParsec := distance * self parsecsPerCell. " 2 * 1.4 = 2.8 parsecs"
+	parsecsInCell := self parsecsPerCell.
+	currentParsec := distance * parsecsInCell. " 2 * 1.4 = 2.8 parsecs"
 	newParsecPos := currentParsec + parsecs. " 8 parsecs´+ 2.8 parsec = 10.8 parsecs"
-	newPosition := newParsecPos // self parsecsPerCell. " (10.8 parsecs / (1.4 parsec/celda ) = 1 celdas "
+	newPosition := (newParsecPos / parsecsInCell) ceiling.
+	newPosition := newPosition <= 0
+		               ifTrue: [ 1 ]
+		               ifFalse: [ newPosition ]. " (10.8 parsecs / (1.4 parsec/celda ) = 1 celdas "
 	currentLap := self moveThrowTheLaps: lap this: newPosition.
-	position := newPosition <= 0
-		            ifTrue: [ 1 ]
+	position := laps > 1
+		            ifTrue: [
+			            modPosition := newPosition \\ amountOfCells.
+			            modPosition = 0
+				            ifTrue: [ "← devuelve posición máxima en lugar de un número fuera de rango"
+					            amountOfCells ]
+				            ifFalse: [ modPosition ] ]
 		            ifFalse: [
-			            laps > 1
-				            ifTrue: [ newPosition \\ amountOfCells ]
-				            ifFalse: [
-					            newPosition <= 0 ifTrue: [ 1 ].
-					            newPosition min: amountOfCells ] ].
-	^ {position. currentLap.}.
+			            (newPosition max: 1) min: amountOfCells "← asegura que esté en [1..amountOfCells]" ].
+	^ {
+		  position.
+		  currentLap }
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 Board >> moveThrowTheLaps: currentLap this: position [
 
-	^ currentLap + (position // amountOfCells)
+	| lapValue |
+	lapValue := currentLap + (position // amountOfCells).
+	lapValue <= 0 ifTrue: [
+		^ Error signal: 'Current lap cannot be negative' ].
+	^ lapValue
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'convertion' }
 Board >> parsecsPerCell [
 
-	^ totalParsecs // amountOfCells
+	^ distance parsecs / amountOfCells
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'verification' }
 Board >> specialCells [
 
 	^ wormHole positions: self
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'verification' }
 Board >> verifyPosition: position [
 
 	| newPosition |

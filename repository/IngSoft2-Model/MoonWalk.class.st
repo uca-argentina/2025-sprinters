@@ -22,7 +22,7 @@ MoonWalk class >> move: numberOfCells [
 	^ self new initializeWith: numberOfCells
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 MoonWalk >> applyTo: aShip in: aGame [
 
 	aGame applyMoonWalkEffectOn: aShip  moving: numberOfCells

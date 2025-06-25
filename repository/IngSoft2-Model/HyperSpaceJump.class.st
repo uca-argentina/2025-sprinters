@@ -10,7 +10,7 @@ HyperSpaceJump class >> initializeThis [
 	^ self new.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 HyperSpaceJump >> applyTo: aShip in: aGame [
 
 	aGame applyHyperSpaceJumpEffectOn: aShip

@@ -17,7 +17,7 @@ GameStateTest >> test000WhenGameIsNotPlayedThenPlayingStateIsFalse [
 GameStateTest >> test001WhenGameIsNotPlayedThenFinishedStateIsFalse [
 
 	| gameState |
-	gameState := NotPlayed new.
+	gameState := Started new.
 	 self assert: gameState isFinished equals: false
 ]
 
@@ -56,7 +56,7 @@ GameStateTest >> test005WhenGameIsFinishedThenPlayingStateIsFalse [
 { #category : 'tests' }
 GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 
-	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions |
+	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions typesOfCards ships |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
@@ -72,12 +72,17 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: SpeedCard new).
+	ships := OrderedCollection new.
+	ships add: 'ship 1'.
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
-		         andShipsNamed: listOfShips
-		         until: 0.
+		         andShipsNamed: ships
+		         until: 0
+		         having: (FixedCardFactory with: typesOfCards).
 	gameState := Started new.
 	self
 		should: [ gameState showWinner: aGame ]
@@ -91,7 +96,7 @@ GameStateTest >> test006WhenGameIsStartedAndAskForWinnerThenRaiseError [
 { #category : 'tests' }
 GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 
-	| listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions |
+	| listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions typesOfCards |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
@@ -108,12 +113,17 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 0.
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
 	aGame play.
 	self assert: aGame showWinner name equals: shipOne
 ]
@@ -121,7 +131,7 @@ GameStateTest >> test007WhenGameIsFinishedAndAskForWinnerThenReturnWinner [
 { #category : 'tests' }
 GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 
-	| gameState listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions |
+	| listOfShips shipOne listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame distributions typesOfCards |
 	listOfShips := OrderedCollection new.
 	shipOne := 'Ship 1'.
 	listOfDices := OrderedCollection new.
@@ -137,27 +147,31 @@ GameStateTest >> test008WhenGameIsNotPlayedAndAskForWinnerThenRaiseError [
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 0.
-	gameState := NotPlayed new.
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
 
 	self
-		should: [ gameState showWinner: aGame ]
+		should: [ aGame currentStatus showWinner: aGame ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
 				assert: error messageText
-				equals: 'The game has not started, it does not have a winner yet' ]
+				equals: 'The game is not finished, so it hasn´t a winner yet' ]
 ]
 
 { #category : 'tests' }
 GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChangeItPosition [
 
-	| listOfShips listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame ship1 ship2 distributions |
+	| listOfShips listOfDices aDice aDiceBucket amountOfCells aWorm aBoard aGame ship1 ship2 distributions typesOfCards |
 	listOfShips := OrderedCollection new.
 	listOfDices := OrderedCollection new.
 	listOfShips add: 'Ship 1'.
@@ -173,12 +187,17 @@ GameStateTest >> test009WhenGamePlayOneTurnAndTwoShipsInSamePositionThenOneChang
 		          with: amountOfCells
 		          and: aWorm
 		          has: distributions
-		          andTotalParsec: 20.
+		          basedOn: (Distance parsecs: 20).
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: AccelerationCard new).
+	typesOfCards add: (FixedCard withTypeOfCard: CancellationCard new).
+
 	aGame := Game
 		         with: aBoard
 		         using: aDiceBucket
 		         andShipsNamed: listOfShips
-		         until: 0.
+		         until: 1
+		         having: (FixedCardFactory with: typesOfCards).
 	aGame playTurn.
 	ship1 := aGame ships at: 1.
 	ship2 := aGame ships at: 2.

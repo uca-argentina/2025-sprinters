@@ -10,7 +10,7 @@ NoEffect class >> initializeThis [
 	^ self new.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'playing' }
 NoEffect >> applyTo: aShip in: aGame [
 
 	^ 'No effects are applied'
