@@ -320,7 +320,7 @@ ShipTest >> test017WhenShipMovesMoreCellsThanCellsInBoardThenItActualPositionIs1
 	aDice := LoadedDice withSequence: #( 10 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
-	amountOfCells := 9.
+	amountOfCells := 10.
 	aWorm := Worm with: 3 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).
@@ -353,7 +353,7 @@ ShipTest >> test018WhenShipMovesToLastCellInLapThanCellsInBoardThenItIsInLastCel
 	aDice := LoadedDice withSequence: #( 9 ).
 	dices add: aDice.
 	aDiceBucket := DiceBucket with: dices.
-	amountOfCells := 9.
+	amountOfCells := 10.
 	aWorm := Worm with: 2 and: 4.
 	distributions := OrderedCollection new.
 	distributions add: (Distribution at: NoEffect with: 1).

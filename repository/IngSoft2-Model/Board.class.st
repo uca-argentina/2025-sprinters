@@ -83,18 +83,22 @@ Board >> lightYearsPerCell [
 { #category : 'as yet unclassified' }
 Board >> move: distance at: lap having: parsecs [
 
-	| position currentParsec newParsecPos newPosition currentLap parsecsInCell |
+	| position currentParsec newParsecPos newPosition currentLap parsecsInCell modPosition pos |
 	"escenario  --> 7 parsecs y 5 celas --> 1.4 parsecs/celd"
 	parsecsInCell := self parsecsPerCell.
 	currentParsec := distance * parsecsInCell. " 2 * 1.4 = 2.8 parsecs"
 	newParsecPos := currentParsec + parsecs. " 8 parsecs´+ 2.8 parsec = 10.8 parsecs"
-	newPosition := newParsecPos // parsecsInCell. " (10.8 parsecs / (1.4 parsec/celda ) = 1 celdas "
+	newPosition := (newParsecPos / parsecsInCell) ceiling. " (10.8 parsecs / (1.4 parsec/celda ) = 1 celdas "
 	currentLap := self moveThrowTheLaps: lap this: newPosition.
 	position := newPosition <= 0
 		            ifTrue: [ 1 ]
 		            ifFalse: [
 			            laps > 1
-				            ifTrue: [ newPosition \\ amountOfCells ]
+				            ifTrue: [
+					            modPosition := newPosition \\ amountOfCells.
+					            modPosition = 0
+						            ifTrue: [ newPosition ]
+						            ifFalse: [ modPosition ] ]
 				            ifFalse: [
 					            newPosition <= 0 ifTrue: [ 1 ].
 					            newPosition min: amountOfCells ] ].
