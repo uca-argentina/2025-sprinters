@@ -181,7 +181,7 @@ GameTest >> test004When2ShipsPlayAndShipOneWonThenReturnPositions [
 { #category : 'tests' }
 GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 
-	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions |
+	| dices aDice aDiceBucket aBoard amountOfCells aWorm ships distributions typesOfCards|
 	ships := OrderedCollection new.
 	dices := OrderedCollection new.
 	aDice := Dice with: 5.
@@ -200,14 +200,16 @@ GameTest >> test005When2ShipsWithSameNameAddedInAListThenRaiseError [
 	ships add: 'ship 1'.
 	ships add: 'ship 2'.
 	ships add: 'ship 1'.
-
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	self
 		should: [
 			Game
 				with: aBoard
 				using: aDiceBucket
 				andShipsNamed: ships
-				until: 1 ]
+				until: 1
+				having: (CardFactory with: typesOfCards) ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self
@@ -233,14 +235,16 @@ GameTest >> test006WhenCreateGamewithEmptyShipsThenRaiseError [
 		                    and: aWorm
 		                    has: distributions
 		                    basedOn: (Distance parsecs: 20).
-
+	typesOfCards := OrderedCollection new.
+	typesOfCards add: (FixedCard withTypeOfCard: MercenaryCard new).
 	self
 		should: [
 			Game
 				with: aBoard
 				using: aDiceBucket
 				andShipsNamed: ships
-				until: 0 ]
+				until: 0
+				having: (CardFactory with: typesOfCards) ]
 		raise: Error
 		withExceptionDo: [ :error |
 			self

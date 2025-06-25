@@ -28,15 +28,6 @@ Ship class >> create: aName [
 	^ self new initializeWith: aName
 ]
 
-{ #category : 'as yet unclassified' }
-Ship class >> create: aName with: aDiceBucket andReceiveCardsFrom: aCardFactory [
-
-	aName isString ifFalse: [
-		^ Error signal: 'Ship´s name must be a string.' ].
-
-	^ self new initializeWith: aName and: aDiceBucket using: aCardFactory
-]
-
 { #category : 'testing' }
 Ship >> canPlay [
 
@@ -96,21 +87,6 @@ Ship >> initializeWith: aName [
 	bonusBattle := OrderedCollection new.
 	shipsIAmMercenaryTo := OrderedCollection new.
 	amIMercenary:=false.
-]
-
-{ #category : 'initialization' }
-Ship >> initializeWith: aName and: aDiceBucket using: aCardFactory [
-
-	currentLap := 1.
-	position := 1.
-	name := aName.
-	shields := 3.
-	turnsToSkip := 0.
-	optionalTurn := true.
-	cards := aCardFactory generateInitialCards.
-	diceBucket := aDiceBucket.
-	bonusThrow := 0.
-	bonusBattle := OrderedCollection new
 ]
 
 { #category : 'testing' }

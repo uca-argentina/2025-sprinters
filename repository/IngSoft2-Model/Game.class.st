@@ -37,20 +37,6 @@ Game class >> validateUniqueNames: ships [
 ]
 
 { #category : 'as yet unclassified' }
-Game class >> with: aCircularBoard using: aLoadedDice andShipsNamed: shipsName until: anInteger [
-
-	shipsName ifEmpty: [
-		^ Error signal: 'List of ships must not be empty.' ].
-	self validateUniqueNames: shipsName.
-
-	^ self new
-		  initializeWith: aCircularBoard
-		  using: aLoadedDice
-		  andShipsNamed: shipsName
-		  until: anInteger
-]
-
-{ #category : 'as yet unclassified' }
 Game class >> with: aBoard using: aLoadedDice andShipsNamed: shipsName until: laps having: aCardDeck [ 
 	shipsName ifEmpty: [
 		^ Error signal: 'List of ships must not be empty.' ].
@@ -162,19 +148,6 @@ Game >> currentTopPlayer [
 Game >> findShipBy: aName [
 
 	^ ships detect: [ :ship | ship name = aName ]
-]
-
-{ #category : 'initialization' }
-Game >> initializeWith: aCircularBoard using: aDiceBucket andShipsNamed: shipsNames until: numberOfLaps [
-
-	| cardFactory |
-	cardFactory:=CardFactory new.
-	board := aCircularBoard with: numberOfLaps.
-	ships := shipsNames collect: [ :aName | Ship create: aName with:aDiceBucket  andReceiveCardsFrom: cardFactory ].
-	bucketOfDices := aDiceBucket.
-	status := Started new.
-	turnManager := TurnManager with: ships.
-	battleManager := BattleManager with: aDiceBucket
 ]
 
 { #category : 'initialization' }
