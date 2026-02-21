@@ -51,7 +51,7 @@ WormHoleTest >> test003WhenCreateWormHolesPositionNoIntegersThenReturnsError [
 { #category : 'tests' }
 WormHoleTest >> test004WhenShipMovesInsideWormholeThenPositionChanges [
 
-	| aWorm aX aY aPosition aBoard amountOfCells distributions laps ships cardManager aGame aDiceBucket ship1 |
+	| aWorm aX aY aPosition aBoard amountOfCells distributions laps ships cardManager aGame aDiceBucket ship1 aVar|
 	aX := 2.
 	aY := 6.
 	aWorm := Worm with: aX and: aY.
@@ -76,5 +76,6 @@ WormHoleTest >> test004WhenShipMovesInsideWormholeThenPositionChanges [
 	ship1 := aGame findShipBy: 'ship 1'.
 	ship1 move: 5 in: aBoard.
 	aWorm applyTo: ship1 in: aGame.
+	aVar:= 5.
 	self assert: ship1 position equals: 2
 ]
