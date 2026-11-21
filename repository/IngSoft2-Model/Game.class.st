@@ -9,183 +9,199 @@ Class {
 		'turnManager',
 		'battleManager',
 		'cardManager',
-		'effectManager',
-		'winner'
+		'effectManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
-Game class >> validateUniqueNames: ships [
+{ #category : 'validating' }
+Game class >> validateUniqueNames: shipNames [
 
-	| uniqueNames duplicatedNames |
-	uniqueNames := Set new.
-	duplicatedNames := OrderedCollection new.
-
-	ships do: [ :shipName |
-		(uniqueNames includes: shipName)
-			ifTrue: [ duplicatedNames add: shipName ]
-			ifFalse: [ uniqueNames add: shipName ] ].
-
-	duplicatedNames isEmpty ifFalse: [
+	shipNames asSet size = shipNames size ifFalse: [
 		^ Error signal: 'Ship´s name must not be reapeated.' ].
-
-	^ ships
+	^ shipNames
 ]
 
-{ #category : 'as yet unclassified' }
-Game class >> with: arg1 using: arg2 andShipsNamed: arg3 until: arg4 cardManager: arg5 [
+{ #category : 'creation' }
+Game class >> with: aBoard using: aDiceBucket andShipsNamed: shipNames deck: aDeck [
 
-	arg3 ifEmpty: [ ^ Error signal: 'List of ships must not be empty.' ].
-	self validateUniqueNames: arg3.
+	shipNames ifEmpty: [ ^ Error signal: 'List of ships must not be empty.' ].
+	self validateUniqueNames: shipNames.
 	^ self new
-		  initializeWith: arg1
-		  using: arg2
-		  andShipsNamed: arg3
-		  until: arg4
-		  cardManager: arg5
+		  initializeWith: aBoard
+		  using: aDiceBucket
+		  andShipsNamed: shipNames
+		  deck: aDeck
 ]
 
-{ #category : 'playing' }
-Game >> applyAccelerationCardEffect [
-	ships do: [:ship | ship increaseBonusThrow  ].
+{ #category : 'card rules' }
+Game >> activate: anActiveCard [
+
+	cardManager activate: anActiveCard
 ]
 
-{ #category : 'playing' }
-Game >> applyAtomicEffectOn: aShip [
+{ #category : 'cards' }
+Game >> activeCards [
 
-	ships do: [ :ship |
-		ship moveToPosition: 1.
-		ship loseShield ]
+	^ cardManager activeCards
 ]
 
-{ #category : 'playing' }
-Game >> applyMoonWalkEffectOn: aShip moving: numberOfCells [
-	 ships do: [ :otherShip |
-		otherShip ~~ aShip ifTrue: [
-			otherShip move: numberOfCells * -1 in: board ] ].
+{ #category : 'battle' }
+Game >> areAllied: aShip with: anotherShip [
+
+	^ ((self mercenariesOf: aShip) includes: anotherShip) or: [
+		  (self mercenariesOf: anotherShip) includes: aShip ]
 ]
 
-{ #category : 'accessing' }
-Game >> board [
+{ #category : 'card rules' }
+Game >> cancel: anActiveCard [
 
-	^ board
+	cardManager cancel: anActiveCard
 ]
 
-{ #category : 'accessing' }
-Game >> cardManager [
+{ #category : 'cards' }
+Game >> cardsOf: aShipName [
 
-	^ cardManager
+	^ (cardManager handOf: (self shipNamed: aShipName)) copy
 ]
 
-{ #category : 'accessing' }
-Game >> currentStatus [
+{ #category : 'effects' }
+Game >> cellsIn: aDistance [
 
-	^ status
+	^ board cellsIn: aDistance
 ]
 
-{ #category : 'accessing' }
-Game >> currentTopPlayer [
+{ #category : 'effects' }
+Game >> damage: aShip [
 
-	^ self shipsSortedByPosition at: 1.
+	aShip loseShield.
+	aShip isDefenseless ifTrue: [ self penalize: aShip ]
 ]
 
-{ #category : 'as yet unclassified' }
-Game >> effectManager [
+{ #category : 'effects' }
+Game >> damageAllShips [
 
-	^ effectManager
+	ships do: [ :ship | self damage: ship ]
 ]
 
-{ #category : 'accessing' }
-Game >> findShipBy: aName [
+{ #category : 'private' }
+Game >> finish [
 
-	^ ships detect: [ :ship | ship name = aName ]
+	status := Finished new
+]
+
+{ #category : 'private' }
+Game >> finishIfSomeShipWon [
+
+	(ships anySatisfy: [ :ship | ship winAt: board ]) ifTrue: [ self finish ]
+]
+
+{ #category : 'effects' }
+Game >> giveCardTo: aShip [
+
+	cardManager giveCardTo: aShip
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard using: diceBucket andShipsNamed: shipsname until: laps cardManager: aCardManager [
+Game >> initializeWith: aBoard using: aDiceBucket andShipsNamed: shipNames deck: aDeck [
 
-	| tmp1 |
-	board := aBoard with: laps.
-	ships := shipsname collect: [ :ship | Ship create: ship ].
-	bucketOfDices := diceBucket.
-	status := Started creation.
+	board := aBoard.
+	ships := shipNames collect: [ :shipName | Ship create: shipName ].
+	bucketOfDices := aDiceBucket.
+	status := Started new.
 	turnManager := TurnManager with: ships.
-	battleManager := BattleManager with: diceBucket.
-	effectManager := EffectManager creation.
-	cardManager := aCardManager.
-	ships do: [ :ship | cardManager drawInitialCardsFor: ship ]
+	battleManager := BattleManager new.
+	effectManager := EffectManager new.
+	cardManager := CardManager with: aDeck.
+	ships do: [ :ship | cardManager dealInitialCardsTo: ship ]
+]
+
+{ #category : 'private' }
+Game >> keepPlaying [
+
+	status keepPlaying: self
+]
+
+{ #category : 'querying' }
+Game >> lapOf: aShipName [
+
+	^ (self shipNamed: aShipName) laps
+]
+
+{ #category : 'card rules' }
+Game >> lastPlayedCard [
+
+	^ cardManager lastPlayedCard
+]
+
+{ #category : 'private' }
+Game >> leaderName [
+
+	^ self shipsSortedByPosition first name
+]
+
+{ #category : 'battle' }
+Game >> mercenariesOf: aShip [
+
+	^ cardManager mercenariesOf: aShip
+]
+
+{ #category : 'effects' }
+Game >> move: aShip by: anAmountOfCells [
+
+	board move: aShip by: anAmountOfCells
+]
+
+{ #category : 'effects' }
+Game >> moveAllShipsExcept: aShip by: anAmountOfCells [
+
+	(ships copyWithout: aShip) do: [ :ship |
+		board move: ship by: anAmountOfCells ]
+]
+
+{ #category : 'private' }
+Game >> penalize: aShip [
+
+	turnManager penalize: aShip turns: 2.
+	aShip restoreShields
 ]
 
 { #category : 'playing' }
 Game >> play [
 
-	status play:self.
+	status play: self
+]
 
-	^ 'Game over'
+{ #category : 'private' }
+Game >> playNextTurn [
+
+	| currentShip |
+	currentShip := turnManager nextShip.
+	board move: currentShip by: (self rollFor: currentShip).
+	(currentShip winAt: board) ifTrue: [ ^ self finish ].
+	effectManager
+		apply: (board effectOnPosition: currentShip position)
+		to: currentShip
+		in: self.
+	battleManager resolveBattlesOf: currentShip in: self.
+	self finishIfSomeShipWon
 ]
 
 { #category : 'playing' }
 Game >> playTurn [
 
-	| currentShip rolledDistance boardEffect |
-	currentShip := turnManager nextShip.
-	rolledDistance := bucketOfDices rollFor: currentShip.
-	currentShip move: rolledDistance in: board.
-
-	boardEffect := board effectOnPosition: currentShip position.
-	effectManager apply: boardEffect to: currentShip in: self.
-	battleManager resolveIfNeededAt: currentShip in: self.
-
-	self someShipWon
+	status playTurnOf: self
 ]
 
-{ #category : 'playing' }
-Game >> shipNamed: shipName useCard: aCard with: anotherShipName [
+{ #category : 'querying' }
+Game >> positionOf: aShipName [
 
-	| ship anotherShip |
-	ship := self findShipBy: shipName.
-	anotherShip := self findShipBy: anotherShipName.
-	cardManager
-		playCard: aCard
-		by: ship
-		target: anotherShip
-		in: self
+	^ (self shipNamed: aShipName) position
 ]
 
-{ #category : 'accessing' }
-Game >> ships [
-	^ ships
-]
-
-{ #category : 'accessing' }
-Game >> shipsSortedByPosition [
-
-	^ ships copy sort: [ :a :b | a isAheadOf: b ]
-]
-
-{ #category : 'accessing' }
-Game >> showRanking [
-
-	| top ranking sorted |
-	status isFinished
-		ifTrue: [
-			top := 1.
-			ranking := OrderedCollection new.
-			sorted := self shipsSortedByPosition.
-
-			[ top <= 3 and: [ top <= sorted size ] ] whileTrue: [
-				ranking add: (sorted at: top) name.
-				top := top + 1 ].
-			^ ranking ]
-		ifFalse: [
-			Error signal:
-				'The Game has not been played yet so it doesn`t have a ranking' ]
-]
-
-{ #category : 'playing' }
-Game >> showShipsPositions [
+{ #category : 'querying' }
+Game >> positions [
 
 	| result |
 	result := Dictionary new.
@@ -193,22 +209,125 @@ Game >> showShipsPositions [
 	^ result
 ]
 
-{ #category : 'accessing' }
-Game >> showWinner [
+{ #category : 'querying' }
+Game >> ranking [
 
-	^ status showWinner: self
+	^ status rankingOf: self
+]
+
+{ #category : 'card rules' }
+Game >> repeatLastEffectOn: aShip [
+
+	effectManager repeatLastEffectOn: aShip in: self
+]
+
+{ #category : 'private' }
+Game >> resolveShip: aShipName plays: aCard targeting: aTarget [
+
+	cardManager
+		play: aCard
+		by: (self shipNamed: aShipName)
+		targeting: aTarget
+		in: self
+]
+
+{ #category : 'battle' }
+Game >> rollFor: aShip [
+
+	^ bucketOfDices throw + (cardManager bonusFor: aShip)
+]
+
+{ #category : 'effects' }
+Game >> sendAllShipsToStart [
+
+	ships do: [ :ship | self sendToStart: ship ]
+]
+
+{ #category : 'effects' }
+Game >> sendToStart: aShip [
+
+	board moveToStart: aShip
+]
+
+{ #category : 'querying' }
+Game >> shieldsOf: aShipName [
+
+	^ (self shipNamed: aShipName) shields
+]
+
+{ #category : 'cards' }
+Game >> ship: aShipName plays: aCard [
+
+	self ship: aShipName plays: aCard targeting: aShipName
+]
+
+{ #category : 'cards' }
+Game >> ship: aShipName plays: aCard targeting: aTarget [
+
+	status ship: aShipName plays: aCard targeting: aTarget in: self
+]
+
+{ #category : 'private' }
+Game >> shipNamed: aShipName [
+
+	^ ships
+		  detect: [ :ship | ship name = aShipName ]
+		  ifNone: [ Error signal: 'There is no ship named ' , aShipName ]
+]
+
+{ #category : 'battle' }
+Game >> shipsAt: aLocation [
+
+	^ ships select: [ :ship | ship location = aLocation ]
+]
+
+{ #category : 'private' }
+Game >> shipsSortedByPosition [
+
+	^ ships copy sort: [ :a :b | a isAheadOf: b ]
+]
+
+{ #category : 'private' }
+Game >> skipNextTurn [
+
+	turnManager nextShip restoreShields
 ]
 
 { #category : 'playing' }
-Game >> skipTurnForShipNamed: shipName [ 
-	turnManager skipTurnForShipNamed: shipName.
+Game >> skipTurn [
+
+	status skipTurnOf: self
 ]
 
-{ #category : 'playing' }
-Game >> someShipWon [
+{ #category : 'effects' }
+Game >> teleport: aShip to: aCell [
 
-	| laps winner result |
-	laps := board laps.
-	result := ships anySatisfy: [ :ship | ship winAt: board ].
-	result ifTrue: [ status := Finished new ]
+	board teleport: aShip to: aCell
+]
+
+{ #category : 'private' }
+Game >> topShipNames [
+
+	^ ((self shipsSortedByPosition first: (3 min: ships size)) collect: [
+		   :ship | ship name ]) asOrderedCollection
+]
+
+{ #category : 'card rules' }
+Game >> validateIsAvailableAsMercenary: aShip [
+
+	(cardManager isHired: aShip) ifTrue: [
+		^ Error signal: 'You can not use this ship as a mercenary' ]
+]
+
+{ #category : 'card rules' }
+Game >> validateTurnOf: aShip [
+
+	turnManager shipInTurn == aShip ifFalse: [
+		^ Error signal: 'Permanent cards can only be played during your turn' ]
+]
+
+{ #category : 'querying' }
+Game >> winner [
+
+	^ status winnerOf: self
 ]

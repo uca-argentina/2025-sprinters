@@ -2,31 +2,32 @@ Class {
 	#name : 'Distribution',
 	#superclass : 'Object',
 	#instVars : [
-		'cellClass',
-		'probability'
+		'probability',
+		'effectGenerator'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'accessing' }
-Distribution class >> at: aCellClass with: aProbability [ 
-	(aProbability between: 0 and: 1) ifFalse:[
-		Error signal: 'Distribution must add up 1'.
-		].
-	^ self new initializeWith: aProbability asignTo: aCellClass.
-]
+{ #category : 'creation' }
+Distribution class >> of: anEffectGenerator withProbability: aProbability [
 
-{ #category : 'accessing' }
-Distribution >> cellClass [
-	^ cellClass
+	(aProbability between: 0 and: 1) ifFalse: [
+		^ Error signal: 'Probability must be between 0 and 1' ].
+	^ self new initializeOf: anEffectGenerator withProbability: aProbability
 ]
 
 { #category : 'initialization' }
-Distribution >> initializeWith: aProbability asignTo: aCellClass [
+Distribution >> initializeOf: anEffectGenerator withProbability: aProbability [
 
-	cellClass := aCellClass initializeThis.
+	effectGenerator := anEffectGenerator.
 	probability := aProbability
+]
+
+{ #category : 'instance creation' }
+Distribution >> newEffect [
+
+	^ effectGenerator value
 ]
 
 { #category : 'accessing' }

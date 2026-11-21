@@ -9,7 +9,7 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'creation' }
 Worm class >> with: aX and: aY [
 	(aX isInteger and: [ aY isInteger ]) ifFalse: [
 		^ Error signal: 'Worm holes positions must be integers' ].
@@ -26,11 +26,7 @@ Worm class >> with: aX and: aY [
 { #category : 'playing' }
 Worm >> applyTo: aShip in: aGame [
 
-	| aPosition newPosition |
-	aPosition := aShip position.
-	aPosition = positionX ifTrue: [ newPosition := positionY ].
-	aPosition = positionY ifTrue: [ newPosition := positionX ].
-	aShip moveToPosition: newPosition
+	aGame teleport: aShip to: (self otherEndOf: aShip position)
 ]
 
 { #category : 'initialization' }
@@ -43,6 +39,14 @@ Worm >> initializeWith: aX positionsOn: aY [
 { #category : 'playing' }
 Worm >> isInside: aAmountOfCells [ 
 	^ ((positionX between: 0 and: aAmountOfCells) and: [positionY between: 0 and: aAmountOfCells]) . 
+]
+
+{ #category : 'private' }
+Worm >> otherEndOf: aCell [
+
+	^ aCell = positionX
+		  ifTrue: [ positionY ]
+		  ifFalse: [ positionX ]
 ]
 
 { #category : 'playing' }

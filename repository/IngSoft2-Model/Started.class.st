@@ -1,50 +1,50 @@
 Class {
 	#name : 'Started',
 	#superclass : 'Object',
-	#instVars : [
-		'playing'
-	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'accessing' }
-Started class >> creation [
+{ #category : 'playing' }
+Started >> keepPlaying: aGame [
 
-	^ self new initialization
-]
-
-{ #category : 'initialization' }
-Started >> initialization [
-
-	playing := false
-]
-
-{ #category : 'testing' }
-Started >> isFinished [
-
-	^ false
-]
-
-{ #category : 'testing' }
-Started >> isPlaying [
-
-	^ playing
+	aGame playTurn.
+	aGame keepPlaying
 ]
 
 { #category : 'playing' }
-Started >> markAsPlaying [
+Started >> play: aGame [
 
-	playing := true
+	aGame keepPlaying
 ]
 
 { #category : 'playing' }
-Started >> play:aGame [
-	 [aGame currentStatus isFinished ] whileFalse: [ aGame playTurn ].
+Started >> playTurnOf: aGame [
+
+	aGame playNextTurn
 ]
 
 { #category : 'playing' }
-Started >> showWinner: aGame [
+Started >> rankingOf: aGame [
+
+	^ Error signal:
+		  'The Game has not been played yet so it doesn`t have a ranking'
+]
+
+{ #category : 'playing' }
+Started >> ship: aShipName plays: aCard targeting: aTarget in: aGame [
+
+	aGame resolveShip: aShipName plays: aCard targeting: aTarget
+]
+
+{ #category : 'playing' }
+Started >> skipTurnOf: aGame [
+
+	aGame skipNextTurn
+]
+
+{ #category : 'playing' }
+Started >> winnerOf: aGame [
 
 	^ Error signal: 'The game is not finished, so it hasn´t a winner yet'
 ]

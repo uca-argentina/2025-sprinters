@@ -2,13 +2,8 @@ Class {
 	#name : 'HyperJump',
 	#superclass : 'Effect',
 	#instVars : [
-		'parsecsToMove',
 		'index',
 		'distancesToMove'
-	],
-	#classInstVars : [
-		'parsecsToMove',
-		'index'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -33,17 +28,7 @@ HyperJump class >> with: distanceToMove [
 { #category : 'playing' }
 HyperJump >> applyTo: aShip in: aGame [
 
-	| board parsecsToJump distance |
-	board := aGame board.
-	parsecsToJump := self nextParsecs.
-	distance := board calculatePositionByParsecs: parsecsToJump.
-	aShip move: distance in: board
-]
-
-{ #category : 'initialization' }
-HyperJump >> initializeThis [
-
-	^ self
+	aGame move: aShip by: (aGame cellsIn: self nextDistance)
 ]
 
 { #category : 'initialization' }
@@ -53,11 +38,11 @@ HyperJump >> initializeWith: aCollectionOfDistanceToMove [
 	index := 1
 ]
 
-{ #category : 'playing' }
-HyperJump >> nextParsecs [
+{ #category : 'private' }
+HyperJump >> nextDistance [
 
-	| parsecsToJump |
-	parsecsToJump := (distancesToMove at: index) parsecs.
+	| distance |
+	distance := distancesToMove at: index.
 	index := index \\ distancesToMove size + 1.
-	^ parsecsToJump
+	^ distance
 ]

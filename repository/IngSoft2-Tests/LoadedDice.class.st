@@ -1,8 +1,14 @@
+"
+Soy un dado cargado para los tests, no formo parte del modelo del juego.
+Devuelvo en orden los valores de una secuencia y, al terminarla, vuelvo a empezar.
+
+	(LoadedDice withSequence: #( 6 3 )) throw.   ""6, luego 3, luego 6...""
+	(LoadedDice with: 4) throw.                  ""siempre 4""
+"
 Class {
 	#name : 'LoadedDice',
 	#superclass : 'Object',
 	#instVars : [
-		'amountOfFaces',
 		'index',
 		'throwns'
 	],
@@ -11,9 +17,9 @@ Class {
 }
 
 { #category : 'instance creation' }
-LoadedDice class >> with: aAmountOfFaces [
+LoadedDice class >> with: aValue [
 
-	^ self new initializeWith: aAmountOfFaces
+	^ self new initializeWith: { aValue }
 ]
 
 { #category : 'as yet unclassified' }
@@ -23,10 +29,10 @@ LoadedDice class >> withSequence: throwns [
 ]
 
 { #category : 'initialization' }
-LoadedDice >> initializeWith: amountOfThrowns [
+LoadedDice >> initializeWith: aSequence [
 
 	index := 1.
-	throwns := amountOfThrowns
+	throwns := aSequence
 ]
 
 { #category : 'as yet unclassified' }

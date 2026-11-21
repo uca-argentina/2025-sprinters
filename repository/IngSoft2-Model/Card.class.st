@@ -5,34 +5,27 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'generators' }
-Card >> generateRandomCard [
+{ #category : 'playing' }
+Card >> applyBy: aShip targeting: aTarget in: aGame [
 
-	| classes |
-	classes := self class subclasses.
-	^ (classes at: (Random new nextIntegerBetween: 1 and: classes size)) new. 
+	self subclassResponsibility
 ]
 
-{ #category : 'testing' }
-Card >> isCancellationCard [
+{ #category : 'playing' }
+Card >> playBy: aShip targeting: aTarget in: aGame [
 
-	^ false
+	self validatePlayBy: aShip in: aGame.
+	self applyBy: aShip targeting: aTarget in: aGame
 ]
 
-{ #category : 'testing' }
-Card >> isPermanent [
+{ #category : 'playing' }
+Card >> registerIn: aCardManager [
 
-	^ false
+	aCardManager registerPlayed: self
 ]
 
-{ #category : 'testing' }
-Card >> isRedo [
+{ #category : 'playing' }
+Card >> validatePlayBy: aShip in: aGame [
 
-	^ false
-]
-
-{ #category : 'testing' }
-Card >> matches: anotherCard [
-
-	^ self class = anotherCard class
+	self subclassResponsibility
 ]

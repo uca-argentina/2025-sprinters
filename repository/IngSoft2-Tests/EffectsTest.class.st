@@ -8,367 +8,133 @@ Class {
 { #category : 'tests' }
 EffectsTest >> test001WhenApplyBlackHoleEffectToShipThenShipMove4Cells [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions amountOfCells effect typesOfCards cardManager repeatcard |
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice with: 9.
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	aWorm := Worm with: 2 and: 8.
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: BlackHole with: 1).
-	amountOfCells := 10.
-	aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	ships add: 'ship 1'.
-	cardManager := FixCardManager creation.
-	repeatcard := RepeatCard new.
-	cardManager addCardsToDeck: {
-			repeatcard.
-			AccelerationCard new.
-			SpeedCard new.
-			SpeedCard new }.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 1
-		         cardManager: cardManager.
-	ship1 := aGame ships at: 1.
-	ship1 move: 6 in: aBoard.
-	effect := (distributions at: 1) cellClass.
-	effect applyTo: ship1 in: aGame.
-	self assert: ship1 position equals: 3
+	| effects aGame |
+	effects := (1 to: 10) collect: [ :cell | NoEffect new ].
+	effects at: 7 put: BlackHole new.
+	aGame := GameBuilder new
+		         diceSequence: #( 6 );
+		         effects: effects;
+		         wormHoleBetween: 9 and: 10;
+		         build.
+	aGame playTurn. "cae en 7 (BlackHole) y retrocede 4"
+	self assert: (aGame positionOf: 'ship 1') equals: 3
 ]
 
 { #category : 'tests' }
-EffectsTest >> test002WhenApplyBlackHoleEffectToShipWitchISInCell2ThenShipPositionNeverBeNegative [
+EffectsTest >> test002WhenApplyBlackHoleEffectNearTheStartThenShipPositionIsNeverLessThanOne [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 effect distributions typesOfCards cardManager repeatcard |
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	aWorm := Worm with: 2 and: 8.
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: BlackHole with: 1).
-	aBoard := Board
-		          with: 10
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	ships add: 'ship 1'.
-	cardManager := FixCardManager creation.
-	repeatcard := RepeatCard new.
-	cardManager addCardsToDeck: {
-			SpeedCard new.
-			SpeedCard new }.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 1
-		         cardManager: cardManager.
-	ship1 := aGame ships at: 1.
-	ship1 move: 2 in: aBoard.
-	effect := (distributions at: 1) cellClass.
-	effect applyTo: ship1 in: aGame.
-	self assert: ship1 position equals: 1
+	| effects aGame |
+	effects := (1 to: 10) collect: [ :cell | NoEffect new ].
+	effects at: 3 put: BlackHole new.
+	aGame := GameBuilder new
+		         diceSequence: #( 2 );
+		         effects: effects;
+		         wormHoleBetween: 9 and: 10;
+		         build.
+	aGame playTurn. "cae en 3 (BlackHole): 3 - 4 seria -1, queda en 1"
+	self assert: (aGame positionOf: 'ship 1') equals: 1
 ]
 
 { #category : 'tests' }
-EffectsTest >> test003WhenApplyHyperSpaceJumpEffectToShipThenShipPositionIs4 [
+EffectsTest >> test003WhenShipLandsOnAHyperSpaceJumpThenItMoves4CellsAndLosesAShield [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions typesOfCards cardManager |
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #( 10 ).
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	aWorm := Worm with: 2 and: 8.
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: HyperSpaceJump with: 1).
-	aBoard := Board
-		          with: 10
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	ships add: 'ship 1'.
-	cardManager := CardManager creation.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 1
-		         cardManager: cardManager.
-	ship1 := aGame findShipBy: 'ship 1'.
-	effect := (distributions at: 1) cellClass.
-	effect applyTo: ship1 in: aGame.
-	self assert: ship1 position equals: 5
-]
-
-{ #category : 'tests' }
-EffectsTest >> test004WhenApplyHyperSpaceJumpEffectToShipThenShipShieldsAre2 [
-
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions typesOfCards cardManager |
-	effect := HyperSpaceJump new.
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	aWorm := Worm with: 2 and: 8.
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: HyperSpaceJump with: 1).
-	aBoard := Board
-		          with: 10
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	ships add: 'ship 1'.
-	cardManager := CardManager creation.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 1
-		         cardManager: cardManager.
-	ship1 := aGame ships at: 1.
-	effect := (distributions at: 1) cellClass.
-	effect applyTo: ship1 in: aGame.
-	self assert: ship1 shields equals: 2
+	| effects aGame |
+	effects := (1 to: 10) collect: [ :cell | NoEffect new ].
+	effects at: 3 put: HyperSpaceJump new.
+	aGame := GameBuilder new
+		         diceSequence: #( 2 );
+		         effects: effects;
+		         wormHoleBetween: 9 and: 10;
+		         build.
+	aGame playTurn. "cae en 3 (HyperSpaceJump) -> 7"
+	self assert: (aGame positionOf: 'ship 1') equals: 7.
+	self assert: (aGame shieldsOf: 'ship 1') equals: 2
 ]
 
 { #category : 'tests' }
 EffectsTest >> test005WhenApplyMoonWalkEffectToShip1ThenShip2MoveNPositionBackward [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 n ship2 distributions typesOfCards cardManager |
-	n := 2.
-	"effect := MoonWalk move:n."
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	aWorm := Worm with: 2 and: 8.
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: MoonWalk with: 1).
-	aBoard := Board
-		          with: 10
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	ships add: 'ship 1'.
-	ships add: 'ship 2'.
-	cardManager := CardManager creation.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 2
-		         cardManager: cardManager.
-	ship1 := aGame ships at: 1.
-	ship2 := aGame ships at: 2.
-	ship2 move: 13 in: aBoard.
-	effect := (distributions at: 1) cellClass.
-
-	effect applyTo: ship1 in: aGame.
-	self assert: ship2 position equals: 1
-]
-
-{ #category : 'tests' }
-EffectsTest >> test006WhenApplyMoonWalkEffectToShip1ThenAllShipsToPositionZero [
-
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 ship2 distributions typesOfCards cardManager |
-	effect := AtomicBomb.
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice with: 10.
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	aWorm := Worm with: 2 and: 8.
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: AtomicBomb with: 1).
-	aBoard := Board
-		          with: 10
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	ships add: 'ship 1'.
-	ships add: 'ship 2'.
-	ships add: 'ship 3'.
-	cardManager := CardManager creation.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 4
-		         cardManager: cardManager.
-	ship1 := aGame ships at: 1.
-	ship2 := aGame ships at: 2.
-	ship2 move: 23 in: aBoard.
-	effect := (distributions at: 1) cellClass.
-	effect applyTo: ship1 in: aGame.
-	self assert: ship1 position + ship2 position equals: 2
+	| effects aGame |
+	effects := (1 to: 10) collect: [ :cell | NoEffect new ].
+	effects at: 6 put: (MoonWalk move: 10).
+	aGame := GameBuilder new
+		         shipsNamed: #( 'ship 1' 'ship 2' );
+		         diceSequence: #( 1 13 4 );
+		         effects: effects;
+		         wormHoleBetween: 9 and: 10;
+		         laps: 2;
+		         build.
+	aGame playTurn. "ship 1 cae en 2"
+	aGame playTurn. "ship 2: 1 + 13 = celda 4 de la vuelta 2"
+	aGame playTurn. "ship 1 cae en 6 (MoonWalk): ship 2 retrocede 10"
+	self assert: (aGame positionOf: 'ship 2') equals: 4.
+	self assert: (aGame lapOf: 'ship 2') equals: 1.
+	self assert: (aGame positionOf: 'ship 1') equals: 6
 ]
 
 { #category : 'tests' }
 EffectsTest >> test007WhenApplyAtomicBombEffectToShipThenAllShipPositionAreOneButLapsNotChange [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 assertedResult ship2 distributions typesOfCards cardManager |
-	effect := AtomicBomb.
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #( 0 23 10 ).
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	aWorm := Worm with: 2 and: 8.
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: AtomicBomb with: 1).
-	aBoard := Board
-		          with: 10
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	ships add: 'ship 1'.
-	ships add: 'ship 2'.
-	ships add: 'ship 3'.
-	cardManager := CardManager creation.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 4
-		         cardManager: cardManager.
-	aGame playTurn.
-	aGame playTurn.
-	self assert: (aGame ships at: 2) laps equals: 2
+	| aGame |
+	aGame := GameBuilder new
+		         shipsNamed: #( 'ship 1' 'ship 2' );
+		         diceSequence: #( 12 );
+		         allCellsWith: AtomicBomb new;
+		         wormHoleBetween: 9 and: 10;
+		         laps: 3;
+		         build.
+	aGame playTurn. "ship 1: 1 + 12 = 13 -> celda 3 de la vuelta 2 -> AtomicBomb"
+	self assert: (aGame positionOf: 'ship 1') equals: 1.
+	self assert: (aGame lapOf: 'ship 1') equals: 2.
+	self assert: (aGame positionOf: 'ship 2') equals: 1.
+	self assert: (aGame lapOf: 'ship 2') equals: 1
 ]
 
 { #category : 'tests' }
 EffectsTest >> test008WhenApplyAtomicBombEffectToShipThenAllShipLoseOneShield [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 distributions typesOfCards cardManager |
-	effect := AtomicBomb.
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #( 10 ).
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	aWorm := Worm with: 2 and: 8.
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: effect with: 1).
-
-	aBoard := Board
-		          with: 10
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	ships add: 'ship 1'.
-	cardManager := CardManager creation.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 4
-		         cardManager: cardManager.
-	ship1 := aGame ships at: 1.
+	| aGame |
+	aGame := GameBuilder new
+		         diceSequence: #( 10 );
+		         allCellsWith: AtomicBomb new;
+		         laps: 4;
+		         build.
 	aGame playTurn.
-	self assert: ship1 shields equals: 2
+	self assert: (aGame shieldsOf: 'ship 1') equals: 2
 ]
 
 { #category : 'tests' }
 EffectsTest >> test009WhenCreatHuperJumpEffectToShipThenItMoveaParsec [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions typesOfCards cardManager |
-	parsecsToMove := OrderedCollection new.
-	parsecsToMove add: (Distance parsecs: 8).
-	parsecsToMove add: (Distance parsecs: 6).
-	parsecsToMove add: (Distance parsecs: 3).
-
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #( 2 5 ).
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	amountOfCells := 10.
-	aX := 2.
-	aY := 9.
-	aWorm := Worm with: aX and: aY.
-
-	distributions := OrderedCollection new.
-	distributions add:
-		(Distribution at: (HyperJump with: parsecsToMove) with: 1).
-
-	aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	ships add: 'ship 1'.
-	ships add: 'ship 2'.
-	ships add: 'ship 3'.
-	cardManager := CardManager creation.
-
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 4
-		         cardManager: cardManager.
-	ship1 := aGame ships at: 1.
-	aGame playTurn.
-	self assert: ship1 position equals: 7
+	| aGame |
+	aGame := GameBuilder new
+		         diceSequence: #( 2 );
+		         allCellsWith: (HyperJump with: {
+						          (Distance parsecs: 8).
+						          (Distance parsecs: 6).
+						          (Distance parsecs: 3) });
+		         build.
+	aGame playTurn. "cae en 3, salta 8 parsecs = 4 celdas"
+	self assert: (aGame positionOf: 'ship 1') equals: 7
 ]
 
 { #category : 'tests' }
-EffectsTest >> test010WhenCreatHyperJumpEffectToShip1andShip2ThenShipsPositionAreDifferent [
+EffectsTest >> test010WhenTwoShipsFallOnTheSameHyperJumpThenEachOneJumpsTheNextDistance [
 
-	| effect ships dices aDice aDiceBucket aWorm aBoard aGame ship1 parsecsToMove amountOfCells aX aY distributions ship2 typesOfCards cardManager |
-	parsecsToMove := OrderedCollection new.
-	parsecsToMove add: (Distance parsecs: 8).
-	parsecsToMove add: (Distance parsecs: 6).
-	parsecsToMove add: (Distance parsecs: 3).
-
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #( 3 ).
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	amountOfCells := 10.
-	aX := 1.
-	aY := 3.
-	aWorm := Worm with: aX and: aY.
-
-	distributions := OrderedCollection new.
-	distributions add:
-		(Distribution at: (HyperJump with: parsecsToMove) with: 1).
-
-	aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	ships add: 'ship 1'.
-	ships add: 'ship 2'.
-	ships add: 'ship 3'.
-	cardManager := CardManager creation.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 4
-		         cardManager: cardManager.
-	aGame playTurn.
-	aGame playTurn.
-	self
-		assert: (aGame findShipBy: 'ship 1') position
-			+ (aGame findShipBy: 'ship 2') position
-		equals: 15
+	| aGame |
+	aGame := GameBuilder new
+		         shipsNamed: #( 'ship 1' 'ship 2' );
+		         diceSequence: #( 3 );
+		         allCellsWith: (HyperJump with: {
+						          (Distance parsecs: 8).
+						          (Distance parsecs: 6).
+						          (Distance parsecs: 3) });
+		         wormHoleBetween: 9 and: 10;
+		         build.
+	aGame playTurn. "ship 1: cae en 4, salta 8 parsecs = 4 celdas"
+	aGame playTurn. "ship 2: cae en 4, salta 6 parsecs = 3 celdas"
+	self assert: (aGame positionOf: 'ship 1') equals: 8.
+	self assert: (aGame positionOf: 'ship 2') equals: 7
 ]
 
 { #category : 'tests' }
@@ -408,139 +174,35 @@ EffectsTest >> test012WhenCreatHuperJumpEffectWithCellsHaveToBeLessThanThePreviu
 ]
 
 { #category : 'tests' }
-EffectsTest >> test013WhenHavingMoonwalkEffectThenHasNCells [
-
-	| dices aDice aDiceBucket amountOfCells aWorm ships distributions |
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice with: 5.
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	amountOfCells := 10.
-	aWorm := Worm with: 2 and: 4.
-	distributions := OrderedCollection new.
-	distributions add: (Distribution at: MoonWalk with: 1).
-
-	self assert: (distributions at: 1) cellClass numberOfCells equals: 10
-]
-
-{ #category : 'tests' }
 EffectsTest >> test014WhenCreatHyperJumpWithParsecsrEffectToShipThenItMovesParsecs [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 amountOfCells aX aY distributions typesOfCards distanceToMove cardManager |
-	distanceToMove := OrderedCollection new.
-	distanceToMove add: (Distance parsecs: 9).
-	distanceToMove add: (Distance parsecs: 6).
-	distanceToMove add: (Distance parsecs: 3).
-
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #( 2 5 ).
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	amountOfCells := 20.
-	aX := 2.
-	aY := 9.
-	aWorm := Worm with: aX and: aY.
-
-	distributions := OrderedCollection new.
-	distributions add:
-		(Distribution at: (HyperJump with: distanceToMove) with: 1).
-	ships add: 'ship 1'.
-	ships add: 'ship 2'.
-	ships add: 'ship 3'.
-	cardManager := CardManager creation.
-	aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 60).
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 4
-		         cardManager: cardManager.
-	ship1 := aGame ships at: 1.
-	aGame playTurn.
-	self assert: ship1 position equals: 6
+	| aGame |
+	aGame := GameBuilder new
+		         diceSequence: #( 2 );
+		         cells: 20;
+		         length: (Distance parsecs: 60);
+		         allCellsWith: (HyperJump with: {
+						          (Distance parsecs: 9).
+						          (Distance parsecs: 6).
+						          (Distance parsecs: 3) });
+		         build.
+	aGame playTurn. "cae en 3, salta 9 parsecs = 3 celdas"
+	self assert: (aGame positionOf: 'ship 1') equals: 6
 ]
 
 { #category : 'tests' }
 EffectsTest >> test015WhenCreatHyperJumpLightYearEffectToShipThenItMovesPrrsecs [
 
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 amountOfCells aX aY distributions typesOfCards distanceToMove cardManager |
-	distanceToMove := OrderedCollection new.
-	distanceToMove add: (Distance lightYear: 27).
-	distanceToMove add: (Distance lightYear: 18).
-	distanceToMove add: (Distance lightYear: 9).
-
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #( 2 5 ).
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	amountOfCells := 20.
-	aX := 2.
-	aY := 9.
-	aWorm := Worm with: aX and: aY.
-
-	distributions := OrderedCollection new.
-	distributions add:
-		(Distribution at: (HyperJump with: distanceToMove) with: 1).
-	ships add: 'ship 1'.
-	ships add: 'ship 2'.
-	ships add: 'ship 3'.
-	cardManager := CardManager creation.
-
-	aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance lightYear: 180).
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 4
-		         cardManager: cardManager.
-	ship1 := aGame ships at: 1.
-	aGame playTurn.
-	self assert: ship1 position equals: 6
-]
-
-{ #category : 'tests' }
-EffectsTest >> test016WhenInitializeGameThenLastRealEffectIsEmpty [
-
-	| ships dices aDice aDiceBucket aWorm aBoard aGame ship1 amountOfCells aX aY distributions typesOfCards distanceToMove cardManager |
-	ships := OrderedCollection new.
-	dices := OrderedCollection new.
-	aDice := LoadedDice withSequence: #( 2 5 ).
-	dices add: aDice.
-	aDiceBucket := DiceBucket with: dices.
-	amountOfCells := 20.
-	aX := 2.
-	aY := 9.
-	aWorm := Worm with: aX and: aY.
-
-	distributions := OrderedCollection new.
-	distributions add:
-		(Distribution at: AtomicBomb with: 1).
-	ships add: 'ship 1'.
-	ships add: 'ship 2'.
-	ships add: 'ship 3'.
-	cardManager := CardManager creation.
-
-	aBoard := Board
-		          with: amountOfCells
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance lightYear: 180).
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: 4
-		         cardManager: cardManager.
-	self assert:(aGame effectManager lastRealEffect class) equals:NoEffect
+	| aGame |
+	aGame := GameBuilder new
+		         diceSequence: #( 2 );
+		         cells: 20;
+		         length: (Distance lightYear: 180);
+		         allCellsWith: (HyperJump with: {
+						          (Distance lightYear: 27).
+						          (Distance lightYear: 18).
+						          (Distance lightYear: 9) });
+		         build.
+	aGame playTurn. "cae en 3, salta 27 años luz = 9 parsecs = 3 celdas"
+	self assert: (aGame positionOf: 'ship 1') equals: 6
 ]

@@ -9,9 +9,3 @@ Class {
 Effect >> applyTo: aShip in: aGame [
 	self subclassResponsibility .
 ]
-
-{ #category : 'testing' }
-Effect >> isCardGiver [
-
-	^ false
-]

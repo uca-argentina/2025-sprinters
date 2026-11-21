@@ -1,49 +1,45 @@
 Class {
 	#name : 'BattleManager',
 	#superclass : 'Object',
-	#instVars : [
-		'diceBucket'
-	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
-BattleManager class >> with: aDiceBucket [
+{ #category : 'private' }
+BattleManager >> battleRollOf: aShip in: aGame [
 
-	^ self new initializeWith: aDiceBucket
+	^ (aGame mercenariesOf: aShip)
+		  inject: (aGame rollFor: aShip)
+		  into: [ :total :mercenary | total + (aGame rollFor: mercenary) ]
+]
+
+{ #category : 'private' }
+BattleManager >> defeat: aShip in: aGame [
+
+	aGame sendToStart: aShip.
+	aGame damage: aShip.
+	(aGame mercenariesOf: aShip) do: [ :mercenary | aGame damage: mercenary ]
 ]
 
 { #category : 'playing' }
-BattleManager >> fightBetween: shipA and: shipB [
+BattleManager >> fightBetween: shipA and: shipB in: aGame [
 
 	| resultA resultB |
 	[
-	resultA := shipA throwDicesWith: diceBucket.
-	resultB := shipB throwDicesWith: diceBucket.
+	resultA := self battleRollOf: shipA in: aGame.
+	resultB := self battleRollOf: shipB in: aGame.
 	resultA = resultB ] whileTrue.
-
-	resultA > resultB
-		ifTrue: [ shipB loseFight ]
-		ifFalse: [ shipA loseFight ]
+	self
+		defeat: (resultA > resultB
+				 ifTrue: [ shipB ]
+				 ifFalse: [ shipA ])
+		in: aGame
 ]
 
-{ #category : 'initialization' }
-BattleManager >> initializeWith: aDiceBucket [
+{ #category : 'playing' }
+BattleManager >> resolveBattlesOf: aShip in: aGame [
 
-	diceBucket := aDiceBucket
-]
-
-{ #category : 'accessing' }
-BattleManager >> resolveIfNeededAt: actualShip in: aGame [
-
-	| shipsInSamePosition |
-	shipsInSamePosition := (aGame ships) select: [ :ship |
-		                       ship ~~ actualShip and: [
-			                       ship position = actualShip position and:
-				                       ship laps = actualShip laps ] ].
-	shipsInSamePosition do: [ :enemy |
-		((actualShip hasAsMercery: enemy ) or: [
-			 enemy hasAsMercery: actualShip ]) ifFalse: [
-			self fightBetween: actualShip and: enemy ] ]
+	((aGame shipsAt: aShip location) copyWithout: aShip) do: [ :enemy |
+		(aGame areAllied: aShip with: enemy) ifFalse: [
+			self fightBetween: aShip and: enemy in: aGame ] ]
 ]

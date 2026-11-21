@@ -5,13 +5,8 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'initialization' }
-NoEffect class >> initializeThis [
-	^ self new.
-]
-
 { #category : 'playing' }
 NoEffect >> applyTo: aShip in: aGame [
 
-	^ 'No effects are applied'
+	^ self
 ]

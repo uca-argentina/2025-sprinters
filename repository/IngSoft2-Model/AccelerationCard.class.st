@@ -1,33 +1,12 @@
 Class {
 	#name : 'AccelerationCard',
-	#superclass : 'Card',
-	#instVars : [
-		'linkedShips'
-	],
+	#superclass : 'PermanentCard',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'playing' }
-AccelerationCard >> applyTo: aShip using: aShip2 in: aGame [
+AccelerationCard >> activeCardBy: aShip targeting: aTarget in: aGame [
 
-	linkedShips := aGame ships.
-	aGame applyAccelerationCardEffect
-]
-
-{ #category : 'testing' }
-AccelerationCard >> isPermanent [
-
-	^ true
-]
-
-{ #category : 'testing' }
-AccelerationCard >> matches: anotherCard [
-
-	^ self class = anotherCard class
-]
-
-{ #category : 'removing' }
-AccelerationCard >> removePermanentEffect [
-	linkedShips do: [:ship | ship decreaseBonusThrow. ] .
+	^ ActiveAcceleration new
 ]

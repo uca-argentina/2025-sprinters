@@ -3,31 +3,27 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'amountOfCells',
-		'wormHole',
 		'laps',
 		'cells',
-		'totalParsecs',
 		'distance'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
-Board class >> with: aAmountOfCells and: aWormHole has: aDistribution basedOn: aDistance [
+{ #category : 'creation' }
+Board class >> withEffects: effects wormHole: aWorm laps: anAmountOfLaps length: aDistance [
 
-	aAmountOfCells isInteger ifFalse: [
-		^ Error signal: 'Amount of cells must be an integer' ].
-	aAmountOfCells < 1 ifTrue: [
+	effects ifEmpty: [
 		^ Error signal: 'Amount of cells must be greater than zero' ].
-	(aWormHole isInside: aAmountOfCells) ifFalse: [
+	(aWorm isInside: effects size) ifFalse: [
 		^ Error signal:
 			  'Position of the worm hole exceed amount board`s cells' ].
 	^ self new
-		  initializeWith: aAmountOfCells
-		  and: aWormHole
-		  has: aDistribution
-		  basedOn: aDistance
+		  initializeWithEffects: effects
+		  wormHole: aWorm
+		  laps: anAmountOfLaps
+		  length: aDistance
 ]
 
 { #category : 'accessing' }
@@ -36,101 +32,70 @@ Board >> amountOfCells [
 	^ amountOfCells
 ]
 
-{ #category : 'convertion' }
-Board >> amountOfCellsOf: anEffectOrClass [
+{ #category : 'converting' }
+Board >> cellsIn: aDistance [
 
-	^ cells count: [ :cell | cell effect className = anEffectOrClass ]
-]
-
-{ #category : 'as yet unclassified' }
-Board >> calculatePosition: aPosition moving: parsecs [
-
-	| parsecsInCell currentParsec newParsecPos newPosition |
-	parsecsInCell := self parsecsPerCell.
-	currentParsec := aPosition * parsecsInCell.
-	newParsecPos := currentParsec + parsecs.
-	newPosition := (newParsecPos / parsecsInCell) ceiling.
-	^ newPosition
-]
-
-{ #category : 'as yet unclassified' }
-Board >> calculatePositionByParsecs: parsecs [
-
-	| parsecsInCell newPosition |
-	parsecsInCell := self parsecsPerCell.
-	newPosition := (parsecs / parsecsInCell) ceiling.
-	^ newPosition
+	^ (aDistance parsecs / self parsecsPerCell) ceiling
 ]
 
 { #category : 'playing' }
 Board >> effectOnPosition: position [
 
-	(wormHole positions anySatisfy: [ :cell | cell = position ]) ifTrue: [
-		^ wormHole ].
-	^ (cells at: position) effect value
-]
-
-{ #category : 'initialization' }
-Board >> initializeWith: aAmountOfCells and: aWormHole has: distributions basedOn: aDistance [
-
-	| cell aDistributor effectsOnCells |
-	amountOfCells := aAmountOfCells.
-	wormHole := aWormHole.
-	laps := 1.
-	distance := aDistance.
-	aDistributor := EffectDistributor
-		                withDistribution: distributions
-		                on: aAmountOfCells.
-
-	effectsOnCells := aDistributor recieveAmountOfEffects.
-	cells := OrderedCollection new.
-	1 to: amountOfCells do: [ :i |
-		cell := Cell new.
-		cell position: i.
-		cell effect: (effectsOnCells at: i).
-		cells add: cell ]
+	^ (cells at: position) effect
 ]
 
 { #category : 'accessing' }
-Board >> laps [
+Board >> indexOf: aLocation [
 
-	^ laps
+	^ aLocation lap - 1 * amountOfCells + aLocation cell
 ]
 
-{ #category : 'convertion' }
-Board >> lightYearsPerCell [
-	^ (self parsecsPerCell) * 3.
+{ #category : 'initialization' }
+Board >> initializeWithEffects: effects wormHole: aWorm laps: anAmountOfLaps length: aDistance [
+
+	| effectsWithWormHole |
+	effectsWithWormHole := effects asArray copy.
+	aWorm positions do: [ :position |
+		effectsWithWormHole at: position put: aWorm ].
+	cells := effectsWithWormHole collect: [ :effect | Cell with: effect ].
+	amountOfCells := cells size.
+	laps := anAmountOfLaps.
+	distance := aDistance
 ]
 
-{ #category : 'as yet unclassified' }
-Board >> move: aDistance ship: aShip [
+{ #category : 'testing' }
+Board >> isTheFinish: aLocation [
 
-	| parsecsInCell currentParsec newParsecPos newPosition currentLap position modPosition |
-	newPosition := aDistance <= 0
-		               ifTrue: [ 1 ]
-		               ifFalse: [ aDistance ].
-
-	currentLap := self moveThrowTheLaps: aShip laps this: newPosition.
-
-	position := laps > 1
-		            ifTrue: [
-			            modPosition := newPosition \\ amountOfCells.
-			            modPosition = 0
-				            ifTrue: [ amountOfCells ]
-				            ifFalse: [ modPosition ] ]
-		            ifFalse: [ (newPosition max: 1) min: amountOfCells ].
-
-	aShip updatePosition: position andLap: currentLap
+	^ (self indexOf: aLocation) = self lastIndex
 ]
 
-{ #category : 'playing' }
-Board >> moveThrowTheLaps: currentLap this: position [
+{ #category : 'accessing' }
+Board >> lastIndex [
 
-	| lapValue |
-	lapValue := currentLap + (position // amountOfCells).
-	lapValue <= 0 ifTrue: [
-		^ Error signal: 'Current lap cannot be negative' ].
-	^ lapValue
+	^ laps * amountOfCells
+]
+
+{ #category : 'accessing' }
+Board >> locationAt: anIndex [
+
+	| index |
+	index := (anIndex max: 1) min: self lastIndex.
+	^ Location
+		  cell: index - 1 \\ amountOfCells + 1
+		  lap: index - 1 // amountOfCells + 1
+]
+
+{ #category : 'moving' }
+Board >> move: aShip by: anAmountOfCells [
+
+	aShip moveTo:
+		(self locationAt: (self indexOf: aShip location) + anAmountOfCells)
+]
+
+{ #category : 'moving' }
+Board >> moveToStart: aShip [
+
+	aShip moveTo: aShip location atStart
 ]
 
 { #category : 'convertion' }
@@ -139,14 +104,8 @@ Board >> parsecsPerCell [
 	^ distance parsecs / amountOfCells
 ]
 
-{ #category : 'instance creation' }
-Board >> with: aNumberOfLaps [
+{ #category : 'moving' }
+Board >> teleport: aShip to: aCell [
 
-	laps := aNumberOfLaps
-]
-
-{ #category : 'accessing' }
-Board >> wormHole [
-
-	^ wormHole
+	aShip moveTo: (Location cell: aCell lap: aShip laps)
 ]

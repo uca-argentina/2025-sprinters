@@ -3,149 +3,110 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'deck',
+		'hands',
 		'activeCards',
-		'discardPile'
+		'playedCards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'accessing' }
-CardManager class >> creation [
+{ #category : 'instance creation' }
+CardManager class >> with: aDeck [
 
-	^ self new initialization
+	^ self new initializeWith: aDeck
 ]
 
-{ #category : 'as yet unclassified' }
-CardManager >> activePermanentCards [
+{ #category : 'playing' }
+CardManager >> activate: anActiveCard [
+
+	activeCards add: anActiveCard
+]
+
+{ #category : 'quering' }
+CardManager >> activeCards [
+
+	^ activeCards copy
+]
+
+{ #category : 'quering' }
+CardManager >> bonusFor: aShip [
 
 	^ activeCards
+		  inject: 0
+		  into: [ :total :activeCard | total + (activeCard bonusFor: aShip) ]
 ]
 
-{ #category : 'as yet unclassified' }
-CardManager >> applyRedoEffectOn: aShip in: aGame [
+{ #category : 'playing' }
+CardManager >> cancel: anActiveCard [
 
-	| realCard |
-    discardPile isEmpty ifTrue: [
-        ^ Error signal: 'There are no cards played before.'
-    ].
-    realCard := discardPile reversed
-        detect: [ :card | card isRedo not ]
-        ifNone: [ ^ Error signal: 'No real card to redo.' ].
-
-    realCard applyTo: aShip using: aShip in: aGame.
+	activeCards ifEmpty: [
+		^ Error signal:
+			  'Cannot play cancellation card with no active permanent cards' ].
+	activeCards
+		remove: anActiveCard
+		ifAbsent: [ ^ Error signal: 'The selected card is not currently active' ]
 ]
 
-{ #category : 'as yet unclassified' }
-CardManager >> applyTo: aShip using: aShip2 in: aGame [
+{ #category : 'dealing' }
+CardManager >> dealInitialCardsTo: aShip [
 
-	| realCard |
-    discardPile isEmpty ifTrue: [
-        ^ Error signal: 'There are no cards played before.'
-    ].
-    realCard := discardPile reversed
-        detect: [ :card | card isRedo not ]
-        ifNone: [ ^ Error signal: 'No real card to redo.' ].
-
-    realCard applyTo: aShip using: aShip in: aGame.
+	2 timesRepeat: [ self giveCardTo: aShip ]
 ]
 
-{ #category : 'as yet unclassified' }
-CardManager >> cancelCard: aCard [
+{ #category : 'dealing' }
+CardManager >> giveCardTo: aShip [
 
-	| card |
-	card := activeCards
-		        detect: [ :c | c matches: aCard ]
-		        ifNone: [
-		        Error signal: 'No active card matches the one to cancel' ].
-	card removePermanentEffect.
-	activeCards remove: card
+	(self handOf: aShip) add: deck draw
 ]
 
-{ #category : 'accessing' }
-CardManager >> deck [
+{ #category : 'dealing' }
+CardManager >> handOf: aShip [
 
-	^ deck
-]
-
-{ #category : 'as yet unclassified' }
-CardManager >> drawCard [
-
-	| index randomCard typeOfCards |
-	typeOfCards := {
-		               AccelerationCard.
-		               SpeedCard.
-		               CancellationCard.
-		               MercenaryCard.
-		               RedoCard.
-		               RepeatCard.
-		               SpeedCard }.
-	index := Random new nextIntegerBetween: 1 and: typeOfCards size.
-	randomCard := (typeOfCards at: index) new.
-	^ randomCard
-]
-
-{ #category : 'as yet unclassified' }
-CardManager >> drawCardOn: aShip [
-
-	| card |
-	card := self drawCard.
-	aShip receiveCard: card
-]
-
-{ #category : 'as yet unclassified' }
-CardManager >> drawInitialCardsFor: aShip [
-
-	| card |
-	self drawCardOn: aShip.
-	self drawCardOn: aShip
-]
-
-{ #category : 'as yet unclassified' }
-CardManager >> ensureHasEnoughCardsForShips: shipCount [
-
-	deck size >= (shipCount * 2) ifFalse: [
-		Error signal: 'Not enough cards to give 2 to each ship.' ]
-]
-
-{ #category : 'testing' }
-CardManager >> hasActiveCard: aCard [
-
-	^ activeCards anySatisfy: [ :each | each matches: aCard ]
+	^ hands at: aShip ifAbsentPut: [ OrderedCollection new ]
 ]
 
 { #category : 'initialization' }
-CardManager >> initialization [
+CardManager >> initializeWith: aDeck [
 
-	deck := OrderedCollection new.
-	discardPile :=OrderedCollection new.
+	deck := aDeck.
+	hands := IdentityDictionary new.
 	activeCards := OrderedCollection new.
+	playedCards := OrderedCollection new
 ]
 
-{ #category : 'testing' }
-CardManager >> isValidMercenary: aShip in: ships [
+{ #category : 'quering' }
+CardManager >> isHired: aShip [
 
-	^ ships noneSatisfy: [ :ship | ship hasAsMercery: aShip ]
+	^ activeCards anySatisfy: [ :activeCard | activeCard hasHired: aShip ]
 ]
 
-{ #category : 'as yet unclassified' }
-CardManager >> playCard: aCard by: aShip target: aShip2 in: aGame [
+{ #category : 'playing' }
+CardManager >> lastPlayedCard [
 
-	(aShip hasCard: aCard) ifFalse: [
-		Error signal: 'Cannot play a card you do not have' ].
-
-	(aCard isCancellationCard and: [ self activePermanentCards isEmpty ])
-		ifTrue: [
-			self error:
-				'Cannot play cancellation card with no active permanent cards' ].
-
-	aCard applyTo: aShip using: aShip2 in: aGame.
-	aShip removeCard: aCard.
-	self registerCard: aCard
+	playedCards ifEmpty: [
+		^ Error signal: 'There are no cards played before.' ].
+	^ playedCards last
 ]
 
-{ #category : 'as yet unclassified' }
-CardManager >> registerCard: aCard [
-	discardPile add:aCard.
-    (aCard isPermanent )ifTrue:[ activeCards add: aCard ]
+{ #category : 'quering' }
+CardManager >> mercenariesOf: aShip [
+
+	^ activeCards flatCollect: [ :activeCard | activeCard mercenariesOf: aShip ]
+]
+
+{ #category : 'playing' }
+CardManager >> play: aCard by: aShip targeting: aTarget in: aGame [
+
+	((self handOf: aShip) includes: aCard) ifFalse: [
+		^ Error signal: 'Cannot play a card you do not have' ].
+	aCard playBy: aShip targeting: aTarget in: aGame.
+	(self handOf: aShip) remove: aCard.
+	aCard registerIn: self
+]
+
+{ #category : 'playing' }
+CardManager >> registerPlayed: aCard [
+
+	playedCards add: aCard
 ]

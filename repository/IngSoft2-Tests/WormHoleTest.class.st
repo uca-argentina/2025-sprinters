@@ -51,30 +51,12 @@ WormHoleTest >> test003WhenCreateWormHolesPositionNoIntegersThenReturnsError [
 { #category : 'tests' }
 WormHoleTest >> test004WhenShipMovesInsideWormholeThenPositionChanges [
 
-	| aWorm aX aY aPosition aBoard amountOfCells distributions laps ships cardManager aGame aDiceBucket ship1 |
-	aX := 2.
-	aY := 6.
-	aWorm := Worm with: aX and: aY.
-	distributions := OrderedCollection new.
-	ships := OrderedCollection new.
-	distributions add: (Distribution at: NoEffect with: 1).
-	aPosition := 6.
-	aBoard := Board
-		          with: 10
-		          and: aWorm
-		          has: distributions
-		          basedOn: (Distance parsecs: 20).
-	laps := 3.
-	ships add: 'ship 1'.
-	cardManager := CardManager creation.
-	aGame := Game
-		         with: aBoard
-		         using: aDiceBucket
-		         andShipsNamed: ships
-		         until: laps
-		         cardManager: cardManager.
-	ship1 := aGame findShipBy: 'ship 1'.
-	ship1 move: 5 in: aBoard.
-	aWorm applyTo: ship1 in: aGame.
-	self assert: ship1 position equals: 2
+	| aGame |
+	aGame := GameBuilder new
+		         diceSequence: #( 5 );
+		         wormHoleBetween: 2 and: 6;
+		         laps: 3;
+		         build.
+	aGame playTurn. "cae en 6 y el wormhole lo lleva a 2"
+	self assert: (aGame positionOf: 'ship 1') equals: 2
 ]

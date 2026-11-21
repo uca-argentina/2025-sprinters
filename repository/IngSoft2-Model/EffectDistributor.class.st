@@ -2,45 +2,47 @@ Class {
 	#name : 'EffectDistributor',
 	#superclass : 'Object',
 	#instVars : [
-		'distribution',
-		'cells'
+		'distributions',
+		'random'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
-EffectDistributor class >> withDistribution: aDistribution on:amountOfCells [ 
-	^self new initializeWith: aDistribution on:amountOfCells
+{ #category : 'instance creation' }
+EffectDistributor class >> with: aCollectionOfDistributions [
+
+	| totalProbability |
+	totalProbability := aCollectionOfDistributions
+		                    inject: 0
+		                    into: [ :total :each | total + each probability ].
+	(totalProbability - 1) abs < 0.0001 ifFalse: [
+		^ Error signal: 'Probabilities must add up to 1' ].
+	^ self new initializeWith: aCollectionOfDistributions
+]
+
+{ #category : 'distributing' }
+EffectDistributor >> effectsFor: anAmountOfCells [
+
+	^ (1 to: anAmountOfCells) collect: [ :each | self randomEffect ]
 ]
 
 { #category : 'initialization' }
-EffectDistributor >> initializeWith: aDistribution on: amountOfCells [
+EffectDistributor >> initializeWith: aCollectionOfDistributions [
 
-	distribution := aDistribution.
-	cells := amountOfCells
+	distributions := aCollectionOfDistributions.
+	random := Random new
 ]
 
-{ #category : 'playing' }
-EffectDistributor >> recieveAmountOfEffects [
+{ #category : 'distributing' }
+EffectDistributor >> randomEffect [
 
-	| cumulativeProbabilities cum effectsOnCells randomItem effectSelected random |
-	cumulativeProbabilities := OrderedCollection new.
-	random := Random new.
-	cum := 0.0.
-
-	distribution do: [ :dist |
-		cum := cum + dist probability.
-		cumulativeProbabilities add: cum -> dist cellClass ].
-
-	effectsOnCells := OrderedCollection new.
-
-	cells timesRepeat: [
-		randomItem := random next. "Entre 0 y 1"
-		effectSelected := cumulativeProbabilities
-			                  detect: [ :assoc | randomItem <= assoc key ]
-			                  ifNone: [ NoEffect ].
-		effectsOnCells add: effectSelected value ].
-
-	^ effectsOnCells
+	| randomNumber accumulated |
+	randomNumber := random next.
+	accumulated := 0.
+	^ (distributions
+		   detect: [ :distribution |
+			   accumulated := accumulated + distribution probability.
+			   randomNumber < accumulated ]
+		   ifNone: [ distributions last ]) newEffect
 ]

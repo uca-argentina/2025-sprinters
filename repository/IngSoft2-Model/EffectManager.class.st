@@ -2,42 +2,28 @@ Class {
 	#name : 'EffectManager',
 	#superclass : 'Object',
 	#instVars : [
-		'lastRealEffect'
+		'lastEffect'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'accessing' }
-EffectManager class >> creation [
-
-	^ self new initialization
-]
-
-{ #category : 'as yet unclassified' }
+{ #category : 'applying' }
 EffectManager >> apply: anEffect to: aShip in: aGame [
 
-	(anEffect isCardGiver) ifTrue: [
-		aGame cardManager drawCardOn: aShip.
-		^ self ].
 	anEffect applyTo: aShip in: aGame.
-	self registerEffect: anEffect
+	lastEffect := anEffect
 ]
 
 { #category : 'initialization' }
-EffectManager >> initialization [
+EffectManager >> initialize [
 
-	lastRealEffect := NoEffect new
-]
-
-{ #category : 'accessing' }
-EffectManager >> lastRealEffect [
-
-	^ lastRealEffect
+	super initialize.
+	lastEffect := NoEffect new
 ]
 
 { #category : 'as yet unclassified' }
-EffectManager >> registerEffect: anEffect [
+EffectManager >> repeatLastEffectOn: aShip in: aGame [
 
-	lastRealEffect := anEffect
+	lastEffect applyTo: aShip in: aGame
 ]

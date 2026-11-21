@@ -9,20 +9,20 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'creation' }
 Distance class >> lightYear: anAmount [
 
-	^ self new intializeWithParsecs: anAmount / 3 andLightYears: anAmount
+	^ self new initializeWithParsecs: anAmount / 3 andLightYears: anAmount
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'creation' }
 Distance class >> parsecs: anAmount [
 
-	^ self new intializeWithParsecs: anAmount andLightYears:(anAmount * 3)
+	^ self new initializeWithParsecs: anAmount andLightYears: (anAmount * 3)
 ]
 
-{ #category : 'as yet unclassified' }
-Distance >> intializeWithParsecs: someParsecs andLightYears: someLightYear [
+{ #category : 'initialization' }
+Distance >> initializeWithParsecs: someParsecs andLightYears: someLightYear [
 
 	parsecs := someParsecs.
 	lightYear := someLightYear

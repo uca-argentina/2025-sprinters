@@ -2,8 +2,7 @@ Class {
 	#name : 'Cell',
 	#superclass : 'Object',
 	#instVars : [
-		'positionOfEffect',
-		'cellClass'
+		'effect'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -17,26 +16,12 @@ Cell class >> with: anEffect [
 
 { #category : 'playing' }
 Cell >> effect [
-	^ cellClass.
-]
 
-{ #category : 'playing' }
-Cell >> effect: aCellClass [ 
-	cellClass := aCellClass.
-]
-
-{ #category : 'playing' }
-Cell >> effectOnMovement [
-	^ cellClass effectOnMovement
+	^ effect
 ]
 
 { #category : 'initialization' }
-Cell >> initializeWith: aCellClass [
+Cell >> initializeWith: anEffect [
 
-	cellClass := aCellClass
-]
-
-{ #category : 'accessing' }
-Cell >> position: anInteger [ 
-	positionOfEffect := anInteger.
+	effect := anEffect
 ]

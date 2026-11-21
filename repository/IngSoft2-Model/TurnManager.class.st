@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'ships',
 		'turn',
-		'currentTurnIndex'
+		'penalties'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -18,40 +18,62 @@ TurnManager class >> with: ships [
 	^ self new initializeWith: ships
 ]
 
-{ #category : 'accessing' }
-TurnManager >> findShipBy: shipName [
-
-	^ ships detect: [ :ship | ship name = shipName ]
-]
-
 { #category : 'initialization' }
 TurnManager >> initializeWith: shipCollection [
 
 	turn := 1.
-	ships := shipCollection
+	ships := shipCollection.
+	penalties := IdentityDictionary new
+]
+
+{ #category : 'private' }
+TurnManager >> isPenalized: aShip [
+
+	^ (penalties at: aShip ifAbsent: [ 0 ]) > 0
 ]
 
 { #category : 'playing' }
 TurnManager >> nextShip [
 
-	| totalShips turnsSkipped ship |
-	totalShips := ships size.
-	turnsSkipped := 0.
-
-	[ turnsSkipped < totalShips ] whileTrue: [
-		ship := ships at: turn.
-		turn := turn \\ totalShips + 1.
-		(ship canPlay and: [ ship wantsToPlay ])
-			ifTrue: [ ^ ship ]
-			ifFalse: [
-				ship skipTurn.
-				turnsSkipped := turnsSkipped + 1 ] ].
-	Error signal: 'There is no ship witch can play'
+	| ship |
+	ship := self shipInTurnOrder.
+	[ self isPenalized: ship ] whileTrue: [
+		self servePenaltyOf: ship.
+		ship := self shipInTurnOrder ].
+	^ ship
 ]
 
-{ #category : 'playing' }
-TurnManager >> skipTurnForShipNamed: shipName [	
-	| shipFound |
-	shipFound := self findShipBy: shipName.
-	shipFound choiceToNotPlay.
+{ #category : 'penalizing' }
+TurnManager >> penalize: aShip turns: anAmountOfTurns [
+
+	penalties at: aShip put: anAmountOfTurns
+]
+
+{ #category : 'private' }
+TurnManager >> servePenaltyOf: aShip [
+
+	penalties at: aShip put: (penalties at: aShip) - 1
+]
+
+{ #category : 'accessing' }
+TurnManager >> shipInTurn [
+
+	| simulatedTurn simulatedPenalties ship |
+	simulatedTurn := turn.
+	simulatedPenalties := penalties copy.
+	[
+	ship := ships at: simulatedTurn.
+	(simulatedPenalties at: ship ifAbsent: [ 0 ]) > 0 ] whileTrue: [
+		simulatedPenalties at: ship put: (simulatedPenalties at: ship) - 1.
+		simulatedTurn := simulatedTurn \\ ships size + 1 ].
+	^ ship
+]
+
+{ #category : 'private' }
+TurnManager >> shipInTurnOrder [
+
+	| ship |
+	ship := ships at: turn.
+	turn := turn \\ ships size + 1.
+	^ ship
 ]
